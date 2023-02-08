@@ -90,7 +90,7 @@ namespace Mirror
         public static Action                         OnConnectedEvent;
         public static Action                         OnDisconnectedEvent;
         public static Action<TransportError, string> OnErrorEvent;
-
+        
         /// <summary>Registered spawnable prefabs by assetId.</summary>
         public static readonly Dictionary<uint, GameObject> prefabs =
             new Dictionary<uint, GameObject>();
