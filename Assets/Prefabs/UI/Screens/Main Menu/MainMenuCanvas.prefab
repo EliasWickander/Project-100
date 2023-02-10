@@ -968,6 +968,7 @@ GameObject:
   - component: {fileID: 8305715114926518438}
   - component: {fileID: 7725222000858296618}
   - component: {fileID: 4143809442862210989}
+  - component: {fileID: 1048934021716013007}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1077,7 +1078,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7725222000858296618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1048934021716013007}
+        m_TargetAssemblyTypeName: HostLobbyTrigger, Assembly-CSharp
+        m_MethodName: Trigger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1048934021716013007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3590203718405710472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a032b788d22ba948b57795dc89147c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3708035341457616005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1226,6 +1251,8 @@ GameObject:
   - component: {fileID: 6043698207368596529}
   - component: {fileID: 6043698207368596528}
   - component: {fileID: 6043698207368596531}
+  - component: {fileID: 953958107069090084}
+  - component: {fileID: 7614322611812356436}
   m_Layer: 5
   m_Name: MainMenuCanvas
   m_TagString: Untagged
@@ -1328,6 +1355,66 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &953958107069090084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6043698207368596530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b98a41ae1eaef741b78364e3411a9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStartHostAttemptEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7614322611812356436}
+        m_TargetAssemblyTypeName: UINavigationTrigger, Assembly-CSharp
+        m_MethodName: Trigger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnStartHostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientConnectionAttemptEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientConnectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientDisconnectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_singleErrorListener: 0
+  m_errorTypeToListenFor: 0
+  OnClientErrorEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7614322611812356436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6043698207368596530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40f9fb6a9fe02e4d95c7aaf0cb31693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_target: 1
+  m_mode: 0
+  m_screenData: {fileID: 0}
+  m_panelData: {fileID: 11400000, guid: e80ccdc36fe073f4484dec9f9f92ae46, type: 2}
 --- !u!1 &6153503024687634882
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,8 +5,10 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ClientConnectionListener : MonoBehaviour
+public class NetworkActionListener : MonoBehaviour
 {
+    public UnityEvent OnStartHostAttemptEvent;
+    public UnityEvent OnStartHostEvent;
     public UnityEvent OnClientConnectionAttemptEvent;
     public UnityEvent OnClientConnectedEvent;
     public UnityEvent OnClientDisconnectedEvent;
@@ -17,6 +19,8 @@ public class ClientConnectionListener : MonoBehaviour
     
     private void OnEnable()
     {
+        NetworkManagerCustom.OnStartHostAttemptEvent += OnStartHostAttempt;
+        NetworkManagerCustom.OnStartHostEvent += OnStartHost;
         NetworkManagerCustom.OnClientConnectionAttemptEvent += OnClientConnectionAttempt;
         NetworkManagerCustom.OnClientConnectedEvent += OnClientConnected;
         NetworkManagerCustom.OnClientDisconnectedEvent += OnClientDisconnected;
@@ -25,12 +29,24 @@ public class ClientConnectionListener : MonoBehaviour
 
     private void OnDisable()
     {
+        NetworkManagerCustom.OnStartHostAttemptEvent -= OnStartHostAttempt;
+        NetworkManagerCustom.OnStartHostEvent -= OnStartHost;
         NetworkManagerCustom.OnClientConnectionAttemptEvent -= OnClientConnectionAttempt;
         NetworkManagerCustom.OnClientConnectedEvent -= OnClientConnected;
         NetworkManagerCustom.OnClientDisconnectedEvent -= OnClientDisconnected;
         NetworkManagerCustom.OnClientErrorEvent -= OnClientError;
     }
 
+    private void OnStartHostAttempt()
+    {
+        OnStartHostAttemptEvent?.Invoke();   
+    }
+    
+    private void OnStartHost()
+    {
+        OnStartHostEvent?.Invoke();
+    }
+    
     private void OnClientConnectionAttempt()
     {
         OnClientConnectionAttemptEvent?.Invoke();

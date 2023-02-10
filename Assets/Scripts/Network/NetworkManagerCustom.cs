@@ -18,6 +18,8 @@ public class NetworkManagerCustom : NetworkManager
     [SerializeField]
     private LobbyRoomPlayer m_roomPlayerPrefab;
 
+    public static event Action OnStartHostAttemptEvent;
+    public static event Action OnStartHostEvent;
     public static event Action OnClientConnectionAttemptEvent;
     public static event Action OnClientConnectedEvent;
     public static event Action OnClientDisconnectedEvent;
@@ -86,6 +88,30 @@ public class NetworkManagerCustom : NetworkManager
 
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
+    }
+    
+    public override void OnStartHost()
+    {
+        base.OnStartHost();
+        
+        OnStartHostEvent?.Invoke();
+    }
+
+    public void HostLobby()
+    {
+        if(NetworkServer.active || NetworkClient.active)
+            return;
+
+        OnStartHostAttemptEvent?.Invoke();
+
+        StartCoroutine(HostLobbyAsync());
+    }
+
+    public IEnumerator HostLobbyAsync()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        StartHost();
     }
     
     public void JoinLobby()
