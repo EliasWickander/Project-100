@@ -7,8 +7,8 @@ public class UIScreen : MonoBehaviour
     public UIScreenData m_screenData;
     private Dictionary<UIPanelData, UIPanel> m_panels = new Dictionary<UIPanelData, UIPanel>();
     
-    public Stack<UIPanel> ActivePanels => m_activePanels;
-    private Stack<UIPanel> m_activePanels = new Stack<UIPanel>();
+    public UIPanel TopPanel => m_panelStack.Count > 0 ? m_panelStack.Peek() : null;
+    private Stack<UIPanel> m_panelStack = new Stack<UIPanel>();
     
     public void Setup()
     {
@@ -34,15 +34,13 @@ public class UIScreen : MonoBehaviour
 
     public void Reset()
     {
-        for (int i = 0; i < m_activePanels.Count; i++)
+        for (int i = 0; i < m_panelStack.Count; i++)
         {
-            UIPanel topPanel = m_activePanels.Peek();
-
-            if (topPanel.m_panelData.m_activeOnStart)
+            if (TopPanel.m_panelData.m_activeOnStart)
                 break;
             
-            topPanel.SetVisible(false);
-            m_activePanels.Pop();
+            TopPanel.SetVisible(false);
+            m_panelStack.Pop();
         }
     }
     public void SetVisible(bool visible)
@@ -59,19 +57,19 @@ public class UIScreen : MonoBehaviour
     {
         UIPanel panelObject = m_panels[panel];
 
-        if(m_activePanels.Contains(panelObject))
+        if(m_panelStack.Contains(panelObject))
             return;
 
-        m_activePanels.Push(panelObject);
+        m_panelStack.Push(panelObject);
         panelObject.SetVisible(true);
     }
 
     public void NavigateBack()
     {
-        if(m_activePanels.Count <= 0)
+        if(TopPanel == null)
             return;
-
-        UIPanel topPanel = m_activePanels.Pop();
-        topPanel.SetVisible(false);
+        
+        TopPanel.SetVisible(false);
+        m_panelStack.Pop();
     }
 }

@@ -12,7 +12,8 @@ public class UINavigation : MonoBehaviour
 
     private Dictionary<UIScreenData, UIScreen> m_screens = new Dictionary<UIScreenData, UIScreen>();
 
-    private UIScreen m_activeScreen = null;
+    public UIScreen ActiveScreen => m_screenStack.Count > 0 ? m_screenStack.Peek() : null;
+    private Stack<UIScreen> m_screenStack = new Stack<UIScreen>();
     
     private void Awake()
     {
@@ -72,14 +73,14 @@ public class UINavigation : MonoBehaviour
 
         UIScreen screenObject = m_screens.ContainsKey(screen) ? m_screens[screen] : CreateScreen(screen); 
         
-        if (m_activeScreen)
+        if (ActiveScreen)
         {
-            m_activeScreen.SetVisible(false);
+            ActiveScreen.SetVisible(false);
         }
         
-        m_activeScreen = screenObject;
-        
-        m_activeScreen.SetVisible(true);
+        m_screenStack.Push(screenObject);
+
+        ActiveScreen.SetVisible(true);
     }
 
     public void NavigateTo(UIPanelData panel)
@@ -90,29 +91,43 @@ public class UINavigation : MonoBehaviour
             return;
         }
 
-        if (m_activeScreen == null)
+        if (ActiveScreen == null)
         {
             Debug.LogError("Tried to navigate to panel but active screen is null");
             return;
         }
         
-        if (!m_activeScreen.m_screenData.m_panels.Contains(panel))
+        if (!ActiveScreen.m_screenData.m_panels.Contains(panel))
         {
             Debug.LogError("Tried to navigate to panel that isn't associated with active screen");
             return;
         }
         
-        m_activeScreen.NavigateTo(panel);
+        ActiveScreen.NavigateTo(panel);
     }
 
     public void NavigateBack()
     {
-        if (m_activeScreen == null)
+        if (ActiveScreen == null)
         {
             Debug.LogError("Tried to navigate back from panel but active screen is null");
             return;
         }
-        
-        m_activeScreen.NavigateBack();
+
+        if (ActiveScreen.TopPanel != null)
+        {
+            ActiveScreen.NavigateBack();   
+        }
+        else
+        {
+            if (m_screenStack.Count > 1)
+            {
+                ActiveScreen.SetVisible(false);
+                
+                m_screenStack.Pop();
+                
+                ActiveScreen.SetVisible(true);
+            }
+        }
     }
 }
