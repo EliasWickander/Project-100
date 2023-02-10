@@ -682,6 +682,7 @@ GameObject:
   - component: {fileID: 5120697793178869578}
   - component: {fileID: 5120697793178869579}
   - component: {fileID: 5120697793178869572}
+  - component: {fileID: 4761325536875824574}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -792,18 +793,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5120697793759289780}
-        m_TargetAssemblyTypeName: LobbyJoiner, Assembly-CSharp
-        m_MethodName: JoinLobby
-        m_Mode: 1
+      - m_Target: {fileID: 4761325536875824574}
+        m_TargetAssemblyTypeName: JoinLobbyTrigger, Assembly-CSharp
+        m_MethodName: Trigger
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 5120697793324638872}
+          m_ObjectArgumentAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4761325536875824574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5120697793178869574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa96f7822226a44f86ceafdbce3bfda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5120697793289954792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,8 +1038,8 @@ GameObject:
   - component: {fileID: 2363739063287837364}
   - component: {fileID: 5120697793759289782}
   - component: {fileID: 5120697793759289783}
-  - component: {fileID: 5120697793759289780}
-  - component: {fileID: 5120697793759289781}
+  - component: {fileID: 1748498498912896047}
+  - component: {fileID: 254834434596990109}
   m_Layer: 5
   m_Name: JoinPanel
   m_TagString: Untagged
@@ -1067,6 +1080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925217a8190475e4a976a84c3cde4538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_panelData: {fileID: 0}
 --- !u!222 &5120697793759289782
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1105,7 +1119,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5120697793759289780
+--- !u!114 &1748498498912896047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1114,57 +1128,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5120697793759289777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aa96f7822226a44f86ceafdbce3bfda, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b98a41ae1eaef741b78364e3411a9cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ipAddressInputField: {fileID: 5120697792782163945}
-  OnAttemptedJoin:
+  OnClientConnectionAttemptEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ConnectingText, Assembly-CSharp
-        m_MethodName: OnConnectionAttempted
+      - m_Target: {fileID: 254834434596990109}
+        m_TargetAssemblyTypeName: UINavigationTrigger, Assembly-CSharp
+        m_MethodName: Trigger
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
---- !u!114 &5120697793759289781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5120697793759289777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa88d603dc82a5f46b920f4d8f0e2c9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_key: 27
-  OnInvoked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5120697793759289777}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1173,6 +1146,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnClientConnectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientDisconnectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_singleErrorListener: 0
+  m_errorTypeToListenFor: 0
+  OnClientErrorEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &254834434596990109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5120697793759289777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40f9fb6a9fe02e4d95c7aaf0cb31693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_target: 1
+  m_mode: 0
+  m_screenData: {fileID: 0}
+  m_panelData: {fileID: 11400000, guid: 41c0c4323a214d84ba1a28978fee97ed, type: 2}
 --- !u!1 &5120697794286314848
 GameObject:
   m_ObjectHideFlags: 0

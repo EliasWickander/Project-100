@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class ClientConnectionListener : MonoBehaviour
 {
+    public UnityEvent OnClientConnectionAttemptEvent;
     public UnityEvent OnClientConnectedEvent;
     public UnityEvent OnClientDisconnectedEvent;
 
@@ -16,6 +17,7 @@ public class ClientConnectionListener : MonoBehaviour
     
     private void OnEnable()
     {
+        NetworkManagerCustom.OnClientConnectionAttemptEvent += OnClientConnectionAttempt;
         NetworkManagerCustom.OnClientConnectedEvent += OnClientConnected;
         NetworkManagerCustom.OnClientDisconnectedEvent += OnClientDisconnected;
         NetworkManagerCustom.OnClientErrorEvent += OnClientError;
@@ -23,11 +25,17 @@ public class ClientConnectionListener : MonoBehaviour
 
     private void OnDisable()
     {
+        NetworkManagerCustom.OnClientConnectionAttemptEvent -= OnClientConnectionAttempt;
         NetworkManagerCustom.OnClientConnectedEvent -= OnClientConnected;
         NetworkManagerCustom.OnClientDisconnectedEvent -= OnClientDisconnected;
         NetworkManagerCustom.OnClientErrorEvent -= OnClientError;
     }
 
+    private void OnClientConnectionAttempt()
+    {
+        OnClientConnectionAttemptEvent?.Invoke();
+    }
+    
     private void OnClientConnected()
     {
         OnClientConnectedEvent?.Invoke();

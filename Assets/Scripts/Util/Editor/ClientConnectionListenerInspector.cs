@@ -10,11 +10,13 @@ public class ClientConnectionListenerInspector : Editor
     {
         serializedObject.Update();
         
+        SerializedProperty onClientConnectionAttemptEvent = serializedObject.FindProperty(nameof(ClientConnectionListener.OnClientConnectionAttemptEvent));
         SerializedProperty onClientConnectedEvent = serializedObject.FindProperty(nameof(ClientConnectionListener.OnClientConnectedEvent));
         SerializedProperty onClientDisconnectedEvent = serializedObject.FindProperty(nameof(ClientConnectionListener.OnClientDisconnectedEvent));
         SerializedProperty singleErrorListener = serializedObject.FindProperty(nameof(ClientConnectionListener.m_singleErrorListener));
         SerializedProperty onClientErrorEvent = serializedObject.FindProperty(nameof(ClientConnectionListener.OnClientErrorEvent));
 
+        EditorGUILayout.PropertyField(onClientConnectionAttemptEvent);
         EditorGUILayout.PropertyField(onClientConnectedEvent);
         EditorGUILayout.PropertyField(onClientDisconnectedEvent);
         EditorGUILayout.PropertyField(singleErrorListener);

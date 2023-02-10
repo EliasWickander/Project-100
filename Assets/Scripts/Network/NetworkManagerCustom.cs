@@ -18,6 +18,7 @@ public class NetworkManagerCustom : NetworkManager
     [SerializeField]
     private LobbyRoomPlayer m_roomPlayerPrefab;
 
+    public static event Action OnClientConnectionAttemptEvent;
     public static event Action OnClientConnectedEvent;
     public static event Action OnClientDisconnectedEvent;
     public static event Action<TransportError> OnClientErrorEvent;
@@ -85,5 +86,34 @@ public class NetworkManagerCustom : NetworkManager
 
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
+    }
+    
+    public void JoinLobby()
+    {
+        if(NetworkClient.active)
+            return;
+        
+        OnClientConnectionAttemptEvent?.Invoke();
+        
+        StartCoroutine(JoinLobbyAsync());
+    }
+
+    public void JoinLobby(string ip)
+    {
+        if(NetworkClient.active)
+            return;
+
+        networkAddress = ip;
+        OnClientConnectionAttemptEvent?.Invoke();
+
+        StartCoroutine(JoinLobbyAsync());
+    }
+    
+    //Make sure to call StartClient after one frame so event has time to trigger
+    private IEnumerator JoinLobbyAsync()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        StartClient();
     }
 }

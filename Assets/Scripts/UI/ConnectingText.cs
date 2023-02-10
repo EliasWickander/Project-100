@@ -11,11 +11,13 @@ public class ConnectingText : MonoBehaviour
 
     private void OnEnable()
     {
+        NetworkManagerCustom.OnClientConnectionAttemptEvent += OnConnectionAttempted;
         NetworkManagerCustom.OnClientErrorEvent += OnClientError;
     }
 
     private void OnDisable()
     {
+        NetworkManagerCustom.OnClientConnectionAttemptEvent -= OnConnectionAttempted;
         NetworkManagerCustom.OnClientErrorEvent -= OnClientError;
     }
 
