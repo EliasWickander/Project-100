@@ -35,7 +35,7 @@ public class NetworkManagerCustom : NetworkManager
     public override void OnStartClient()
     {
         base.OnStartClient();
-
+        
         GameObject[] spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
         
         foreach(GameObject prefab in spawnablePrefabs)
@@ -45,7 +45,7 @@ public class NetworkManagerCustom : NetworkManager
     public override void OnClientConnect()
     {
         base.OnClientConnect();
-        
+
         if(m_onClientConnectedEvent)
             m_onClientConnectedEvent.Raise();;
     }
@@ -53,7 +53,7 @@ public class NetworkManagerCustom : NetworkManager
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
-        
+
         if(m_onClientDisconnectedEvent)
             m_onClientDisconnectedEvent.Raise();
     }
@@ -61,7 +61,8 @@ public class NetworkManagerCustom : NetworkManager
     public override void OnClientError(TransportError error, string reason)
     {
         base.OnClientError(error, reason);
-        
+
+        Debug.Log(error + " " + reason);
         if(m_onClientErrorEvent)
             m_onClientErrorEvent.Raise(error);
     }
@@ -76,7 +77,7 @@ public class NetworkManagerCustom : NetworkManager
             return;
         }
 
-        if (SceneManager.GetActiveScene().name != m_menuScene)
+        if (SceneManager.GetActiveScene().path != m_menuScene)
         {
             conn.Disconnect();
             return;
@@ -85,7 +86,7 @@ public class NetworkManagerCustom : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        if (SceneManager.GetActiveScene().name == m_menuScene)
+        if (SceneManager.GetActiveScene().path == m_menuScene)
         {
             LobbyRoomPlayer roomPlayerInstance = Instantiate(m_roomPlayerPrefab);
 

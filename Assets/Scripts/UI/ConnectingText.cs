@@ -23,7 +23,11 @@ public class ConnectingText : MonoBehaviour
     {
         m_connectingText.text = "Connected!";
     }
-    
+
+    public void OnConnectionDisconnected()
+    {
+        m_connectingText.text = "Couldn't connect to server: Connection closed";
+    }
     public void OnClientError(TransportError error)
     {
         switch (error)

@@ -25,7 +25,7 @@ public class JoinLobbyTrigger : MonoBehaviour
         }
     }
 
-    public void Trigger(TextMeshProUGUI ip)
+    public void Trigger(TMP_InputField ip)
     {
         if (NetworkManagerCustom.Instance != null && ip != null)
         {

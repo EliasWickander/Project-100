@@ -174,6 +174,7 @@ namespace Mirror
             }
 
             GameObject gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
+
             if (gamePlayer == null)
             {
                 // get start position from base class
