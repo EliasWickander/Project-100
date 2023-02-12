@@ -63,6 +63,12 @@ MonoBehaviour:
   timeInterpolationGui: 0
   m_menuScene: Assets/Scenes/MainMenu.unity
   m_roomPlayerPrefab: {fileID: 9214188552314703482, guid: cba3cd854a9885c4ab3d2d26836562f0, type: 3}
+  m_onStartHostAttemptEvent: {fileID: 11400000, guid: 62305c44588ccc143a8ce21636848ca7, type: 2}
+  m_onStartHostEvent: {fileID: 11400000, guid: 0f3fd24998353144f865b20b854e48c3, type: 2}
+  m_onClientConnectionAttemptEvent: {fileID: 11400000, guid: fcf9c78aaa123cc42a484c0f79ed9b0e, type: 2}
+  m_onClientConnectedEvent: {fileID: 11400000, guid: d485b03cf4f51a54c967e4ed390d9405, type: 2}
+  m_onClientDisconnectedEvent: {fileID: 11400000, guid: 5f4ee208592e42846b3237e73c5b9c62, type: 2}
+  m_onClientErrorEvent: {fileID: 11400000, guid: bd33ce8192dca2948b464dc96029fbd2, type: 2}
 --- !u!114 &4921770832255139380
 MonoBehaviour:
   m_ObjectHideFlags: 0

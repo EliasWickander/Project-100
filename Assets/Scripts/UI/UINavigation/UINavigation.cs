@@ -110,7 +110,7 @@ public class UINavigation : MonoBehaviour
     {
         if (ActiveScreen == null)
         {
-            Debug.LogError("Tried to navigate back from panel but active screen is null");
+            Debug.LogError("Tried to navigate back but active screen is null");
             return;
         }
 
@@ -120,14 +120,33 @@ public class UINavigation : MonoBehaviour
         }
         else
         {
-            if (m_screenStack.Count > 1)
-            {
-                ActiveScreen.SetVisible(false);
+            NavigateBackScreen();
+        }
+    }
+
+    public void NavigateBackPanel()
+    {
+        if (ActiveScreen == null)
+        {
+            Debug.LogError("Tried to navigate back but active screen is null");
+            return;
+        }
+        
+        if (ActiveScreen.TopPanel != null)
+        {
+            ActiveScreen.NavigateBack();   
+        }
+    }
+    
+    public void NavigateBackScreen()
+    {
+        if (m_screenStack.Count > 1)
+        {
+            ActiveScreen.SetVisible(false);
                 
-                m_screenStack.Pop();
+            m_screenStack.Pop();
                 
-                ActiveScreen.SetVisible(true);
-            }
+            ActiveScreen.SetVisible(true);
         }
     }
 }

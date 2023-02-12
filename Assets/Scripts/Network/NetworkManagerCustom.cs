@@ -18,13 +18,13 @@ public class NetworkManagerCustom : NetworkManager
     [SerializeField]
     private LobbyRoomPlayer m_roomPlayerPrefab;
 
-    public static event Action OnStartHostAttemptEvent;
-    public static event Action OnStartHostEvent;
-    public static event Action OnClientConnectionAttemptEvent;
-    public static event Action OnClientConnectedEvent;
-    public static event Action OnClientDisconnectedEvent;
-    public static event Action<TransportError> OnClientErrorEvent;
-    
+    public OnStartHostAttemptEvent m_onStartHostAttemptEvent;
+    public OnStartHostEvent m_onStartHostEvent;
+    public OnClientConnectionAttemptEvent m_onClientConnectionAttemptEvent;
+    public OnClientConnectedEvent m_onClientConnectedEvent;
+    public OnClientDisconnectedEvent m_onClientDisconnectedEvent;
+    public OnClientErrorEvent m_onClientErrorEvent;
+
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -46,21 +46,24 @@ public class NetworkManagerCustom : NetworkManager
     {
         base.OnClientConnect();
         
-        OnClientConnectedEvent?.Invoke();
+        if(m_onClientConnectedEvent)
+            m_onClientConnectedEvent.Raise();;
     }
 
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
         
-        OnClientDisconnectedEvent?.Invoke();
+        if(m_onClientDisconnectedEvent)
+            m_onClientDisconnectedEvent.Raise();
     }
 
     public override void OnClientError(TransportError error, string reason)
     {
         base.OnClientError(error, reason);
         
-        OnClientErrorEvent?.Invoke(error);
+        if(m_onClientErrorEvent)
+            m_onClientErrorEvent.Raise(error);
     }
 
     public override void OnServerConnect(NetworkConnectionToClient conn)
@@ -94,7 +97,8 @@ public class NetworkManagerCustom : NetworkManager
     {
         base.OnStartHost();
         
-        OnStartHostEvent?.Invoke();
+        if(m_onStartHostEvent)
+            m_onStartHostEvent.Raise();
     }
 
     public void HostLobby()
@@ -102,7 +106,8 @@ public class NetworkManagerCustom : NetworkManager
         if(NetworkServer.active || NetworkClient.active)
             return;
 
-        OnStartHostAttemptEvent?.Invoke();
+        if(m_onStartHostAttemptEvent)
+            m_onStartHostAttemptEvent.Raise();
 
         StartCoroutine(HostLobbyAsync());
     }
@@ -119,7 +124,7 @@ public class NetworkManagerCustom : NetworkManager
         if(NetworkClient.active)
             return;
         
-        OnClientConnectionAttemptEvent?.Invoke();
+        m_onClientConnectionAttemptEvent.Raise();
         
         StartCoroutine(JoinLobbyAsync());
     }
@@ -130,7 +135,9 @@ public class NetworkManagerCustom : NetworkManager
             return;
 
         networkAddress = ip;
-        OnClientConnectionAttemptEvent?.Invoke();
+        
+        if(m_onClientConnectionAttemptEvent)
+            m_onClientConnectionAttemptEvent.Raise();
 
         StartCoroutine(JoinLobbyAsync());
     }

@@ -11,18 +11,7 @@ public class ConnectingText : MonoBehaviour
 
     private void OnEnable()
     {
-        NetworkManagerCustom.OnClientConnectedEvent += OnConnectionSuccess;
-        NetworkManagerCustom.OnClientConnectionAttemptEvent += OnConnectionAttempted;
-        NetworkManagerCustom.OnClientErrorEvent += OnClientError;
-        
         OnConnectionAttempted();
-    }
-
-    private void OnDisable()
-    {
-        NetworkManagerCustom.OnClientConnectedEvent -= OnConnectionSuccess;
-        NetworkManagerCustom.OnClientConnectionAttemptEvent -= OnConnectionAttempted;
-        NetworkManagerCustom.OnClientErrorEvent -= OnClientError;
     }
 
     public void OnConnectionAttempted()
@@ -35,7 +24,7 @@ public class ConnectingText : MonoBehaviour
         m_connectingText.text = "Connected!";
     }
     
-    private void OnClientError(TransportError error)
+    public void OnClientError(TransportError error)
     {
         switch (error)
         {
