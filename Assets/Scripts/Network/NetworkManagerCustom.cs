@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class NetworkManagerCustom : NetworkManager
 {
     public static NetworkManagerCustom Instance => singleton as NetworkManagerCustom;
+
+    public int m_minPlayers = 2;
     
     [Scene]
     [SerializeField]
@@ -24,6 +26,8 @@ public class NetworkManagerCustom : NetworkManager
     public OnClientConnectedEvent m_onClientConnectedEvent;
     public OnClientDisconnectedEvent m_onClientDisconnectedEvent;
     public OnClientErrorEvent m_onClientErrorEvent;
+
+    private List<LobbyRoomPlayer> m_roomPlayers = new List<LobbyRoomPlayer>();
 
     public override void OnStartServer()
     {
@@ -62,7 +66,6 @@ public class NetworkManagerCustom : NetworkManager
     {
         base.OnClientError(error, reason);
 
-        Debug.Log(error + " " + reason);
         if(m_onClientErrorEvent)
             m_onClientErrorEvent.Raise(error);
     }
@@ -84,16 +87,39 @@ public class NetworkManagerCustom : NetworkManager
         }
     }
 
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        if(conn.identity == null)
+            return;
+
+        Debug.Log("disconnect");
+        LobbyRoomPlayer player = conn.identity.GetComponent<LobbyRoomPlayer>();
+
+        m_roomPlayers.Remove(player);
+        
+        base.OnServerDisconnect(conn);
+    }
+
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         if (SceneManager.GetActiveScene().path == m_menuScene)
         {
             LobbyRoomPlayer roomPlayerInstance = Instantiate(m_roomPlayerPrefab);
 
+            roomPlayerInstance.IsLeader = m_roomPlayers.Count == 0;
+            
+            Debug.Log("add " + m_roomPlayers.Count);
+            m_roomPlayers.Add(roomPlayerInstance);
+            
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
     }
-    
+
+    public override void OnStopServer()
+    {
+        m_roomPlayers.Clear();
+    }
+
     public override void OnStartHost()
     {
         base.OnStartHost();

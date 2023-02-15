@@ -48,6 +48,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  m_lobbyLeaderSetEvent: {fileID: 11400000, guid: 693ae7bf079cc0543984ed37b259ddaf, type: 2}
 --- !u!114 &-2878622097938902847
 MonoBehaviour:
   m_ObjectHideFlags: 0
