@@ -28,32 +28,30 @@ namespace Util.UnityMVVM
             
             serializedObject.ApplyModifiedProperties();
         }
-
+        
         private void RenderViewProperty()
         {
-            var bindableViewProperties = PropertyFinder.GetBindableProperties(m_target.gameObject);
+            var bindableViewProperties = MVVMHelper.FindBindableViewProperties(m_target.transform);
 
-            int selectedIndex = string.IsNullOrEmpty(m_target.ViewPropertyName) ? 0 : GetIndexFromPropertyValue(bindableViewProperties, m_target.ViewPropertyName) + 1;
+            int selectedIndex = GetIndexFromPropertyValue(bindableViewProperties, m_target.ViewPropertyName) + 1;
 
             List<GUIContent> content = new List<GUIContent>() {new GUIContent("None")};
             content.AddRange(GetViewPropertyContentFormatted(bindableViewProperties));
             
             int newSelectedIndex = EditorGUILayout.Popup(new GUIContent("View Property"), selectedIndex, content.ToArray());
-
-            if (newSelectedIndex != selectedIndex)
+            
+            if (newSelectedIndex > 0)
             {
-                if (newSelectedIndex > 0)
-                {
-                    BindableProperty newSelectedProp = bindableViewProperties[newSelectedIndex - 1];
+                BindableProperty newSelectedProp = bindableViewProperties[newSelectedIndex - 1];
 
-                    m_target.ViewPropertyName = newSelectedProp.ToString();
+                m_target.ViewPropertyName = newSelectedProp.ToString();
 
-                    m_target.m_viewPropertyType = newSelectedProp.Member.PropertyType.ToString();
-                }
-                else
-                {
-                    m_target.ViewPropertyName = "";
-                }
+                m_target.m_viewPropertyType = newSelectedProp.Member.PropertyType.ToString();
+            }
+            else
+            {
+                m_target.ViewPropertyName = "";
+                m_target.ViewPropertyType = "";
             }
         }
 
@@ -61,7 +59,7 @@ namespace Util.UnityMVVM
         {
             List<string> adapterTypes = new List<string>();
             
-            foreach(var adapter in MVVMHelper.FindAdapters(m_target.ViewPropertyType))
+            foreach(var adapter in MVVMHelper.FindAdaptersOfType(m_target.ViewPropertyType))
                 adapterTypes.Add(adapter.ToString());
 
             int selectedIndex = adapterTypes.IndexOf(m_target.ViewPropertyAdapter) + 1;
@@ -73,41 +71,35 @@ namespace Util.UnityMVVM
             
             int newSelectedIndex = EditorGUILayout.Popup(new GUIContent("View Property Adapter"), selectedIndex, content.ToArray());
             
-            if (newSelectedIndex != selectedIndex)
+            if (newSelectedIndex > 0)
             {
-                if (newSelectedIndex > 0)
-                {
-                    m_target.m_viewPropertyAdapter = adapterTypes[newSelectedIndex - 1];
-                }
-                else
-                {
-                    m_target.ViewPropertyAdapter = "";
-                }
+                m_target.m_viewPropertyAdapter = adapterTypes[newSelectedIndex - 1];
+            }
+            else
+            {
+                m_target.ViewPropertyAdapter = "";
             }
         }
         private void RenderViewModelProperty()
         {
-            List<BindableProperty> bindableViewModelProperties = MVVMHelper.FindBindableProperties(m_target);
+            List<BindableProperty> bindableViewModelProperties = MVVMHelper.FindBindableViewModelProperties(m_target);
             
-            int selectedIndex = string.IsNullOrEmpty(m_target.ViewModelPropertyName) ? 0 : GetIndexFromPropertyValue(bindableViewModelProperties, m_target.m_viewModelPropertyName) + 1;
+            int selectedIndex = GetIndexFromPropertyValue(bindableViewModelProperties, m_target.m_viewModelPropertyName) + 1;
             
             List<GUIContent> content = new List<GUIContent>() {new GUIContent("None")};
             content.AddRange(GetViewModelPropertyContentFormatted(bindableViewModelProperties));
 
             int newSelectedIndex = EditorGUILayout.Popup(new GUIContent("View Model Property"), selectedIndex, content.ToArray());
-
-            if (newSelectedIndex != selectedIndex)
+            
+            if (newSelectedIndex > 0)
             {
-                if (newSelectedIndex > 0)
-                {
-                    BindableProperty newSelectedProp = bindableViewModelProperties[newSelectedIndex - 1];
+                BindableProperty newSelectedProp = bindableViewModelProperties[newSelectedIndex - 1];
 
-                    m_target.ViewModelPropertyName = newSelectedProp.ToString();
-                }
-                else
-                {
-                    m_target.ViewModelPropertyName = "";
-                }
+                m_target.ViewModelPropertyName = newSelectedProp.ToString();
+            }
+            else
+            {
+                m_target.ViewModelPropertyName = "";
             }
         }
 
@@ -142,7 +134,7 @@ namespace Util.UnityMVVM
         private int GetIndexFromPropertyValue(List<BindableProperty> propertyList, string value)
         {
             if (string.IsNullOrEmpty(value))
-                return 0;
+                return -1;
             
             for (int i = 0; i < propertyList.Count; i++)
             {
@@ -152,7 +144,7 @@ namespace Util.UnityMVVM
                     return i;
             }
 
-            return 0;
+            return -1;
         }
     }
 }

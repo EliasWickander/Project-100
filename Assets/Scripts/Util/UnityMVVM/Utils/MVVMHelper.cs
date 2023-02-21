@@ -7,17 +7,24 @@ using UnityEngine;
 
 namespace Util.UnityMVVM
 {
-    public class MVVMHelper : MonoBehaviour
+    public class MVVMHelper
     {
-        public static List<BindableProperty> FindBindableProperties(OneWayPropertyBinding target)
+        /// <summary>
+        /// Find all bindable properties on view models known to target binding
+        /// </summary>
+        /// <param name="target">Target binding</param>
+        /// <returns></returns>
+        public static List<BindableProperty> FindBindableViewModelProperties(OneWayPropertyBinding target)
         {
-            List<Type> viewModelTypes = FindAvailableViewModelTypes(target);
+            List<ViewModelMonoBehaviour> tentativeViewModels = FindViewModelsInHierarchy(target.transform);
 
             List<BindableProperty> bindableProperties = new List<BindableProperty>();
 
-            foreach (Type viewModel in viewModelTypes)
+            foreach (ViewModelMonoBehaviour viewModel in tentativeViewModels)
             {
-                IEnumerable<PropertyInfo> publicProperties = GetPublicProperties(viewModel);
+                Type viewModelType = viewModel.GetType();
+                
+                IEnumerable<PropertyInfo> publicProperties = GetPublicProperties(viewModelType);
 
                 foreach (PropertyInfo property in publicProperties)
                 {
@@ -27,41 +34,110 @@ namespace Util.UnityMVVM
                     if(property.PropertyType.ToString() != target.ViewPropertyType)
                         continue;
                     
-                    bindableProperties.Add(new BindableProperty(property, viewModel));
+                    bindableProperties.Add(new BindableProperty(property, viewModelType));
                 }
             }
 
             return bindableProperties;
         }
         
-        private static List<Type> FindAvailableViewModelTypes(OneWayPropertyBinding memberBinding)
+        /// <summary>
+        /// Find all bindable properties on components attached to target
+        /// </summary>
+        /// <param name="target">Target transform</param>
+        /// <returns></returns>
+        public static List<BindableProperty> FindBindableViewProperties(Transform target)
         {
-            List<Type> viewModelTypes = new List<Type>();
+            List<BindableProperty> bindableProperties = new List<BindableProperty>();
 
-            var transform = memberBinding.transform;
+            Component[] components = target.GetComponents<Component>();
+
+            foreach (Component component in components)
+            {
+                Type type = component.GetType();
+                
+                if(type.IsSubclassOf(typeof(PropertyBinding)))
+                    continue;
+                
+                IEnumerable<PropertyInfo> properties = GetPublicProperties(type);
+
+                foreach (PropertyInfo propertyInfo in properties)
+                {
+                    if(propertyInfo.GetGetMethod(false) == null || propertyInfo.GetSetMethod(false) == null)
+                        continue;
+
+                    if(propertyInfo.GetCustomAttributes(typeof(ObsoleteAttribute), true).Length > 0)
+                        continue;
+                    
+                    bindableProperties.Add(new BindableProperty(propertyInfo, type));
+                }
+            }
+
+            return bindableProperties;
+        }
+        
+        /// <summary>
+        /// Find all view models upwards in hierarchy from source transform
+        /// </summary>
+        /// <param name="source">Source transform to start the search from</param>
+        /// <returns></returns>
+        private static List<ViewModelMonoBehaviour> FindViewModelsInHierarchy(Transform source)
+        {
+            List<ViewModelMonoBehaviour> foundViewModels = new List<ViewModelMonoBehaviour>();
+
+            var transform = source;
 
             while (transform != null)
             {
-                var components = transform.GetComponents<MonoBehaviour>();
-                foreach (var component in components)
+                foreach (ViewModelMonoBehaviour viewModel in transform.GetComponents<ViewModelMonoBehaviour>())
                 {
-                    // Can't bind to self or null
-                    if (component == null || component == memberBinding)
-                    {
+                    if(viewModel == null)
                         continue;
-                    }
                     
-                    if(component is ViewModelMonoBehaviour)
-                        viewModelTypes.Add(component.GetType());
+                    foundViewModels.Add(viewModel);
                 }
                 
                 transform = transform.parent;
             }
 
-            return viewModelTypes;
+            return foundViewModels;
+        }
+        
+        /// <summary>
+        /// Finds view model upwards in hierarchy from source transform
+        /// </summary>
+        /// <param name="source">Source transform to start the search from</param>
+        /// <param name="viewModelName">Name of view model to look for</param>
+        /// <returns></returns>
+        public static ViewModelMonoBehaviour FindViewModelInHierarchy(Transform source, string viewModelName)
+        {
+            Transform transform = source;
+
+            while (transform != null)
+            {
+                Component foundComponent = transform.GetComponent(viewModelName);
+
+                if (foundComponent)
+                {
+                    if (foundComponent is ViewModelMonoBehaviour foundViewModel)
+                        return foundViewModel;
+                    
+                    Debug.LogError($"Found component with name {viewModelName} but it is not derived from ViewModelMonoBehaviour. Something is wrong");
+                    return null;
+                }
+                
+                transform = transform.parent;
+            }
+
+            return null;
         }
 
-        public static List<Type> FindAdapters(string typeName)
+        /// <summary>
+        /// Finds all property adapters of type in executing assembly
+        /// </summary>
+        /// <param name="typeName">Name of type (including namespaces)</param>
+        /// <returns></returns>
+        public static List<Type> FindAdaptersOfType(string typeName)
         {
             List<Type> result = new List<Type>();
 
@@ -110,26 +186,7 @@ namespace Util.UnityMVVM
 
             return null;
         }
-        public static ViewModelMonoBehaviour FindViewModel(Transform target, string name)
-        {
-            Transform transform = target;
 
-            while (transform != null)
-            {
-                var components = transform.GetComponents<ViewModelMonoBehaviour>();
-                foreach (var component in components)
-                {
-                    if (component == null)
-                        continue;
-
-                    if (component.name == name)
-                        return component;
-                }
-            }
-
-            return null;
-        }
-        
         private static IEnumerable<PropertyInfo> GetPublicProperties(Type type)
         {
             if (!type.IsInterface)

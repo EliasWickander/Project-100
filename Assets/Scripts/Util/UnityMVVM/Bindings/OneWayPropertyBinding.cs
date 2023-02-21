@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using Component = UnityEngine.Component;
 
@@ -70,11 +66,14 @@ namespace Util.UnityMVVM
 
         protected override void Connect()
         {
+            if(string.IsNullOrEmpty(ViewPropertyName) || string.IsNullOrEmpty(ViewModelPropertyName))
+                return;
+            
             ParseMemberReferenceData(ViewPropertyName, out string viewComponent, out string viewProperty);
             ParseMemberReferenceData(ViewModelPropertyName, out string viewModelComponent, out string viewModelProperty);
-            
+
             Component view = GetComponent(viewComponent);
-            Component viewModel = GetComponent(viewModelComponent);
+            Component viewModel = MVVMHelper.FindViewModelInHierarchy(transform, viewModelComponent);
 
             PropertyAdapter adapter = CreateAdapter(m_viewPropertyAdapter);
             
