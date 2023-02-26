@@ -79,6 +79,13 @@ namespace UnityWeld_Editor
             Func<PropertyInfo, bool> menuEnabled
         )
         {
+            Color guiColor = GUI.color;
+            
+            string[] bindablePropsAsString = bindableProperties.Select(prop => prop.ToString()).ToArray();
+            
+            if(!string.IsNullOrEmpty(curPropertyValue) && !bindablePropsAsString.Contains(curPropertyValue))
+                GUI.color = Color.red;
+            
             InspectorUtils.DoPopup(
                 new GUIContent(curPropertyValue),
                 label,
@@ -99,8 +106,42 @@ namespace UnityWeld_Editor
                     .ThenBy(property => property.MemberName)
                     .ToArray()
             );
+
+            GUI.color = guiColor;
         }
 
+        protected void ShowViewModelMenu(
+            GUIContent label,
+            string[] viewModelTypeNames,
+            Action<string> onValueUpdated,
+            string currentValue)
+        {
+            var adapterMenu = new[] { "None" }
+                .Concat(viewModelTypeNames)
+                .Select(typeName => new GUIContent(typeName))
+                .ToArray();
+
+            var curSelectionIndex = Array.IndexOf(viewModelTypeNames, currentValue) + 1; // +1 to account for 'None'.
+            var newSelectionIndex = EditorGUILayout.Popup(
+                label,
+                curSelectionIndex,
+                adapterMenu
+            );
+
+            if (newSelectionIndex == curSelectionIndex)
+            {
+                return;
+            }
+
+            if (newSelectionIndex == 0)
+            {
+                onValueUpdated(null); // No view model selected.
+            }
+            else
+            {
+                onValueUpdated(viewModelTypeNames[newSelectionIndex - 1]); // -1 to account for 'None'.
+            }
+        }
         /// <summary>
         /// Class used to wrap property infos
         /// </summary>
