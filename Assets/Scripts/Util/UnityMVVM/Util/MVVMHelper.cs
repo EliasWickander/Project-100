@@ -213,7 +213,7 @@ namespace Util.UnityMVVM.Internal
         public static IEnumerable<Type> GetAllViewModelTypes()
         {
             return GetAllTypes().Where(
-                x => !x.IsAbstract && (x.IsSubclassOf(typeof(ViewModelMonoBehaviour)) || x.IsSubclassOf(typeof(ViewModelNetworkBehaviour))));
+                x => !x.IsAbstract && (x.IsSubclassOf(typeof(ViewModelMonoBehaviour))));
         }
         /// <summary>
         /// Returns an enumerable of all known types.
