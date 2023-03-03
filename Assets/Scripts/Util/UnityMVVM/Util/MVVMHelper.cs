@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityWeld.Ioc;
 using Util.UnityMVVM.Exceptions;
+using Component = UnityEngine.Component;
 
 namespace Util.UnityMVVM.Internal
 {
@@ -99,7 +101,7 @@ namespace Util.UnityMVVM.Internal
                     if(component == null)
                         continue;
 
-                    if (component is ViewModelMonoBehaviour viewModel)
+                    if (component is INotifyPropertyChanged viewModel)
                     {
                         foundViewModels.Add(viewModel.GetType());   
                     }
@@ -109,8 +111,11 @@ namespace Util.UnityMVVM.Internal
                         
                         if(string.IsNullOrEmpty(viewModelName))
                             continue;
+
+                        Type viewModelType = GetViewModelType(viewModelName);
                         
-                        foundViewModels.Add(GetViewModelType(viewModelName));
+                        if(viewModelType != null)
+                            foundViewModels.Add(viewModelType);
                     }
                 }
                 
@@ -208,7 +213,7 @@ namespace Util.UnityMVVM.Internal
         public static IEnumerable<Type> GetAllViewModelTypes()
         {
             return GetAllTypes().Where(
-                x => x.IsSubclassOf(typeof(ViewModelMonoBehaviour)) && !x.IsAbstract);
+                x => !x.IsAbstract && (x.IsSubclassOf(typeof(ViewModelMonoBehaviour)) || x.IsSubclassOf(typeof(ViewModelNetworkBehaviour))));
         }
         /// <summary>
         /// Returns an enumerable of all known types.
@@ -284,11 +289,6 @@ namespace Util.UnityMVVM.Internal
         {
             var type = TypesWithBindingAttribute
                 .FirstOrDefault(t => t.ToString() == viewModelTypeName);
-
-            if (type == null)
-            {
-                throw new ViewModelNotFoundException("Could not find the specified view model \"" + viewModelTypeName + "\"");
-            }
 
             return type;
         }
