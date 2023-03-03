@@ -779,7 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e586d7591d15905439468ee1f53b9cb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_sceneToLoad: Level_1
+  m_sceneToLoad: Assets/Scenes/Level_1.unity
 --- !u!1 &3708035341457616005
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,7 +928,6 @@ GameObject:
   - component: {fileID: 6043698207368596529}
   - component: {fileID: 6043698207368596528}
   - component: {fileID: 6043698207368596531}
-  - component: {fileID: 778279578920210973}
   m_Layer: 5
   m_Name: MainMenuCanvas
   m_TagString: Untagged
@@ -1031,21 +1030,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &778279578920210973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6043698207368596530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd52da19b48bc9c43b5099c569878332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_target: 1
-  m_screenData: {fileID: 0}
-  m_panelData: {fileID: 11400000, guid: e80ccdc36fe073f4484dec9f9f92ae46, type: 2}
 --- !u!1 &6153503024687634882
 GameObject:
   m_ObjectHideFlags: 0
