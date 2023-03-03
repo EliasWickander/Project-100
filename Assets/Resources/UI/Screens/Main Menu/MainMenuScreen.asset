@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: MainMenuScreen
   m_EditorClassIdentifier: 
   m_uiScreenPrefab: {fileID: 8220531737411850694, guid: c35e22a9a5ed64242836b22a4274a557, type: 3}
-  m_panels:
-  - {fileID: 11400000, guid: c43e13ec5f17dec499551bfcbf8a358b, type: 2}
-  - {fileID: 11400000, guid: 41c0c4323a214d84ba1a28978fee97ed, type: 2}
-  - {fileID: 11400000, guid: e80ccdc36fe073f4484dec9f9f92ae46, type: 2}
+  m_panels: []
