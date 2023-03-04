@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Player Data", menuName = "Project 100/Data/PlayerData")]
-public class PlayerData : ScriptableObject
+public class PlayerData : CharacterData
 {
-    public GameObject m_prefab;
+    
 }
