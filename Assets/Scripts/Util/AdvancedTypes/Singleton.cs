@@ -8,60 +8,53 @@ namespace Util.AdvancedTypes
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         public bool m_persistentBetweenScenes;
-        private static readonly object m_lock = new object();
-        
-        private static T s_instance;
+
+        private static object s_instance = null;
         public static T Instance
         {
             get
             {
-                lock (m_lock)
+                if (s_instance == null)
                 {
-                    if (s_instance != null)
-                        return s_instance;
-    
-                    T[] instances = FindObjectsOfType<T>();
-    
-                    if (instances.Length > 0)
+                    s_instance = FindObjectOfType(typeof(T)) as T;
+
+                    if (s_instance == null)
                     {
-                        if (instances.Length > 1)
-                        {
-                            Debug.LogError($"Found {instances.Length} duplicates of Singleton<{typeof(T)}>. Cleaning all but one");
-    
-                            for (int i = 1; i < instances.Length; i++)
-                            {
-                                Destroy(instances[i]);
-                            }
-                        }
-    
-                        s_instance = instances[0];
-                        return s_instance;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Failed to find instance of Singleton<{typeof(T)}> in scene. Creating one...");
-                        
                         GameObject newObject = new GameObject($"Singleton<{typeof(T)}>");
-    
+                        
                         s_instance = newObject.AddComponent<T>();
-    
-                        return s_instance;
+                        
+                        return (T)s_instance;
                     }
                 }
+
+                return (T)s_instance;
             }
         }
-    
-        private void Awake()
+
+        protected virtual void Awake()
         {
-            if(m_persistentBetweenScenes)
-                DontDestroyOnLoad(gameObject);
-            
-            OnAwake();
+            if (s_instance != null && s_instance != this)
+            {
+                Debug.LogWarning($"Destroying duplicate instance of Singleton<{typeof(T)}>");
+                Destroy(Instance.gameObject);
+            }
+            else
+            {
+                s_instance = this;
+                
+                if(m_persistentBetweenScenes)
+                    DontDestroyOnLoad(gameObject);   
+            }
         }
-    
-        protected virtual void OnAwake()
+
+        protected virtual void OnDestroy()
         {
-            
+            if (!m_persistentBetweenScenes)
+            {
+                if(s_instance == this)
+                    s_instance = null;   
+            }
         }
     }
 }
