@@ -10,6 +10,9 @@ namespace Util.AdvancedTypes
         public bool m_persistentBetweenScenes;
 
         private static object s_instance = null;
+
+        private static bool s_initialized = false;
+        
         public static T Instance
         {
             get
@@ -20,11 +23,7 @@ namespace Util.AdvancedTypes
 
                     if (s_instance == null)
                     {
-                        GameObject newObject = new GameObject($"Singleton<{typeof(T)}>");
-                        
-                        s_instance = newObject.AddComponent<T>();
-                        
-                        return (T)s_instance;
+                        return CreateInstance();
                     }
                 }
 
@@ -32,12 +31,14 @@ namespace Util.AdvancedTypes
             }
         }
 
-        protected virtual void Awake()
+        private void Awake()
         {
+            ResetInstanceIfFirstAwake();
+
             if (s_instance != null && s_instance != this)
             {
                 Debug.LogWarning($"Destroying duplicate instance of Singleton<{typeof(T)}>");
-                Destroy(Instance.gameObject);
+                Destroy(gameObject);
             }
             else
             {
@@ -45,16 +46,57 @@ namespace Util.AdvancedTypes
                 
                 if(m_persistentBetweenScenes)
                     DontDestroyOnLoad(gameObject);   
+                
+                OnSingletonAwake();
             }
         }
 
-        protected virtual void OnDestroy()
+        private void OnDestroy()
         {
-            if (!m_persistentBetweenScenes)
+            s_initialized = false;
+            
+            OnSingletonDestroy();
+        }
+        
+        /// <summary>
+        /// Called after Awake. Added for safety
+        /// </summary>
+        protected virtual void OnSingletonAwake()
+        {
+            
+        }
+        
+        /// <summary>
+        /// Called after OnDestroy. Added for safety
+        /// </summary>
+        protected virtual void OnSingletonDestroy()
+        {
+            
+        }
+
+        /// <summary>
+        /// Makes sure instance is always null on first awake. Needed if Domain Reloading is set to off since statics don't reset
+        /// </summary>
+        private void ResetInstanceIfFirstAwake()
+        {
+            if (s_initialized == false)
             {
-                if(s_instance == this)
-                    s_instance = null;   
+                s_instance = null;
+                s_initialized = true;
             }
+        }
+
+        /// <summary>
+        /// Create object with singleton component on it
+        /// </summary>
+        /// <returns></returns>
+        private static T CreateInstance()
+        {
+            GameObject newObject = new GameObject($"Singleton<{typeof(T)}>");
+                        
+            s_instance = newObject.AddComponent<T>();
+                        
+            return (T)s_instance;
         }
     }
 }
