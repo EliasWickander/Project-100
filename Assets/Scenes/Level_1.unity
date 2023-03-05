@@ -726,7 +726,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_debug: 1
   m_worldSize: {x: 10, y: 10}
-  m_nodeRadius: 0.2
+  m_nodeRadius: 0.5
 --- !u!4 &640538141
 Transform:
   m_ObjectHideFlags: 0
