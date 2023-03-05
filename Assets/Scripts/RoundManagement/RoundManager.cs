@@ -4,12 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Util.AdvancedTypes;
 
-[Serializable]
-public class RoundData
-{
-    public string m_roundName;
-}
-
 public class RoundManager : Singleton<RoundManager>
 {
     public event Action<RoundData> OnRoundStartEvent;
