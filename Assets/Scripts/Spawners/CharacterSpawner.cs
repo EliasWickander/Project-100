@@ -21,6 +21,16 @@ public abstract class CharacterSpawner<T> : MonoBehaviour where T : CharacterDat
             return;
         }
 
-        Instantiate(m_data.m_prefab, transform.position, Quaternion.identity);
+        GameObject instance = Instantiate(m_data.m_prefab, transform.position, Quaternion.identity);
+        
+        Character spawnedCharacter = instance.GetComponent<Character>();
+
+        if (spawnedCharacter == null)
+        {
+            Debug.LogError("Spawned character had no component deriving from Character attached. Click to locate", instance);
+            return;
+        }
+        
+        spawnedCharacter.OnSpawn(m_data);
     }
 }

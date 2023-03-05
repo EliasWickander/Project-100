@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public CharacterData m_data;
+    private CharacterData m_data;
+    public CharacterData Data => m_data;
     
-    private MoveStateInfo m_moveStateInfo = null;
-    public MoveStateInfo MoveStateInfo => m_moveStateInfo;
+    private MoveInfo m_moveInfo = null;
+    public MoveInfo MoveInfo => m_moveInfo;
     
     public virtual void OnSpawn(CharacterData data)
     {
@@ -18,9 +19,9 @@ public class Character : MonoBehaviour
 
     private void ResetMoveStateInfo()
     {
-        m_moveStateInfo = new MoveStateInfo();
+        m_moveInfo = new MoveInfo();
 
-        m_moveStateInfo.Acceleration = m_data.m_acceleration;
-        m_moveStateInfo.MaxSpeed = m_data.m_maxSpeed;
+        m_moveInfo.Acceleration = m_data.m_acceleration;
+        m_moveInfo.MaxSpeed = m_data.m_maxSpeed;
     }
 }
