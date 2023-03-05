@@ -1,6 +1,9 @@
-public interface IState
+namespace Util.StateMachine
 {
-    public void OnEnter(IState prevState);
-    public void Update();
-    public void OnExit(IState nextState);
+    public interface IState
+    {
+        public void OnEnter(IState prevState);
+        public void Update();
+        public void OnExit(IState nextState);
+    }   
 }
