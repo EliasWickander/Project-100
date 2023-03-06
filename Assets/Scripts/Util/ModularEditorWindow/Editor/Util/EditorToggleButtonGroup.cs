@@ -4,23 +4,23 @@ using UnityEngine;
 namespace wild
 {
     //Button group. Acts as a manager for a group of buttons
-    public class LevelEditorToggleButtonGroup
+    public class EditorToggleButtonGroup
     {
-        private List<LevelEditorButtonToggle> m_buttons = new List<LevelEditorButtonToggle>();
-        public List<LevelEditorButtonToggle> Buttons => m_buttons;
+        private List<EditorButtonToggle> m_buttons = new List<EditorButtonToggle>();
+        public List<EditorButtonToggle> Buttons => m_buttons;
 
-        private LevelEditorButtonToggle m_selectedButton = null;
+        private EditorButtonToggle m_selectedButton = null;
 
-        private LevelEditorToggleButtonGroup m_parent;
-        private LevelEditorToggleButtonGroup m_child;
+        private EditorToggleButtonGroup m_parent;
+        private EditorToggleButtonGroup m_child;
         
-        public LevelEditorToggleButtonGroup(List<LevelEditorButtonToggle> buttons)
+        public EditorToggleButtonGroup(List<EditorButtonToggle> buttons)
         {
-            foreach (LevelEditorButtonToggle button in m_buttons)
+            foreach (EditorButtonToggle button in m_buttons)
                  AddButton(button);
         }
 
-        public LevelEditorToggleButtonGroup()
+        public EditorToggleButtonGroup()
         {
             
         }
@@ -41,7 +41,7 @@ namespace wild
 
         public void OnDisable()
         {
-            foreach (LevelEditorButtonToggle button in m_buttons)
+            foreach (EditorButtonToggle button in m_buttons)
             {
                 button.OnSelected -= OnButtonSelected;
                 button.OnDeselected -= OnButtonDeselected;
@@ -52,8 +52,8 @@ namespace wild
         {
             for (int i = 0; i < m_buttons.Count; i++)
             {
-                LevelEditorButtonToggle button = m_buttons[i];
-                LevelEditorButtonToggle prevButton = i > 0 ? m_buttons[i - 1] : null;
+                EditorButtonToggle button = m_buttons[i];
+                EditorButtonToggle prevButton = i > 0 ? m_buttons[i - 1] : null;
 
                 if (prevButton == null)
                 {
@@ -67,7 +67,7 @@ namespace wild
                     //Pushes down buttons when needed
                     if (m_child != null && m_child.Buttons.Count > 0 && prevButton == m_selectedButton)
                     {
-                        LevelEditorButton childLowestButton = m_child.GetLowestButton();
+                        EditorButton childLowestButton = m_child.GetLowestButton();
                         
                         button.SetAbsolutePosition(prevButton.Rect.xMin, childLowestButton.Rect.yMax);
                     }
@@ -85,7 +85,7 @@ namespace wild
         /// Add button to include in group
         /// </summary>
         /// <param name="button">Button</param>
-        public void AddButton(LevelEditorButtonToggle button)
+        public void AddButton(EditorButtonToggle button)
         {
             if(m_buttons.Contains(button))
                 return;
@@ -99,7 +99,7 @@ namespace wild
         /// When a button in the group is selected
         /// </summary>
         /// <param name="button">Button</param>
-        private void OnButtonSelected(LevelEditorButtonToggle button)
+        private void OnButtonSelected(EditorButtonToggle button)
         {
             //When a button is selected, deselect previous one
             if (button != m_selectedButton && m_selectedButton != null)
@@ -114,18 +114,18 @@ namespace wild
         /// When a button in the group is deselected
         /// </summary>
         /// <param name="button">Button</param>
-        private void OnButtonDeselected(LevelEditorButton button)
+        private void OnButtonDeselected(EditorButton button)
         {
             m_selectedButton = null;
         }
 
-        public void AddChild(LevelEditorToggleButtonGroup child)
+        public void AddChild(EditorToggleButtonGroup child)
         {
             m_child = child;
             child.m_parent = this;
         }
 
-        public void RemoveChild(LevelEditorToggleButtonGroup child)
+        public void RemoveChild(EditorToggleButtonGroup child)
         {
             m_child = null;
             child.m_parent = null;
@@ -135,14 +135,14 @@ namespace wild
         /// Get button furthest down in group
         /// </summary>
         /// <returns>Lowest button in group</returns>
-        public LevelEditorButton GetLowestButton()
+        public EditorButton GetLowestButton()
         {
             if (m_buttons.Count <= 0)
                 return null;
 
-            LevelEditorButton result = m_buttons[0];
+            EditorButton result = m_buttons[0];
             
-            foreach (LevelEditorButton button in m_buttons)
+            foreach (EditorButton button in m_buttons)
             {
                 if (button.Rect.y > result.Rect.y)
                     result = button;

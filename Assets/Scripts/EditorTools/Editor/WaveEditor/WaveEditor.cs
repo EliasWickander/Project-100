@@ -12,15 +12,15 @@ namespace wild
 	[CreateAssetMenu(fileName = "New Wave Editor", menuName = "Project 100/Level/Wave Editor")]
 	public sealed class WaveEditor : EditorWindow
 	{
-		private LevelEditorMenu m_menuPanel = null;
-		private LevelEditorMap m_mapPanel = null;
-		private LevelEditorToolbar m_toolbarPanel = null;
+		private EditorMenu m_menuPanel = null;
+		private EditorMap m_mapPanel = null;
+		private EditorToolbar m_toolbarPanel = null;
 
 		private EditorCamera m_roundManagementCam;
 		
-		public LevelEditorMenu MenuPanel => m_menuPanel;
-		public LevelEditorMap MapPanel => m_mapPanel;
-		public LevelEditorToolbar ToolbarPanel => m_toolbarPanel;
+		public EditorMenu MenuPanel => m_menuPanel;
+		public EditorMap MapPanel => m_mapPanel;
+		public EditorToolbar ToolbarPanel => m_toolbarPanel;
 		
 		private static RoundData[] m_rounds;
 
@@ -46,12 +46,12 @@ namespace wild
 			m_roundManagementCam = FindObjectOfType<EditorCamera>();
 			
 			if (m_roundManagementCam == null || m_roundManagementCam.Camera == null)
-				throw new Exception("No camera with LevelEditorCamera component found. Map cannot be displayed");
+				throw new Exception("No camera with EditorCamera component found. Map cannot be displayed");
 
 			//Initialization of panels
-			m_menuPanel = new LevelEditorMenu(this);
-			m_mapPanel = new LevelEditorMap(this, m_roundManagementCam.Camera);
-			m_toolbarPanel = new LevelEditorToolbar(this);
+			m_menuPanel = new EditorMenu(this);
+			m_mapPanel = new EditorMap(this, m_roundManagementCam.Camera);
+			m_toolbarPanel = new EditorToolbar(this);
 
 			m_menuPanel.SaveButton.OnClick += OnSaveButtonClicked;
 			
@@ -106,7 +106,7 @@ namespace wild
 			m_toolbarPanel.Render(toolbarRect);
 		}
 
-		private void OnSaveButtonClicked(LevelEditorButton button)
+		private void OnSaveButtonClicked(EditorButton button)
 		{
 			OnSave();
 		}

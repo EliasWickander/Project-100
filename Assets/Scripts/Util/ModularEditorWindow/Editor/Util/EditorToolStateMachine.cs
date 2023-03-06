@@ -8,21 +8,21 @@ using UnityEngine.Assertions.Must;
 namespace wild
 {
     //Tool state machine
-    public class LevelEditorToolStateMachine
+    public class EditorToolStateMachine
     {
-        public delegate void OnToolActivatedDelegate(ILevelEditorTool tool);
+        public delegate void OnToolActivatedDelegate(IEditorTool tool);
         public OnToolActivatedDelegate OnToolActivatedEvent;
 
-        public delegate void OnToolDeactivatedDelegate(ILevelEditorTool tool);
+        public delegate void OnToolDeactivatedDelegate(IEditorTool tool);
         public OnToolDeactivatedDelegate OnToolDeactivatedEvent;
         
-        private Dictionary<LevelEditorButtonToggle, ILevelEditorTool> m_tools = new Dictionary<LevelEditorButtonToggle, ILevelEditorTool>();
+        private Dictionary<EditorButtonToggle, IEditorTool> m_tools = new Dictionary<EditorButtonToggle, IEditorTool>();
 
-        private ILevelEditorTool m_activeTool = null;
-        public ILevelEditorTool ActiveTool => m_activeTool;
+        private IEditorTool m_activeTool = null;
+        public IEditorTool ActiveTool => m_activeTool;
 
-        private LevelEditorToggleButtonGroup m_buttonGroup = new LevelEditorToggleButtonGroup();
-        public LevelEditorToggleButtonGroup ButtonGroup => m_buttonGroup;
+        private EditorToggleButtonGroup m_buttonGroup = new EditorToggleButtonGroup();
+        public EditorToggleButtonGroup ButtonGroup => m_buttonGroup;
         
         public void OnEnter()
         {
@@ -64,7 +64,7 @@ namespace wild
         {
             m_buttonGroup.OnDisable();
             
-            foreach (KeyValuePair<LevelEditorButtonToggle, ILevelEditorTool> pair in m_tools)
+            foreach (KeyValuePair<EditorButtonToggle, IEditorTool> pair in m_tools)
             {
                 pair.Value.OnDisable();
                 
@@ -75,13 +75,13 @@ namespace wild
         
         public virtual void OnSave()
         {
-            foreach(KeyValuePair<LevelEditorButtonToggle, ILevelEditorTool> pair in m_tools)
+            foreach(KeyValuePair<EditorButtonToggle, IEditorTool> pair in m_tools)
                 pair.Value.OnSave();
         }
 
         public virtual void OnLoad()
         {
-            foreach(KeyValuePair<LevelEditorButtonToggle, ILevelEditorTool> pair in m_tools)
+            foreach(KeyValuePair<EditorButtonToggle, IEditorTool> pair in m_tools)
                 pair.Value.OnLoad();
         }
 
@@ -89,7 +89,7 @@ namespace wild
         /// Set active tool to run
         /// </summary>
         /// <param name="tool">Tool</param>
-        private void SetActiveTool(ILevelEditorTool tool)
+        private void SetActiveTool(IEditorTool tool)
         {
             //Exit old active tool
             if (m_activeTool != null)
@@ -112,9 +112,9 @@ namespace wild
         /// Add tool states to manage
         /// </summary>
         /// <param name="tools">Tools</param>
-        public void AddToolStates(List<ILevelEditorTool> tools)
+        public void AddToolStates(List<IEditorTool> tools)
         {
-            foreach(ILevelEditorTool tool in tools)
+            foreach(IEditorTool tool in tools)
                 AddToolState(tool);
         }
         
@@ -122,7 +122,7 @@ namespace wild
         /// Add tool state to manage
         /// </summary>
         /// <param name="tool">Tool</param>
-        public void AddToolState(ILevelEditorTool tool)
+        public void AddToolState(IEditorTool tool)
         { ;
             m_tools.Add(tool.Button, tool);   
             m_buttonGroup.AddButton(tool.Button);
@@ -135,11 +135,11 @@ namespace wild
         /// </summary>
         /// <param name="rect"></param>
         /// <param name="tool"></param>
-        private void RenderControls(Rect rect, ILevelEditorTool tool)
+        private void RenderControls(Rect rect, IEditorTool tool)
         {
             if (tool.Controls != null)
             {
-                LevelEditorButton lowestSubButton = ButtonGroup.GetLowestButton();
+                EditorButton lowestSubButton = ButtonGroup.GetLowestButton();
 
                 if (lowestSubButton != null)
                 {
@@ -155,7 +155,7 @@ namespace wild
         /// When a tool button is selected
         /// </summary>
         /// <param name="button">Button</param>
-        private void OnButtonSelected(LevelEditorButtonToggle button)
+        private void OnButtonSelected(EditorButtonToggle button)
         {
             if (button == null)
             {
@@ -163,7 +163,7 @@ namespace wild
                 return;
             }
             
-            if (!m_tools.TryGetValue(button, out ILevelEditorTool newTool))
+            if (!m_tools.TryGetValue(button, out IEditorTool newTool))
             {
                 Debug.LogError("Tried to set to an invalid state. Aborting.");
                 return;   
@@ -176,17 +176,17 @@ namespace wild
         /// When a tool button is deselected
         /// </summary>
         /// <param name="button">Button</param>
-        private void OnButtonDeselected(LevelEditorButtonToggle button)
+        private void OnButtonDeselected(EditorButtonToggle button)
         {
             SetActiveTool(null);
         }
         
-        private void OnToolActivated(ILevelEditorTool tool)
+        private void OnToolActivated(IEditorTool tool)
         {
             ButtonGroup.AddChild(tool.SubToolStateMachine.ButtonGroup);
         }
         
-        private void OnToolDeactivated(ILevelEditorTool tool)
+        private void OnToolDeactivated(IEditorTool tool)
         {
             ButtonGroup.RemoveChild(tool.SubToolStateMachine.ButtonGroup);
         }

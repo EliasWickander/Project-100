@@ -5,24 +5,24 @@ using UnityEngine;
 namespace wild
 {
     //Level Editor Tool
-    public abstract class ILevelEditorTool
+    public abstract class IEditorTool
     {
         protected WaveEditor m_editor;
         
-        private LevelEditorButtonToggle m_button = null;
-        protected ILevelEditorVariableGroup m_controls = null;
-        protected LevelEditorToolStateMachine m_subToolStateMachine = new LevelEditorToolStateMachine();
+        private EditorButtonToggle m_button = null;
+        protected IEditorVariableGroup m_controls = null;
+        protected EditorToolStateMachine m_subToolStateMachine = new EditorToolStateMachine();
         
         //Toggle-button that's connected to this tool
-        public LevelEditorButtonToggle Button => m_button;
+        public EditorButtonToggle Button => m_button;
         
         //Variables that control this behavior
-        public ILevelEditorVariableGroup Controls => m_controls;
+        public IEditorVariableGroup Controls => m_controls;
         
         //State machine that manages sub tools
-        public LevelEditorToolStateMachine SubToolStateMachine => m_subToolStateMachine;
+        public EditorToolStateMachine SubToolStateMachine => m_subToolStateMachine;
 
-        public ILevelEditorTool(WaveEditor editor, LevelEditorButtonToggle button, ILevelEditorVariableGroup controls)
+        public IEditorTool(WaveEditor editor, EditorButtonToggle button, IEditorVariableGroup controls)
         {
             m_editor = editor;
             m_button = button;

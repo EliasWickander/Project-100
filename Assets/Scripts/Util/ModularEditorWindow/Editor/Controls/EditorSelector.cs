@@ -5,9 +5,9 @@ using UnityEngine;
 namespace wild
 {
     //Control that handles selection by mouse drag
-    public class LevelEditorSelector : ILevelEditorControl
+    public class EditorSelector : IEditorControl
     {
-        public delegate void OnSelectionStartedDelegate(LevelEditorSelector selector);
+        public delegate void OnSelectionStartedDelegate(EditorSelector selector);
 
         public OnSelectionStartedDelegate OnSelectionStarted;
         
@@ -30,7 +30,7 @@ namespace wild
         private int m_mouseButton = -1;
         private Color m_selectionColor = Color.red;
 
-        public LevelEditorSelector(ILevelEditorPanel boundsPanel, int mouseButton, Color color) : base(boundsPanel)
+        public EditorSelector(IEditorPanel boundsPanel, int mouseButton, Color color) : base(boundsPanel)
         {
             if (mouseButton > 2)
             {

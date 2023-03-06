@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace wild
 {
-    //Interface for buttons in the level editor
-    public abstract class LevelEditorButton
+    //Interface for editor buttons
+    public abstract class EditorButton
     {
         //Pivots
         public enum Pivot
@@ -31,7 +31,7 @@ namespace wild
         private Rect m_rect;
         public Rect Rect => m_rect;
         
-        private LevelEditorButton m_anchorButton;
+        private EditorButton m_anchorButton;
         private Pivot m_pivot;
         private Vector2 m_anchorPos;
 
@@ -49,7 +49,7 @@ namespace wild
         /// <param name="yCoord">Y coordinate (relative to panel)</param>
         /// <param name="width">Button width</param>
         /// <param name="height">Button height</param>
-        public LevelEditorButton(string name, float xCoord, float yCoord, float width, float height)
+        public EditorButton(string name, float xCoord, float yCoord, float width, float height)
         {
             m_name = name;
             m_xCoord = xCoord;
@@ -69,7 +69,7 @@ namespace wild
         /// <param name="pivot">Button anchor pivot</param>
         /// <param name="anchor">Other button to anchor to</param>
         /// <param name="anchorPos">Anchor position of other button</param>
-        public LevelEditorButton(string name, float width, float height, Pivot pivot, LevelEditorButton anchor, Vector2 anchorPos)
+        public EditorButton(string name, float width, float height, Pivot pivot, EditorButton anchor, Vector2 anchorPos)
         {
             m_name = name;
             m_width = width;
@@ -81,7 +81,7 @@ namespace wild
             m_buttonGUIStyle = GetGUIStyle();
         }
 
-        public void Anchor(Pivot pivot, LevelEditorButton anchor, Vector2 anchorPos)
+        public void Anchor(Pivot pivot, EditorButton anchor, Vector2 anchorPos)
         {
             m_pivot = pivot;
             m_anchorPos = new Vector2(Mathf.Clamp01(anchorPos.x), Mathf.Clamp01(anchorPos.y));
@@ -143,7 +143,7 @@ namespace wild
         /// <param name="anchorButton">Target button</param>
         /// <param name="anchorPos">Position on button to anchor to</param>
         /// <returns>Rect anchored to target button</returns>
-        private Rect GetAnchoredRect(LevelEditorButton anchorButton, Vector2 anchorPos)
+        private Rect GetAnchoredRect(EditorButton anchorButton, Vector2 anchorPos)
         {
             float minX = anchorButton.Rect.xMin;
             float maxX = anchorButton.Rect.xMax;

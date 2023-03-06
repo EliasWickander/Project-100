@@ -2,11 +2,11 @@
 namespace wild
 {
     //Controls for manipulating the editor
-    public abstract class ILevelEditorControl
+    public abstract class IEditorControl
     {
-        protected ILevelEditorPanel m_boundsPanel;
+        protected IEditorPanel m_boundsPanel;
 
-        public ILevelEditorControl(ILevelEditorPanel boundsPanel)
+        public IEditorControl(IEditorPanel boundsPanel)
         {
             m_boundsPanel = boundsPanel;
         }

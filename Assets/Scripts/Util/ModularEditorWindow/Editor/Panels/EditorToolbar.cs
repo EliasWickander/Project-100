@@ -6,20 +6,20 @@ using UnityEditor;
 namespace wild
 {
 	//Toolbar panel
-	public sealed class LevelEditorToolbar : ILevelEditorPanel
+	public sealed class EditorToolbar : IEditorPanel
 	{
-		private LevelEditorToolStateMachine m_toolStateMachine = new LevelEditorToolStateMachine();
+		private EditorToolStateMachine m_toolStateMachine = new EditorToolStateMachine();
 
-		public ILevelEditorTool CurrentTool => m_toolStateMachine.ActiveTool;
+		public IEditorTool CurrentTool => m_toolStateMachine.ActiveTool;
 
-		public LevelEditorToolbar(WaveEditor editor) : base(editor)
+		public EditorToolbar(WaveEditor editor) : base(editor)
 		{
-			// LevelEditorGridTool gridTool = new LevelEditorGridTool(
+			// EditorGridTool gridTool = new EditorGridTool(
 			// 	editor,
-			// 	new LevelEditorButtonToggle("Grid", 0, 0, 100, 20),
+			// 	new EditorButtonToggle("Grid", 0, 0, 100, 20),
 			// 	null);
 			//
-			// m_toolStateMachine.AddToolStates(new List<ILevelEditorTool>() {gridTool});
+			// m_toolStateMachine.AddToolStates(new List<IEditorTool>() {gridTool});
 		}
 
 		public override void OnEnable()

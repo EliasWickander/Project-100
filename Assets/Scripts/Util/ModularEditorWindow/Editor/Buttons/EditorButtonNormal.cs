@@ -3,13 +3,13 @@
 namespace wild
 {
     //Normal button
-    public class LevelEditorButtonNormal : LevelEditorButton
+    public class EditorButtonNormal : EditorButton
     {
-        public delegate void OnClickDelegate(LevelEditorButtonNormal button);
+        public delegate void OnClickDelegate(EditorButtonNormal button);
 
         public OnClickDelegate OnClick;
         
-        public LevelEditorButtonNormal(string name, float xCoord, float yCoord, float width, float height) : base(name, xCoord, yCoord, width, height)
+        public EditorButtonNormal(string name, float xCoord, float yCoord, float width, float height) : base(name, xCoord, yCoord, width, height)
         {
         }
 

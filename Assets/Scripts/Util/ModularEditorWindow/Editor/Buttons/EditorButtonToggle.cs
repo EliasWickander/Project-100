@@ -3,13 +3,13 @@
 namespace wild
 {
     //Toggleable button 
-    public class LevelEditorButtonToggle : LevelEditorButton
+    public class EditorButtonToggle : EditorButton
     {
-        public delegate void OnSelectedDelegate(LevelEditorButtonToggle button);
+        public delegate void OnSelectedDelegate(EditorButtonToggle button);
 
         public OnSelectedDelegate OnSelected;
 
-        public delegate void OnDeselectedDelegate(LevelEditorButtonToggle button);
+        public delegate void OnDeselectedDelegate(EditorButtonToggle button);
 
         public OnSelectedDelegate OnDeselected;
         
@@ -18,12 +18,12 @@ namespace wild
         private Texture2D m_defaultTexture;
         private Texture2D m_selectedTexture;
         
-        public LevelEditorButtonToggle(string name, float xCoord, float yCoord, float width, float height) : base(name, xCoord, yCoord, width, height)
+        public EditorButtonToggle(string name, float xCoord, float yCoord, float width, float height) : base(name, xCoord, yCoord, width, height)
         {
 
         }
 
-        public LevelEditorButtonToggle(string name, float width, float height, Pivot pivot, LevelEditorButton anchor, Vector2 anchorPos) : base(name, width, height, pivot, anchor, anchorPos)
+        public EditorButtonToggle(string name, float width, float height, Pivot pivot, EditorButton anchor, Vector2 anchorPos) : base(name, width, height, pivot, anchor, anchorPos)
         {
 
         }

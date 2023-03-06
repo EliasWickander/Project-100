@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace wild
 {
-	public class LevelEditorCameraController : ILevelEditorControl
+	public class EditorCameraController : IEditorControl
     {
         private Camera m_camera;
         
@@ -31,7 +31,7 @@ namespace wild
         
         public float CurrentZoom => m_currentZoom;
         
-        public LevelEditorCameraController(ILevelEditorPanel boundsPanel, Camera camera, bool inverseMove = false) : base(boundsPanel)
+        public EditorCameraController(IEditorPanel boundsPanel, Camera camera, bool inverseMove = false) : base(boundsPanel)
         {
             m_camera = camera;
             m_inverseMove = inverseMove;

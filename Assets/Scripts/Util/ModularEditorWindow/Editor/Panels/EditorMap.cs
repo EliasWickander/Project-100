@@ -4,19 +4,19 @@ using Unity.IL2CPP.CompilerServices;
 namespace wild
 {
 	//Map panel
-	public class LevelEditorMap : ILevelEditorPanel
+	public class EditorMap : IEditorPanel
 	{
 		private Camera m_camera;
 
-		private LevelEditorMapInfo m_mapInfoPanel;
+		private EditorMapInfo m_mapInfoPanel;
 
-		private LevelEditorCameraController m_cameraController;
-		public LevelEditorCameraController CameraController => m_cameraController;
+		private EditorCameraController m_cameraController;
+		public EditorCameraController CameraController => m_cameraController;
 
-		public LevelEditorMap(WaveEditor editor, Camera camera) : base(editor)
+		public EditorMap(WaveEditor editor, Camera camera) : base(editor)
 		{
-			m_mapInfoPanel = new LevelEditorMapInfo(editor, this);
-			m_cameraController = new LevelEditorCameraController(this, camera, true);
+			m_mapInfoPanel = new EditorMapInfo(editor, this);
+			m_cameraController = new EditorCameraController(this, camera, true);
 
 			m_camera = camera;
 		}

@@ -5,7 +5,7 @@ namespace wild
 {
 
 	//Panel (designated part of the editor window)
-	public abstract class ILevelEditorPanel
+	public abstract class IEditorPanel
 	{
 		protected Rect m_rect;
 		public Rect Rect => m_rect;
@@ -13,7 +13,7 @@ namespace wild
 		protected WaveEditor m_editor;
 		public WaveEditor Editor => m_editor;
 
-		public ILevelEditorPanel(WaveEditor editor)
+		public IEditorPanel(WaveEditor editor)
 		{
 			m_editor = editor;
 		}

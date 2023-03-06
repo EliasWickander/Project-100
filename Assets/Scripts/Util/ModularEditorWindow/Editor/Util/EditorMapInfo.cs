@@ -4,10 +4,10 @@ using UnityEngine;
 namespace wild
 {
     //Map info panel
-    public class LevelEditorMapInfo : ILevelEditorPanel
+    public class EditorMapInfo : IEditorPanel
     {
-        private LevelEditorMap m_map;
-        public LevelEditorMapInfo(WaveEditor editor, LevelEditorMap map) : base(editor)
+        private EditorMap m_map;
+        public EditorMapInfo(WaveEditor editor, EditorMap map) : base(editor)
         {
             m_map = map;
         }

@@ -7,7 +7,7 @@ using Object = System.Object;
 namespace wild
 {
     //Variable Group. Container for variables that are used to control a tool's behaviour
-    public abstract class ILevelEditorVariableGroup : ScriptableObject
+    public abstract class IEditorVariableGroup : ScriptableObject
     {
         public event Action OnUpdated;
         
