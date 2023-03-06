@@ -17,7 +17,8 @@ public class WorldGrid : MonoBehaviour
     private float m_nodeRadius = 0.2f;
 
     private Grid<GridNode> m_grid = null;
-    
+    public Grid<GridNode> Grid => m_grid;
+
     private void Start()
     {
         CreateGrid();

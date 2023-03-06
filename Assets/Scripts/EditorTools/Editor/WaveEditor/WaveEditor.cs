@@ -15,12 +15,18 @@ namespace wild
 		private EditorMenu m_menuPanel = null;
 		private EditorMap m_mapPanel = null;
 		private EditorToolbar m_toolbarPanel = null;
-
+		private GridPanel m_gridPanel;
+		
 		private EditorCamera m_roundManagementCam;
+		public EditorCamera RoundManagementCam => m_roundManagementCam;
 		
 		public EditorMenu MenuPanel => m_menuPanel;
 		public EditorMap MapPanel => m_mapPanel;
 		public EditorToolbar ToolbarPanel => m_toolbarPanel;
+		public GridPanel GridPanel => m_gridPanel;
+
+		private WorldGrid m_worldGrid;
+		public WorldGrid WorldGrid => m_worldGrid;
 		
 		private static RoundData[] m_rounds;
 
@@ -48,16 +54,23 @@ namespace wild
 			if (m_roundManagementCam == null || m_roundManagementCam.Camera == null)
 				throw new Exception("No camera with EditorCamera component found. Map cannot be displayed");
 
+			m_worldGrid = FindObjectOfType<WorldGrid>();
+
+			if (m_worldGrid == null)
+				throw new Exception("No world grid found");
+			
 			//Initialization of panels
 			m_menuPanel = new EditorMenu(this);
 			m_mapPanel = new EditorMap(this, m_roundManagementCam.Camera);
 			m_toolbarPanel = new EditorToolbar(this);
-
+			m_gridPanel = new GridPanel(this, m_worldGrid);
+			
 			m_menuPanel.SaveButton.OnClick += OnSaveButtonClicked;
 			
 			m_menuPanel.OnEnable();
 			m_toolbarPanel.OnEnable();
 			m_mapPanel.OnEnable();
+			m_gridPanel.OnEnable();
 			
 			OnLoad();
 		}
@@ -70,6 +83,7 @@ namespace wild
 			m_menuPanel.OnDisable();
 			m_toolbarPanel.OnDisable();
 			m_mapPanel.OnDisable();
+			m_gridPanel.OnDisable();
 		}
 
 		private void OnGUI()
@@ -88,6 +102,7 @@ namespace wild
 			m_menuPanel.Update();
 			m_mapPanel.Update();
 			m_toolbarPanel.Update();
+			m_gridPanel.Update();
 		}
 
 		private void RenderPanels()
@@ -104,6 +119,7 @@ namespace wild
 			m_menuPanel.Render(menuRect);
 			m_mapPanel.Render(mapRect);
 			m_toolbarPanel.Render(toolbarRect);
+			m_gridPanel.Render(mapRect);
 		}
 
 		private void OnSaveButtonClicked(EditorButton button)
@@ -116,6 +132,7 @@ namespace wild
 			m_menuPanel.OnSave();
 			m_mapPanel.OnSave();
             m_toolbarPanel.OnSave();
+            m_gridPanel.OnSave();
 		}
 
 		private void OnLoad()
@@ -123,6 +140,7 @@ namespace wild
 			m_menuPanel.OnLoad();
 			m_mapPanel.OnLoad();
 			m_toolbarPanel.OnLoad();
+			m_gridPanel.OnLoad();
 		}
 	}
 }
