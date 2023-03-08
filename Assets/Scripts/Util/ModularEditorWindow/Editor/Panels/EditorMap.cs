@@ -39,11 +39,7 @@ namespace wild
 		{
 			base.Update();
 
-			//Run map controls unless a tool is currently active
-			if (m_editor.ToolbarPanel.CurrentTool == null)
-			{
-				m_cameraController.Update();
-			}
+			m_cameraController.Update();
 		}
 	}
 }

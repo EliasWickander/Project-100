@@ -46,7 +46,7 @@ namespace wild
 
         public virtual void Render()
         {
-            m_subToolStateMachine.Render(m_editor.ToolbarPanel.Rect);
+            m_subToolStateMachine.Render(m_editor.SettingsPanel.Rect);
         }
 
         public virtual void OnExit()

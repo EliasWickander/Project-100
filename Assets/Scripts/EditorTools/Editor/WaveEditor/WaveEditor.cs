@@ -14,7 +14,7 @@ namespace wild
 	{
 		private EditorMenu m_menuPanel = null;
 		private EditorMap m_mapPanel = null;
-		private EditorToolbar m_toolbarPanel = null;
+		private SettingsPanel m_settingsPanel = null;
 		private GridPanel m_gridPanel;
 		
 		private EditorCamera m_roundManagementCam;
@@ -22,7 +22,7 @@ namespace wild
 		
 		public EditorMenu MenuPanel => m_menuPanel;
 		public EditorMap MapPanel => m_mapPanel;
-		public EditorToolbar ToolbarPanel => m_toolbarPanel;
+		public SettingsPanel SettingsPanel => m_settingsPanel;
 		public GridPanel GridPanel => m_gridPanel;
 
 		private WorldGrid m_worldGrid;
@@ -62,13 +62,13 @@ namespace wild
 			//Initialization of panels
 			m_menuPanel = new EditorMenu(this);
 			m_mapPanel = new EditorMap(this, m_roundManagementCam.Camera);
-			m_toolbarPanel = new EditorToolbar(this);
+			m_settingsPanel = new SettingsPanel(this);
 			m_gridPanel = new GridPanel(this, m_worldGrid);
 			
 			m_menuPanel.SaveButton.OnClick += OnSaveButtonClicked;
 			
 			m_menuPanel.OnEnable();
-			m_toolbarPanel.OnEnable();
+			m_settingsPanel.OnEnable();
 			m_mapPanel.OnEnable();
 			m_gridPanel.OnEnable();
 			
@@ -81,7 +81,7 @@ namespace wild
 			
 			//Disable panels
 			m_menuPanel.OnDisable();
-			m_toolbarPanel.OnDisable();
+			m_settingsPanel.OnDisable();
 			m_mapPanel.OnDisable();
 			m_gridPanel.OnDisable();
 		}
@@ -101,7 +101,7 @@ namespace wild
 		{
 			m_menuPanel.Update();
 			m_mapPanel.Update();
-			m_toolbarPanel.Update();
+			m_settingsPanel.Update();
 			m_gridPanel.Update();
 		}
 
@@ -118,7 +118,7 @@ namespace wild
 			//Render panels
 			m_menuPanel.Render(menuRect);
 			m_mapPanel.Render(mapRect);
-			m_toolbarPanel.Render(toolbarRect);
+			m_settingsPanel.Render(toolbarRect);
 			m_gridPanel.Render(mapRect);
 		}
 
@@ -131,7 +131,7 @@ namespace wild
 		{
 			m_menuPanel.OnSave();
 			m_mapPanel.OnSave();
-            m_toolbarPanel.OnSave();
+            m_settingsPanel.OnSave();
             m_gridPanel.OnSave();
 		}
 
@@ -139,7 +139,7 @@ namespace wild
 		{
 			m_menuPanel.OnLoad();
 			m_mapPanel.OnLoad();
-			m_toolbarPanel.OnLoad();
+			m_settingsPanel.OnLoad();
 			m_gridPanel.OnLoad();
 		}
 	}

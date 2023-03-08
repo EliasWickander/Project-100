@@ -10,24 +10,25 @@ public class GridPanel : IEditorPanel
     private WorldGrid m_worldGrid = null;
 
     private Camera m_camera;
+
+    private SettingsVariables m_settings;
     
     public GridPanel(WaveEditor editor, WorldGrid worldGrid) : base(editor)
     {
         m_worldGrid = worldGrid;
 
         m_camera = m_editor.RoundManagementCam.Camera;
+
+        m_settings = m_editor.SettingsPanel.GetSettings();
     }
 
     public override void Render(Rect rect)
     {
         base.Render(rect);
 
-        RoundData[] rounds = WaveEditor.Rounds;
-        
-        
         DrawGrid();
     }
-
+    
     private void DrawGrid()
     {
         if (m_worldGrid != null)
