@@ -18,6 +18,9 @@ public class WorldGrid : MonoBehaviour
 
     private Grid<GridNode> m_grid = null;
     public Grid<GridNode> Grid => m_grid;
+    
+    [RoundData]
+    public RoundData m_round;
 
     private void Start()
     {

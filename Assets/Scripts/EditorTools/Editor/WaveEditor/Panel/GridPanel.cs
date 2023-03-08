@@ -22,6 +22,14 @@ public class GridPanel : IEditorPanel
     {
         base.Render(rect);
 
+        RoundData[] rounds = WaveEditor.Rounds;
+        
+        
+        DrawGrid();
+    }
+
+    private void DrawGrid()
+    {
         if (m_worldGrid != null)
         {
             for (int x = 0; x < m_worldGrid.Grid.GridSize.x; x++)
@@ -29,14 +37,15 @@ public class GridPanel : IEditorPanel
                 for (int y = 0; y < m_worldGrid.Grid.GridSize.y; y++)
                 {
                     GridNode node = m_worldGrid.Grid.GetNode(x, y);
-
-                    Vector2 nodePosScreenSpace = m_camera.WorldToScreenPoint(node.m_worldPosition);
-                    Vector3 diameterScreenSpace = m_camera.WorldToScreenPoint(new Vector3(m_worldGrid.Grid.NodeDiameter, 0, m_worldGrid.Grid.NodeDiameter));
                     
-                    Rect nodeRect = new Rect(nodePosScreenSpace.x, m_editor.position.height - nodePosScreenSpace.y, 10, 10);
+                    Vector2 nodeTopLeftScreenSpace = m_camera.WorldToScreenPoint(node.m_worldPosition + new Vector3(-m_worldGrid.Grid.NodeRadius, 0, m_worldGrid.Grid.NodeRadius));
+                    Vector2 nodeBottomRightScreenSpace = m_camera.WorldToScreenPoint(node.m_worldPosition + new Vector3(m_worldGrid.Grid.NodeRadius, 0, -m_worldGrid.Grid.NodeRadius));
+
+                    float nodeDiameterScreenSpace = (nodeBottomRightScreenSpace.x - nodeTopLeftScreenSpace.x) * 0.95f;
+                    
+                    Rect nodeRect = new Rect(nodeTopLeftScreenSpace.x, m_editor.position.height - nodeTopLeftScreenSpace.y, nodeDiameterScreenSpace, nodeDiameterScreenSpace);
                     
                     EditorGUI.DrawRect(nodeRect, Color.cyan);
-
                 }
             }
         }
