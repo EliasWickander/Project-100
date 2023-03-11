@@ -8,13 +8,11 @@ namespace wild
 	//Waves panel
 	public sealed class WavesPanel : IEditorPanel
 	{
-		private SettingsVariables m_settings;
-
 		private EditorToggleButtonGroup m_waveButtonGroup = new EditorToggleButtonGroup();
 
 		public WavesPanel(WaveEditor editor) : base(editor)
 		{
-			m_settings = editor.SettingsPanel.GetSettings();
+			
 		}
 
 		public override void OnEnable()
@@ -66,7 +64,7 @@ namespace wild
 
 		private void SyncWaveButtons()
 		{
-			RoundData selectedRound = m_settings.m_selectedRound;
+			RoundData selectedRound = WaveEditor.Settings.m_selectedRound;
 
 			if (selectedRound != null)
 			{

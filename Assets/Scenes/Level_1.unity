@@ -760,7 +760,6 @@ MonoBehaviour:
   m_debug: 1
   m_worldSize: {x: 10, y: 10}
   m_nodeRadius: 0.5
-  m_round: {fileID: 0}
 --- !u!4 &640538141
 Transform:
   m_ObjectHideFlags: 0
@@ -817,7 +816,6 @@ GameObject:
   m_Component:
   - component: {fileID: 672059159}
   - component: {fileID: 672059162}
-  - component: {fileID: 672059161}
   - component: {fileID: 672059160}
   m_Layer: 0
   m_Name: EditorCam
@@ -854,14 +852,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_camera: {fileID: 672059162}
---- !u!81 &672059161
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672059158}
-  m_Enabled: 1
 --- !u!20 &672059162
 Camera:
   m_ObjectHideFlags: 0
@@ -883,13 +873,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.7451408
-    height: 0.9127619
+    width: 0.70000005
+    height: 0.83984065
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1186,7 +1176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0

@@ -31,16 +31,8 @@ namespace wild
 		private WorldGrid m_worldGrid;
 		public WorldGrid WorldGrid => m_worldGrid;
 		
-		private static RoundData[] m_rounds;
+		public static SettingsVariables Settings { get; set; }
 
-		public static RoundData[] Rounds => m_rounds;
-
-		[InitializeOnLoadMethod]
-		private static void OnWindowLoad()
-		{
-			m_rounds = Resources.FindObjectsOfTypeAll<RoundData>();
-		}
-		
 		[MenuItem("Project 100/Editor/Wave Editor")]
 		private static void Init()
 		{

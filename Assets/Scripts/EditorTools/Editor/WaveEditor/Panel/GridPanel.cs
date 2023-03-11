@@ -11,15 +11,11 @@ public class GridPanel : IEditorPanel
 
     private Camera m_camera;
 
-    private SettingsVariables m_settings;
-    
     public GridPanel(WaveEditor editor, WorldGrid worldGrid) : base(editor)
     {
         m_worldGrid = worldGrid;
 
         m_camera = m_editor.RoundManagementCam.Camera;
-
-        m_settings = m_editor.SettingsPanel.GetSettings();
     }
 
     public override void Render(Rect rect)

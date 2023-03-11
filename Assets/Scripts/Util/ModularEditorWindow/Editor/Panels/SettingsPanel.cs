@@ -15,7 +15,7 @@ namespace wild
 	//Toolbar panel
 	public sealed class SettingsPanel : IEditorPanel
 	{
-		private SettingsVariables m_variables;
+		private static SettingsVariables Settings => WaveEditor.Settings;
 
 		public event Action<RoundData> onSelectedRoundChanged;
 
@@ -23,7 +23,7 @@ namespace wild
 
 		public SettingsPanel(WaveEditor editor) : base(editor)
 		{
-			m_variables = ScriptableObject.CreateInstance<SettingsVariables>();
+			WaveEditor.Settings = ScriptableObject.CreateInstance<SettingsVariables>();
 		}
 
 		public override void OnEnable()
@@ -38,12 +38,12 @@ namespace wild
 
 		public override void Update()
 		{
-			if (m_selectedRoundLastFrame != m_variables.m_selectedRound)
+			if (m_selectedRoundLastFrame != Settings.m_selectedRound)
 			{
-				onSelectedRoundChanged?.Invoke(m_variables.m_selectedRound);
+				onSelectedRoundChanged?.Invoke(Settings.m_selectedRound);
 			}
 
-			m_selectedRoundLastFrame = m_variables.m_selectedRound;
+			m_selectedRoundLastFrame = Settings.m_selectedRound;
 		}
 
 		public override void Render(Rect rect)
@@ -57,7 +57,7 @@ namespace wild
 
 		private void RenderVariables(Rect rect)
 		{
-			SerializedObject so = new SerializedObject(m_variables);
+			SerializedObject so = new SerializedObject(Settings);
 
 			rect = new Rect(rect.x, rect.y + 20, 250, 20);
 			
@@ -66,10 +66,6 @@ namespace wild
 			EditorGUI.PropertyField(rect, selectedRound);
 		}
 
-		public SettingsVariables GetSettings()
-		{
-			return m_variables;
-		}
 		public override void OnSave()
 		{
 			base.OnSave();
