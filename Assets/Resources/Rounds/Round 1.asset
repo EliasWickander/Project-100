@@ -15,3 +15,5 @@ MonoBehaviour:
   m_roundName: Round 1
   m_waves:
   - m_delay: 0
+  - m_delay: 0
+  - m_delay: 0

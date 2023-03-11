@@ -16,6 +16,7 @@ namespace wild
 		private EditorMap m_mapPanel = null;
 		private SettingsPanel m_settingsPanel = null;
 		private GridPanel m_gridPanel;
+		private WavesControlPanel m_wavesControlPanel;
 		
 		private EditorCamera m_roundManagementCam;
 		public EditorCamera RoundManagementCam => m_roundManagementCam;
@@ -23,6 +24,8 @@ namespace wild
 		public EditorMenu MenuPanel => m_menuPanel;
 		public EditorMap MapPanel => m_mapPanel;
 		public SettingsPanel SettingsPanel => m_settingsPanel;
+		public WavesControlPanel WavesControlPanel => m_wavesControlPanel;
+
 		public GridPanel GridPanel => m_gridPanel;
 
 		private WorldGrid m_worldGrid;
@@ -63,6 +66,7 @@ namespace wild
 			m_menuPanel = new EditorMenu(this);
 			m_mapPanel = new EditorMap(this, m_roundManagementCam.Camera);
 			m_settingsPanel = new SettingsPanel(this);
+			m_wavesControlPanel = new WavesControlPanel(this);
 			m_gridPanel = new GridPanel(this, m_worldGrid);
 			
 			m_menuPanel.SaveButton.OnClick += OnSaveButtonClicked;
@@ -70,6 +74,7 @@ namespace wild
 			m_menuPanel.OnEnable();
 			m_settingsPanel.OnEnable();
 			m_mapPanel.OnEnable();
+			m_wavesControlPanel.OnEnable();
 			m_gridPanel.OnEnable();
 			
 			OnLoad();
@@ -83,6 +88,7 @@ namespace wild
 			m_menuPanel.OnDisable();
 			m_settingsPanel.OnDisable();
 			m_mapPanel.OnDisable();
+			m_wavesControlPanel.OnDisable();
 			m_gridPanel.OnDisable();
 		}
 
@@ -102,6 +108,7 @@ namespace wild
 			m_menuPanel.Update();
 			m_mapPanel.Update();
 			m_settingsPanel.Update();
+			m_wavesControlPanel.Update();
 			m_gridPanel.Update();
 		}
 
@@ -111,14 +118,18 @@ namespace wild
 			Rect menuRect = new Rect(0, 0, position.width * 0.7f, position.height * 0.2f);
 			Rect mapRect = new Rect(0, position.height * 0.2f, position.width * 0.7f, position.height * 0.8f);
 
+			float wavesControlPanelHeight = position.height * 0.1f;
+			Rect wavesControlPanelRect = new Rect(0, mapRect.y - wavesControlPanelHeight, mapRect.width, wavesControlPanelHeight);
+			
 			Rect toolbarRect = new Rect(mapRect.width, position.height, position.width - mapRect.width, position.height * 0.8f);
-
+			
 			toolbarRect.y -= toolbarRect.height;
 
 			//Render panels
 			m_menuPanel.Render(menuRect);
 			m_mapPanel.Render(mapRect);
 			m_settingsPanel.Render(toolbarRect);
+			m_wavesControlPanel.Render(wavesControlPanelRect);
 			m_gridPanel.Render(mapRect);
 		}
 
@@ -132,6 +143,7 @@ namespace wild
 			m_menuPanel.OnSave();
 			m_mapPanel.OnSave();
             m_settingsPanel.OnSave();
+            m_wavesControlPanel.OnSave();
             m_gridPanel.OnSave();
 		}
 
@@ -140,6 +152,7 @@ namespace wild
 			m_menuPanel.OnLoad();
 			m_mapPanel.OnLoad();
 			m_settingsPanel.OnLoad();
+			m_wavesControlPanel.OnLoad();
 			m_gridPanel.OnLoad();
 		}
 	}

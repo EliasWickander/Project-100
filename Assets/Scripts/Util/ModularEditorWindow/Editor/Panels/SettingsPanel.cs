@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
@@ -16,6 +17,10 @@ namespace wild
 	{
 		private SettingsVariables m_variables;
 
+		public event Action<RoundData> onSelectedRoundChanged;
+
+		private RoundData m_selectedRoundLastFrame = null;
+
 		public SettingsPanel(WaveEditor editor) : base(editor)
 		{
 			m_variables = ScriptableObject.CreateInstance<SettingsVariables>();
@@ -33,7 +38,12 @@ namespace wild
 
 		public override void Update()
 		{
+			if (m_selectedRoundLastFrame != m_variables.m_selectedRound)
+			{
+				onSelectedRoundChanged?.Invoke(m_variables.m_selectedRound);
+			}
 
+			m_selectedRoundLastFrame = m_variables.m_selectedRound;
 		}
 
 		public override void Render(Rect rect)

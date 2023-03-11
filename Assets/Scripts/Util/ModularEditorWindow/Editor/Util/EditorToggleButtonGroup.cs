@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace wild
@@ -93,6 +94,22 @@ namespace wild
             m_buttons.Add(button);
             button.OnSelected += OnButtonSelected;
             button.OnDeselected += OnButtonDeselected;
+        }
+
+        public void RemoveButton(EditorButtonToggle button)
+        {
+            if(!m_buttons.Contains(button))
+                return;
+
+            m_buttons.Remove(button);
+            button.OnSelected -= OnButtonSelected;
+            button.OnDeselected -= OnButtonDeselected;
+        }
+        
+        public void ClearButtons()
+        {
+            for(int i = m_buttons.Count - 1; i >= 0; i--)
+                RemoveButton(m_buttons[i]);
         }
 
         /// <summary>
