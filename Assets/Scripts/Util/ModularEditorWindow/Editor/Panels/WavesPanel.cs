@@ -5,14 +5,14 @@ using UnityEditor;
 
 namespace wild
 {
-	//Waves control panel
-	public sealed class WavesControlPanel : IEditorPanel
+	//Waves panel
+	public sealed class WavesPanel : IEditorPanel
 	{
 		private SettingsVariables m_settings;
 
 		private EditorToggleButtonGroup m_waveButtonGroup = new EditorToggleButtonGroup();
 
-		public WavesControlPanel(WaveEditor editor) : base(editor)
+		public WavesPanel(WaveEditor editor) : base(editor)
 		{
 			m_settings = editor.SettingsPanel.GetSettings();
 		}
