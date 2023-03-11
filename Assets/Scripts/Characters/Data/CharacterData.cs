@@ -6,7 +6,7 @@ public abstract class CharacterData : ScriptableObject
 {
     public GameObject m_prefab;
 
-    [Header("Movement Info")]
+    [Header("Movement")]
     public float m_acceleration;
     public float m_maxSpeed;
 }
