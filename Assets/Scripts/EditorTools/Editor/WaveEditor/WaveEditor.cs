@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 using UnityEditor;
@@ -30,6 +31,9 @@ namespace wild
 
 		private WorldGrid m_worldGrid;
 		public WorldGrid WorldGrid => m_worldGrid;
+
+		private static EnemyData[] m_enemies;
+		public static EnemyData[] Enemies => m_enemies;
 		
 		public static SettingsVariables Settings { get; set; }
 
@@ -42,6 +46,11 @@ namespace wild
 			editor.Show();
 		}
 
+		[InitializeOnLoadMethod]
+		private static void OnWindowLoad()
+		{
+			m_enemies = Resources.FindObjectsOfTypeAll<EnemyData>();
+		}
 		private void OnEnable()
 		{
 			m_roundManagementCam = FindObjectOfType<EditorCamera>();

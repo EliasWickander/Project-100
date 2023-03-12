@@ -11,7 +11,7 @@ namespace Util.AdvancedTypes
 	
 	public class Grid<TNode> where TNode : GridNode, new()
 	{
-		public delegate void OnNodeCreatedDelegate(GridNode node);
+		public delegate void OnNodeCreatedDelegate(TNode node);
 
 		private OnNodeCreatedDelegate OnNodeCreated;
 
@@ -32,6 +32,8 @@ namespace Util.AdvancedTypes
 
 		public float NodeDiameter => m_nodeDiameter;
 		private float m_nodeDiameter;
+		
+		public int AmountNodesGenerated { get; private set; }
 
 		/// <summary>
 		/// Constructor
@@ -60,8 +62,9 @@ namespace Util.AdvancedTypes
 		/// <summary>
 		/// Creates grid
 		/// </summary>
-		public void CreateGrid() 
+		public void CreateGrid()
 		{
+			AmountNodesGenerated = 0;
 			m_nodes = new TNode[m_gridSize.x, m_gridSize.y];
 
 			for (int x = 0; x < m_gridSize.x; x ++) 
@@ -77,6 +80,8 @@ namespace Util.AdvancedTypes
 					
 					m_nodes[x, y] = newNode;
 
+					AmountNodesGenerated++;
+					
 					OnNodeCreated?.Invoke(m_nodes[x, y]);
 				}
 			}
@@ -89,16 +94,26 @@ namespace Util.AdvancedTypes
 		/// <returns>Returns node closest to world position</returns>
 		public TNode GetNode(Vector3 worldPosition)
 		{
-			worldPosition -= m_originPoint;
+			TNode closestNode = null;
+			float closestDist = Mathf.Infinity;
 			
-			float percentX = worldPosition.x / m_gridWorldSize.x;
-			float percentY = worldPosition.z / m_gridWorldSize.y;
-			percentX = Mathf.Clamp01(percentX);
-			percentY = Mathf.Clamp01(percentY);
+			for (int x = 0; x < m_gridSize.x; x++)
+			{
+				for (int y = 0; y < m_gridSize.y; y++)
+				{
+					TNode node = m_nodes[x, y];
 
-			int x = Mathf.RoundToInt((m_gridSize.x - 1) * percentX);
-			int y = Mathf.RoundToInt((m_gridSize.y - 1) * percentY);
-			return GetNode(x, y);
+					float sqrDistToNode = (worldPosition - m_nodes[x, y].m_worldPosition).sqrMagnitude;
+
+					if (sqrDistToNode < closestDist)
+					{
+						closestDist = sqrDistToNode;
+						closestNode = node;
+					}
+				}
+			}
+
+			return closestNode;
 		}
 		
 		/// <summary>
