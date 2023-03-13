@@ -32,8 +32,6 @@ namespace Util.AdvancedTypes
 
 		public float NodeDiameter => m_nodeDiameter;
 		private float m_nodeDiameter;
-		
-		public int AmountNodesGenerated { get; private set; }
 
 		/// <summary>
 		/// Constructor
@@ -64,7 +62,6 @@ namespace Util.AdvancedTypes
 		/// </summary>
 		public void CreateGrid()
 		{
-			AmountNodesGenerated = 0;
 			m_nodes = new TNode[m_gridSize.x, m_gridSize.y];
 
 			for (int x = 0; x < m_gridSize.x; x ++) 
@@ -80,13 +77,24 @@ namespace Util.AdvancedTypes
 					
 					m_nodes[x, y] = newNode;
 
-					AmountNodesGenerated++;
-					
 					OnNodeCreated?.Invoke(m_nodes[x, y]);
 				}
 			}
 		}
 
+		public bool IsInGridBounds(Vector3 position)
+		{
+			if (m_nodes.Length <= 0)
+				return false;
+
+			TNode bottomLeft = m_nodes[0, 0];
+			TNode topRight = m_nodes[m_gridSize.x - 1, m_gridSize.y - 1];
+			return position.x >= bottomLeft.m_worldPosition.x - m_nodeRadius 
+			       && position.z >= bottomLeft.m_worldPosition.z - m_nodeRadius
+			       && position.x <= topRight.m_worldPosition.x  + m_nodeRadius
+			       && position.z <= topRight.m_worldPosition.z + m_nodeRadius;
+		}
+		
 		/// <summary>
 		/// Gets node by world position
 		/// </summary>

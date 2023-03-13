@@ -32,6 +32,8 @@ public class LevelEditorGrid : MonoBehaviour
     private LevelEditorGridNode m_selectedNode = null;
     public LevelEditorGridNode SelectedNode { get; private set; }
 
+    private int m_amountNodesGenerated = 0;
+
     private void Start()
     {
         CreateGrid(true);
@@ -39,11 +41,13 @@ public class LevelEditorGrid : MonoBehaviour
 
     private void CreateGrid(bool createVisual)
     {
+        m_amountNodesGenerated = 0;
         m_grid = new Grid<LevelEditorGridNode>(transform.position, m_worldSize, m_nodeRadius, true, createVisual ? OnNodeCreated : null);
     }
 
     private void OnNodeCreated(LevelEditorGridNode node)
     {
+        m_amountNodesGenerated++;
         CreateNodeVisual(node);
     }
 
@@ -78,7 +82,7 @@ public class LevelEditorGrid : MonoBehaviour
             0, 2, 3
         };
 
-        GameObject nodeObject = new GameObject($"Node {m_grid.AmountNodesGenerated}");
+        GameObject nodeObject = new GameObject($"Node {m_amountNodesGenerated}");
         MeshRenderer meshRenderer = nodeObject.AddComponent<MeshRenderer>();
         Mesh mesh = nodeObject.AddComponent<MeshFilter>().mesh;
         

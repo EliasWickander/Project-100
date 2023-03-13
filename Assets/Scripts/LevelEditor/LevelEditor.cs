@@ -16,14 +16,22 @@ public class LevelEditor : MonoBehaviour
 
     private void Update()
     {
+        //TODO: Do timeline (slider) based approach for wave management
         if (Input.GetMouseButtonDown(0))
         {
             Camera camera = CameraManager.Instance.CurrentCamera;
 
             Vector3 mousePosWorld = camera.ScreenToWorldPoint(Input.mousePosition);
 
-            LevelEditorGridNode selectedNode = m_grid.Grid.GetNode(mousePosWorld);
-            m_grid.SelectNode(selectedNode);
+            if (m_grid.Grid.IsInGridBounds(mousePosWorld))
+            {
+                LevelEditorGridNode selectedNode = m_grid.Grid.GetNode(mousePosWorld);
+                m_grid.SelectNode(selectedNode);   
+            }
+            else
+            {
+                m_grid.SelectNode(null);
+            }
         } 
     }
 }
