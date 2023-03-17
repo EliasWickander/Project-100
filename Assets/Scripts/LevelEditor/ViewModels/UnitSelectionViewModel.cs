@@ -6,7 +6,7 @@ using UnityEngine;
 using Util.UnityMVVM;
 
 [Binding]
-public class UnitSelectorViewModel : ViewModelMonoBehaviour
+public class UnitSelectionViewModel : ViewModelMonoBehaviour
 {
     private ObservableList<SelectableUnitViewModel> m_units = new ObservableList<SelectableUnitViewModel>();
     private PropertyChangedEventArgs m_unitsProp = new PropertyChangedEventArgs(nameof(Units));
@@ -25,10 +25,19 @@ public class UnitSelectorViewModel : ViewModelMonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Awake()
     {
-        Units.Add(new SelectableUnitViewModel());
-        Units.Add(new SelectableUnitViewModel());
-        Units.Add(new SelectableUnitViewModel());
+        EnemyData[] enemies = Resources.LoadAll<EnemyData>("Characters/Enemies");
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            EnemyData enemyData = enemies[i];
+
+            SelectableUnitViewModel selectableUnit = new SelectableUnitViewModel();
+            selectableUnit.DisplayName = enemyData.m_displayName;
+            selectableUnit.Icon = enemyData.m_icon;
+
+            Units.Add(selectableUnit);
+        }
     }
 }

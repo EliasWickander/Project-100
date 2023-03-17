@@ -7,5 +7,5 @@ public class EnemyData : CharacterData
 {
     [Header("Info")]
     public string m_displayName = "Enemy";
-    public Texture2D m_icon;
+    public Sprite m_icon;
 }
