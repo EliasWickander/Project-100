@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
 [Binding]
-public class SelectableUnitViewModel : ViewModel
+public class SelectableUnitViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
     private PropertyChangedEventArgs m_displayNameProp = new PropertyChangedEventArgs(nameof(DisplayName));
     private string m_displayName = "Enemy";
@@ -39,5 +40,19 @@ public class SelectableUnitViewModel : ViewModel
             m_icon = value;
             OnPropertyChanged(m_iconProp);
         }
+    }
+
+    [SerializeField] 
+    private UnitSelectedGameEvent m_unitSelectedEvent;
+
+    public void OnSelection()
+    {
+        if(m_unitSelectedEvent != null)
+            m_unitSelectedEvent.Raise(this);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        OnSelection();
     }
 }

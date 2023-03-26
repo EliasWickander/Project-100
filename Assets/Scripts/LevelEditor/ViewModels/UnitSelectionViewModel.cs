@@ -8,22 +8,13 @@ using Util.UnityMVVM;
 [Binding]
 public class UnitSelectionViewModel : ViewModelMonoBehaviour
 {
-    private ObservableList<SelectableUnitViewModel> m_units = new ObservableList<SelectableUnitViewModel>();
-    private PropertyChangedEventArgs m_unitsProp = new PropertyChangedEventArgs(nameof(Units));
+    [SerializeField] 
+    private SelectableUnitViewModel m_selectableUnitPrefab;
 
-    [Binding]
-    public ObservableList<SelectableUnitViewModel> Units
-    {
-        get
-        {
-            return m_units;
-        }
-        set
-        {
-            m_units = value;
-            OnPropertyChanged(m_unitsProp);
-        }
-    }
+    [SerializeField] 
+    private Transform m_contentContainer;
+    
+    private List<SelectableUnitViewModel> m_units = new List<SelectableUnitViewModel>();
 
     private void Awake()
     {
@@ -32,12 +23,12 @@ public class UnitSelectionViewModel : ViewModelMonoBehaviour
         for (int i = 0; i < enemies.Length; i++)
         {
             EnemyData enemyData = enemies[i];
+            
+            SelectableUnitViewModel spawnedUnit = Instantiate(m_selectableUnitPrefab, m_contentContainer);
+            spawnedUnit.DisplayName = enemyData.m_displayName;
+            spawnedUnit.Icon = enemyData.m_icon;
 
-            SelectableUnitViewModel selectableUnit = new SelectableUnitViewModel();
-            selectableUnit.DisplayName = enemyData.m_displayName;
-            selectableUnit.Icon = enemyData.m_icon;
-
-            Units.Add(selectableUnit);
+            m_units.Add(spawnedUnit);
         }
     }
 }

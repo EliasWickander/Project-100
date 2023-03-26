@@ -315,6 +315,8 @@ namespace Util.UnityMVVM.Internal
         /// </summary>
         private static IEnumerable<MethodInfo> GetPublicMethods(Type type)
         {
+            return type.GetMethods();
+            
             if (!type.IsInterface)
             {
                 return type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
@@ -331,8 +333,8 @@ namespace Util.UnityMVVM.Internal
         public static BindableMember<MethodInfo>[] FindBindableMethods(EventBinding targetScript)
         {
             return FindViewModelsInHierarchy(targetScript.transform)
-                .SelectMany(type => GetPublicMethods(type.GetType())
-                    .Select(m => new BindableMember<MethodInfo>(m, type.GetType()))
+                .SelectMany(type => GetPublicMethods(type)
+                    .Select(m => new BindableMember<MethodInfo>(m, type))
                 )
                 .Where(m => m.Member.GetParameters().Length == 0)
                 .Where(m => m.Member.GetCustomAttributes(typeof(BindingAttribute), false).Any() 

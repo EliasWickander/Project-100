@@ -6,12 +6,12 @@ using Util.AdvancedTypes;
 
 public class LevelEditor : MonoBehaviour
 {
-    public LevelEditorGrid m_grid;
+    public LevelEditorGridViewModel m_grid;
 
     private void Awake()
     {
         if (m_grid == null)
-            m_grid = FindObjectOfType<LevelEditorGrid>();
+            m_grid = FindObjectOfType<LevelEditorGridViewModel>();
     }
 
     private void Update()
@@ -19,19 +19,7 @@ public class LevelEditor : MonoBehaviour
         //TODO: Do timeline (slider) based approach for wave management
         if (Input.GetMouseButtonDown(0))
         {
-            Camera camera = CameraManager.Instance.CurrentCamera;
 
-            Vector3 mousePosWorld = camera.ScreenToWorldPoint(Input.mousePosition);
-
-            if (m_grid.Grid.IsInGridBounds(mousePosWorld))
-            {
-                LevelEditorGridNode selectedNode = m_grid.Grid.GetNode(mousePosWorld);
-                m_grid.SelectNode(selectedNode);   
-            }
-            else
-            {
-                m_grid.SelectNode(null);
-            }
         } 
     }
 }
