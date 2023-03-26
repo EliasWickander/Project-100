@@ -9,6 +9,9 @@ using Util.UnityMVVM;
 [Binding]
 public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] 
+    private UnitDirectionArrowViewModel[] m_directionArrows;
+    
     public event Action<LevelEditorGridTileViewModel> OnClicked;
 
     private readonly PropertyChangedEventArgs m_selectedProp = new PropertyChangedEventArgs(nameof(Selected));
@@ -62,7 +65,25 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
             OnPropertyChanged(m_hasUnitAttachedProp);
         }
     }
+
+    private UnitDirectionArrowViewModel m_selectedDirectionArrow;
     
+    private void OnEnable()
+    {
+        foreach (UnitDirectionArrowViewModel arrow in m_directionArrows)
+        {
+            arrow.OnClickedEvent += OnSelectedDirection;
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (UnitDirectionArrowViewModel arrow in m_directionArrows)
+        {
+            arrow.OnClickedEvent -= OnSelectedDirection;
+        }
+    }
+
     public void Select(bool isSelected)
     {
         Selected = isSelected;
@@ -85,6 +106,27 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
 
         HasUnitAttached = false;
         Unit = null;
+
+        if (m_selectedDirectionArrow != null)
+        {
+            m_selectedDirectionArrow.Select(false);
+            m_selectedDirectionArrow = null;
+        }
+    }
+    
+    private void OnSelectedDirection(UnitDirectionArrowViewModel selectedArrow)
+    {
+        if (m_selectedDirectionArrow != null)
+            m_selectedDirectionArrow.Select(false);
+
+        if (selectedArrow == m_selectedDirectionArrow)
+        {
+            m_selectedDirectionArrow = null;
+            return;
+        }
+
+        m_selectedDirectionArrow = selectedArrow;
+        m_selectedDirectionArrow.Select(true);
     }
     
     public void OnPointerClick(PointerEventData eventData)
