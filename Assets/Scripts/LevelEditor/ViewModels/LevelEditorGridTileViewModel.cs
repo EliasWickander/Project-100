@@ -42,14 +42,26 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         {
             m_unit = value;
             OnPropertyChanged(m_unitProp);
-            OnPropertyChanged(m_hasUnitAttachedProp);
         }
     }
 
     private readonly PropertyChangedEventArgs m_hasUnitAttachedProp = new PropertyChangedEventArgs(nameof(HasUnitAttached));
 
-    [Binding] 
-    public bool HasUnitAttached => Unit != null;
+    private bool m_hasUnitAttached;
+
+    [Binding]
+    public bool HasUnitAttached
+    {
+        get
+        {
+            return m_hasUnitAttached;
+        }
+        set
+        {
+            m_hasUnitAttached = value;
+            OnPropertyChanged(m_hasUnitAttachedProp);
+        }
+    }
     
     public void Select(bool isSelected)
     {
@@ -58,10 +70,21 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
 
     public void AttachUnit(SelectableUnitViewModel unit)
     {
-        if(m_unit == unit)
+        if(m_unit == unit || unit == null)
             return;
         
         Unit = unit;
+        HasUnitAttached = true;
+    }
+
+    [Binding]
+    public void DetachUnit()
+    {
+        if(m_unit == null)
+            return;
+
+        HasUnitAttached = false;
+        Unit = null;
     }
     
     public void OnPointerClick(PointerEventData eventData)
