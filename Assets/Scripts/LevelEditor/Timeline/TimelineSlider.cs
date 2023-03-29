@@ -5,5 +5,8 @@ using UnityEngine.UI;
 
 public class TimelineSlider : Slider
 {
-
+    public void SetValue(float newValue)
+    {
+        value = newValue;
+    }
 }
