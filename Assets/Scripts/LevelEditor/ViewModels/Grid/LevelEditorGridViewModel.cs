@@ -15,6 +15,8 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
     
     private LevelEditorGridTileViewModel[] m_tiles;
 
+    public LevelEditorGridTileViewModel[] Tiles => m_tiles;
+
     private readonly PropertyChangedEventArgs m_selectedTileProp = new PropertyChangedEventArgs(nameof(SelectedTile));
     private LevelEditorGridTileViewModel m_selectedTile = null;
 
@@ -37,6 +39,9 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
     [Binding]
     public bool HasTileSelected => SelectedTile != null;
+    
+    [Binding]
+    public LevelEditorTimelineFrameViewModel SelectedFrame { get; set; }
     
     private void Awake()
     {

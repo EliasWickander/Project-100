@@ -35,9 +35,27 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         {
             m_selectedFrame = value;
             OnPropertyChanged(m_selectedFrameProp);
+
+            IsFrameSelected = m_selectedFrame != null;
         }
     }
 
+    private PropertyChangedEventArgs m_isFrameSelectedProp = new PropertyChangedEventArgs(nameof(IsFrameSelected));
+    private bool m_isFrameSelected = false;
+
+    [Binding]
+    public bool IsFrameSelected
+    {
+        get
+        {
+            return m_isFrameSelected;
+        }
+        set
+        {
+            m_isFrameSelected = value;
+            OnPropertyChanged(m_isFrameSelectedProp);
+        }
+    }
     private void OnEnable()
     {
         if (m_slider == null)
@@ -77,6 +95,16 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         SelectFrame(newFrame);
     }
 
+    [Binding]
+    public void RemoveFrame()
+    {
+        if (m_selectedFrame == null)
+            return;
+        
+        RemoveFrame(m_selectedFrame);
+        m_selectedFrame = null;
+    }
+    
     private void RemoveFrame(LevelEditorTimelineFrameViewModel frame)
     {
         if(!m_framesOrdered.Contains(frame))
@@ -85,6 +113,8 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         frame.OnClicked -= OnFrameButtonClicked;
 
         m_framesOrdered.Remove(frame);
+        
+        Destroy(frame.gameObject);
     }
 
     [Binding]
@@ -102,20 +132,23 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     
     private void OnHandleMoved(float value)
     {
+        UpdateFrameSelection();
+    }
+
+    private void UpdateFrameSelection()
+    {
         if(m_framesOrdered.Count <= 0)
             return;
-
-        if (m_selectedFrame == null)
-        {
-            SelectFrame(m_framesOrdered[0]);
-        }
         
+        if (m_selectedFrame == null)
+            SelectFrame(m_framesOrdered[0]);
+
         int selectedFrameIndex = m_framesOrdered.IndexOf(m_selectedFrame);
 
         float epsilon = 0.01f;
         
         //Select previous frame if value has not yet reached currently selected frame
-        if (value < m_selectedFrame.TimeStamp - epsilon && selectedFrameIndex > 0)
+        if (m_slider.value < m_selectedFrame.TimeStamp - epsilon && selectedFrameIndex > 0)
         {
             LevelEditorTimelineFrameViewModel prevFrame = m_framesOrdered[selectedFrameIndex - 1];
                 
@@ -128,7 +161,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         {
             LevelEditorTimelineFrameViewModel nextFrame = m_framesOrdered[selectedFrameIndex + 1];
 
-            if (Mathf.Abs(nextFrame.TimeStamp - value) < epsilon)
+            if (Mathf.Abs(nextFrame.TimeStamp - m_slider.value) < epsilon)
             {
                 SelectFrame(nextFrame);
                 return;

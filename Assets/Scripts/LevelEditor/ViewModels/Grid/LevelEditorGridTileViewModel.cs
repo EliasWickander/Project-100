@@ -6,6 +6,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
+public class UnitTileState
+{
+    public string m_unitId;
+    public Vector3 m_direction;
+}
+
 [Binding]
 public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
@@ -45,6 +51,8 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         {
             m_unit = value;
             OnPropertyChanged(m_unitProp);
+
+            m_tileState.m_unitId = m_unit != null ? m_unit.Id : null;
         }
     }
 
@@ -67,7 +75,23 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
     }
 
     private UnitDirectionArrowViewModel m_selectedDirectionArrow;
-    
+
+    public UnitDirectionArrowViewModel SelectedDirectionArrow
+    {
+        get
+        {
+            return m_selectedDirectionArrow;
+        }
+        set
+        {
+            m_selectedDirectionArrow = value;
+
+            m_tileState.m_direction = m_selectedDirectionArrow != null ? m_selectedDirectionArrow.m_direction : Vector3.zero;
+        }
+    }
+
+    public UnitTileState m_tileState = new UnitTileState();
+
     private void OnEnable()
     {
         foreach (UnitDirectionArrowViewModel arrow in m_directionArrows)
@@ -91,7 +115,7 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
 
     public void AttachUnit(SelectableUnitViewModel unit)
     {
-        if(m_unit == unit || unit == null)
+        if(Unit == unit || unit == null)
             return;
         
         Unit = unit;
@@ -101,32 +125,32 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
     [Binding]
     public void DetachUnit()
     {
-        if(m_unit == null)
+        if(Unit == null)
             return;
 
         HasUnitAttached = false;
         Unit = null;
 
-        if (m_selectedDirectionArrow != null)
+        if (SelectedDirectionArrow != null)
         {
-            m_selectedDirectionArrow.Select(false);
-            m_selectedDirectionArrow = null;
+            SelectedDirectionArrow.Select(false);
+            SelectedDirectionArrow = null;
         }
     }
     
     private void OnSelectedDirection(UnitDirectionArrowViewModel selectedArrow)
     {
-        if (m_selectedDirectionArrow != null)
-            m_selectedDirectionArrow.Select(false);
+        if (SelectedDirectionArrow != null)
+            SelectedDirectionArrow.Select(false);
 
-        if (selectedArrow == m_selectedDirectionArrow)
+        if (selectedArrow == SelectedDirectionArrow)
         {
-            m_selectedDirectionArrow = null;
+            SelectedDirectionArrow = null;
             return;
         }
 
-        m_selectedDirectionArrow = selectedArrow;
-        m_selectedDirectionArrow.Select(true);
+        SelectedDirectionArrow = selectedArrow;
+        SelectedDirectionArrow.Select(true);
     }
     
     public void OnPointerClick(PointerEventData eventData)

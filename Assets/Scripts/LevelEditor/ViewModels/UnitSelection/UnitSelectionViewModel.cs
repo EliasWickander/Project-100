@@ -25,6 +25,7 @@ public class UnitSelectionViewModel : ViewModelMonoBehaviour
             EnemyData enemyData = enemies[i];
             
             SelectableUnitViewModel spawnedUnit = Instantiate(m_selectableUnitPrefab, m_contentContainer);
+            spawnedUnit.Id = enemyData.m_id;
             spawnedUnit.DisplayName = enemyData.m_displayName;
             spawnedUnit.Icon = enemyData.m_icon;
 

@@ -8,6 +8,23 @@ using Util.UnityMVVM;
 [Binding]
 public class SelectableUnitViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
+    private PropertyChangedEventArgs m_idProp = new PropertyChangedEventArgs(nameof(Id));
+    private string m_id;
+
+    [Binding]
+    public string Id
+    {
+        get
+        {
+            return m_id;
+        }
+        set
+        {
+            m_id = value;
+            OnPropertyChanged(m_idProp);
+        }
+    }
+    
     private PropertyChangedEventArgs m_displayNameProp = new PropertyChangedEventArgs(nameof(DisplayName));
     private string m_displayName = "Enemy";
 
@@ -24,7 +41,7 @@ public class SelectableUnitViewModel : ViewModelMonoBehaviour, IPointerClickHand
             OnPropertyChanged(m_displayNameProp);
         }
     }
-
+    
     private PropertyChangedEventArgs m_iconProp = new PropertyChangedEventArgs(nameof(Icon));
     private Sprite m_icon;
 

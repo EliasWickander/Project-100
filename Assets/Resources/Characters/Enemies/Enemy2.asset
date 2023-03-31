@@ -15,5 +15,6 @@ MonoBehaviour:
   m_prefab: {fileID: 0}
   m_acceleration: 0
   m_maxSpeed: 0
+  m_id: enemy_002
   m_displayName: Enemy 2
   m_icon: {fileID: 21300000, guid: 17035c204825f6340a252046ab6476fd, type: 3}
