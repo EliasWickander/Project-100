@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 1465356023852300467}
   - component: {fileID: 1465356023852300109}
   - component: {fileID: 1465356023852300466}
-  - component: {fileID: 7707644586157817217}
-  - component: {fileID: 7326967928346127940}
   m_Layer: 5
   m_Name: LevelEditorGrid
   m_TagString: Untagged
@@ -158,36 +156,6 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &7707644586157817217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465356023852300464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b96c898793735c4683cf41a55f26805, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_searchMode: 1
-  m_viewModelTypeName: LevelEditorTimelineViewModel
---- !u!114 &7326967928346127940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465356023852300464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cde72d7460f83a498bec8933644994f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewAdapterTypeName: 
-  viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: LevelEditorTimelineViewModel.SelectedFrame
-  viewPropertyName: LevelEditorGridViewModel.SelectedFrame
 --- !u!1001 &142618791658753372
 PrefabInstance:
   m_ObjectHideFlags: 0

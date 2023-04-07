@@ -12,10 +12,13 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 {
     [SerializeField] 
     private UnitSelectedGameEvent m_unitSelectedEvent;
-    
-    private LevelEditorGridTileViewModel[] m_tiles;
 
-    public LevelEditorGridTileViewModel[] Tiles => m_tiles;
+    public const int c_gridSizeX = 9;
+    public const int c_gridSizeY = 9;
+    
+    private LevelEditorGridTileViewModel[,] m_tiles;
+
+    public LevelEditorGridTileViewModel[,] Tiles => m_tiles;
 
     private readonly PropertyChangedEventArgs m_selectedTileProp = new PropertyChangedEventArgs(nameof(SelectedTile));
     private LevelEditorGridTileViewModel m_selectedTile = null;
@@ -39,37 +42,24 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
     [Binding]
     public bool HasTileSelected => SelectedTile != null;
-    
-    [Binding]
-    public LevelEditorTimelineFrameViewModel SelectedFrame { get; set; }
-    
+
     private void Awake()
     {
-        m_tiles = GetComponentsInChildren<LevelEditorGridTileViewModel>();
+        SetupGrid();
     }
 
     private void OnEnable()
     {
+        LevelEditor.OnFrameLoaded += OnFrameLoaded;
         m_unitSelectedEvent.RegisterListener(OnUnitSelected);
         SetupTiles();
     }
 
     private void OnDisable()
     {
+        LevelEditor.OnFrameLoaded -= OnFrameLoaded;
         m_unitSelectedEvent.UnregisterListener(OnUnitSelected);
-        ResetTiles();
-    }
-
-    private void SetupTiles()
-    {
-        foreach (LevelEditorGridTileViewModel tile in m_tiles)
-        {
-            tile.OnClicked += OnTileClicked;
-        }
-    }
-
-    private void ResetTiles()
-    {
+       
         foreach (LevelEditorGridTileViewModel tile in m_tiles)
         {
             tile.OnClicked -= OnTileClicked;
@@ -78,7 +68,38 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         }
     }
 
-    private void OnUnitSelected(SelectableUnitViewModel selectedUnit)
+    private void SetupGrid()
+    {
+        LevelEditorGridTileViewModel[] tiles = GetComponentsInChildren<LevelEditorGridTileViewModel>();
+
+        m_tiles = new LevelEditorGridTileViewModel[c_gridSizeX, c_gridSizeY];
+
+        int count = 0;
+
+        for (int y = 0; y < c_gridSizeY; y++)
+        {
+            for (int x = 0; x < c_gridSizeX; x++)
+            {
+                LevelEditorGridTileViewModel tile = tiles[count];
+
+                tile.GridPos = new Vector2Int(x, y);
+                
+                m_tiles[x, y] = tile;
+
+                count++;
+            }
+        }
+    }
+    
+    private void SetupTiles()
+    {
+        foreach (LevelEditorGridTileViewModel tile in m_tiles)
+        {
+            tile.OnClicked += OnTileClicked;
+        }
+    }
+
+    private void OnUnitSelected(UnitData selectedUnit)
     {
         if(m_selectedTile == null)
             return;
@@ -99,5 +120,38 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
         clickedTile.Select(true);
         SelectedTile = clickedTile;
+    }
+    
+    private void OnFrameLoaded(TimelineFrameData frameData)
+    {
+        for (int y = 0; y < c_gridSizeY; y++)
+        {
+            for (int x = 0; x < c_gridSizeX; x++)
+            {
+                GridTileState cache = frameData.m_cachedTiles[x, y];
+
+                LevelEditorGridTileViewModel tile = m_tiles[x, y];
+                
+                tile.Select(false);
+
+                if (!string.IsNullOrEmpty(cache.m_unitId) && LevelEditor.UnitsMap.ContainsKey(cache.m_unitId))
+                {
+                    UnitData cachedUnit = LevelEditor.UnitsMap[cache.m_unitId];
+                    
+                    tile.AttachUnit(cachedUnit);
+                }
+                else
+                {
+                    Debug.LogError($"Couldn't load unit {cache.m_unitId} because it doesn't exist");
+                }
+                
+                
+            }
+        }
+
+        foreach (LevelEditorGridTileViewModel tile in m_tiles)
+        {
+            tile.Reset();
+        }
     }
 }

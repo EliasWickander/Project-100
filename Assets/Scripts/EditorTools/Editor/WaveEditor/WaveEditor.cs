@@ -32,8 +32,8 @@ namespace wild
 		private WorldGrid m_worldGrid;
 		public WorldGrid WorldGrid => m_worldGrid;
 
-		private static EnemyData[] m_enemies;
-		public static EnemyData[] Enemies => m_enemies;
+		private static UnitData[] m_enemies;
+		public static UnitData[] Enemies => m_enemies;
 		
 		public static SettingsVariables Settings { get; set; }
 
@@ -49,7 +49,7 @@ namespace wild
 		[InitializeOnLoadMethod]
 		private static void OnWindowLoad()
 		{
-			m_enemies = Resources.FindObjectsOfTypeAll<EnemyData>();
+			m_enemies = Resources.FindObjectsOfTypeAll<UnitData>();
 		}
 		private void OnEnable()
 		{

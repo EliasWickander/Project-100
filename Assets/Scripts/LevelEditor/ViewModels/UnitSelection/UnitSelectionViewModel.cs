@@ -16,18 +16,17 @@ public class UnitSelectionViewModel : ViewModelMonoBehaviour
     
     private List<SelectableUnitViewModel> m_units = new List<SelectableUnitViewModel>();
 
-    private void Awake()
+    private void Start()
     {
-        EnemyData[] enemies = Resources.LoadAll<EnemyData>("Characters/Enemies");
-
-        for (int i = 0; i < enemies.Length; i++)
+        LevelEditor levelEditor = LevelEditor.Instance;
+        
+        for (int i = 0; i < levelEditor.Units.Length; i++)
         {
-            EnemyData enemyData = enemies[i];
+            UnitData unitData = levelEditor.Units[i];
             
             SelectableUnitViewModel spawnedUnit = Instantiate(m_selectableUnitPrefab, m_contentContainer);
-            spawnedUnit.Id = enemyData.m_id;
-            spawnedUnit.DisplayName = enemyData.m_displayName;
-            spawnedUnit.Icon = enemyData.m_icon;
+
+            spawnedUnit.UnitData = unitData;
 
             m_units.Add(spawnedUnit);
         }

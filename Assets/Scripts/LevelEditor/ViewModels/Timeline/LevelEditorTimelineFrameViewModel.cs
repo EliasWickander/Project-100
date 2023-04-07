@@ -6,6 +6,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
+public class TimelineFrameData
+{
+    public GridTileState[,] m_cachedTiles;
+}
+
 [Binding]
 public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
@@ -59,6 +64,9 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
             OnPropertyChanged(m_isSelectedProp);
         }
     }
+
+    private TimelineFrameData m_savedState;
+    public TimelineFrameData SavedState => m_savedState;
     
     public event Action<LevelEditorTimelineFrameViewModel> OnClicked;
     
@@ -66,11 +74,22 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
     {
         Position = position;
         TimeStamp = timeStamp;
+        
+        SetupSavedState();
     }
 
     public void Select(bool isSelected)
     {
         IsSelected = isSelected;
+    }
+
+    private void SetupSavedState()
+    {
+        TimelineFrameData frameData = new TimelineFrameData();
+        
+        frameData.m_cachedTiles = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY];
+
+        m_savedState = frameData;
     }
     
     public void OnPointerClick(PointerEventData eventData)

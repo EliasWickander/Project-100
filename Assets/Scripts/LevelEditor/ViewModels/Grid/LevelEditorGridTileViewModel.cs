@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
-public class UnitTileState
+public class GridTileState
 {
     public string m_unitId;
     public Vector3 m_direction;
@@ -20,6 +20,8 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
     
     public event Action<LevelEditorGridTileViewModel> OnClicked;
 
+    public Vector2Int GridPos { get; set; }
+    
     private readonly PropertyChangedEventArgs m_selectedProp = new PropertyChangedEventArgs(nameof(Selected));
     private bool m_selected = false;
 
@@ -38,10 +40,10 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
     }
 
     private readonly PropertyChangedEventArgs m_unitProp = new PropertyChangedEventArgs(nameof(Unit));
-    private SelectableUnitViewModel m_unit = null;
+    private UnitData m_unit = null;
 
     [Binding]
-    public SelectableUnitViewModel Unit
+    public UnitData Unit
     {
         get
         {
@@ -90,7 +92,9 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         }
     }
 
-    public UnitTileState m_tileState = new UnitTileState();
+    private GridTileState m_tileState = new GridTileState();
+
+    public GridTileState TileState => m_tileState;
 
     private void OnEnable()
     {
@@ -113,7 +117,7 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         Selected = isSelected;
     }
 
-    public void AttachUnit(SelectableUnitViewModel unit)
+    public void AttachUnit(UnitData unit)
     {
         if(Unit == unit || unit == null)
             return;
@@ -151,6 +155,12 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
 
         SelectedDirectionArrow = selectedArrow;
         SelectedDirectionArrow.Select(true);
+    }
+
+    public void Reset()
+    {
+        DetachUnit();
+        Select(false);
     }
     
     public void OnPointerClick(PointerEventData eventData)

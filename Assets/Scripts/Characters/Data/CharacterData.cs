@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Util.UnityMVVM;
 
-public abstract class CharacterData : ScriptableObject
+[Binding]
+public abstract class CharacterData : ViewModelScriptableObject
 {
     public GameObject m_prefab;
 

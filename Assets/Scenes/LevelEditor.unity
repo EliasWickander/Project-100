@@ -208,6 +208,8 @@ GameObject:
   m_Component:
   - component: {fileID: 258868201}
   - component: {fileID: 258868202}
+  - component: {fileID: 258868204}
+  - component: {fileID: 258868203}
   m_Layer: 0
   m_Name: System
   m_TagString: Untagged
@@ -229,7 +231,6 @@ Transform:
   m_Children:
   - {fileID: 1128973554}
   - {fileID: 1129046402}
-  - {fileID: 1823695807}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -245,7 +246,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 237b35e974fc3964eb3f13347f167aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_grid: {fileID: 0}
+  m_grid: {fileID: 429467648}
+  m_timeline: {fileID: 1241489818}
+  m_frameLoadedEvent: {fileID: 11400000, guid: 04c23bd5e3ab1d64abce364a94b25e18, type: 2}
+--- !u!114 &258868203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258868200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af7cac88c21f084f8cd5c255b9d2eb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_event: {fileID: 11400000, guid: 0d2f66f215ccb4142b04bcd7053c801f, type: 2}
+  m_response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 258868202}
+        m_TargetAssemblyTypeName: LevelEditor, Assembly-CSharp
+        m_MethodName: LoadFrame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &258868204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258868200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7b2f72672ef8d4d9248f3ff12b58c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_event: {fileID: 11400000, guid: 8d93d4964f9aee64ba16e67f4382f9cd, type: 2}
+  m_response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 258868202}
+        m_TargetAssemblyTypeName: LevelEditor, Assembly-CSharp
+        m_MethodName: SaveFrame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &412557883
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +458,17 @@ Transform:
   m_Father: {fileID: 258868201}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1241489818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2241059169471464216, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+  m_PrefabInstance: {fileID: 2241059169885529687}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c279a42f316384fb40ca01fa947d44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1609988435
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,83 +563,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1616627593
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1616627594}
-  - component: {fileID: 1616627597}
-  - component: {fileID: 1616627596}
-  - component: {fileID: 1616627595}
-  m_Layer: 0
-  m_Name: LevelSaverViewModel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1616627594
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616627593}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1823695807}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1616627595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616627593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cde72d7460f83a498bec8933644994f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewAdapterTypeName: 
-  viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: LevelEditorTimelineViewModel.SelectedFrame
-  viewPropertyName: LevelSaverViewModel.SelectedFrame
---- !u!114 &1616627596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616627593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b96c898793735c4683cf41a55f26805, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_searchMode: 1
-  m_viewModelTypeName: LevelEditorTimelineViewModel
---- !u!114 &1616627597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616627593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 825fc2003fc220642ae7bc4961ddb53f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_levelGrid: {fileID: 429467648}
 --- !u!1 &1733315442
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,38 +609,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_persistentBetweenScenes: 0
   m_defaultCamera: {fileID: 234683972}
---- !u!1 &1823695806
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1823695807}
-  m_Layer: 0
-  m_Name: ViewModels
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1823695807
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1823695806}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1616627594}
-  m_Father: {fileID: 258868201}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1895606723 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2586652388110131581, guid: f142da4550baa224b9739d23cb81ec14, type: 3}

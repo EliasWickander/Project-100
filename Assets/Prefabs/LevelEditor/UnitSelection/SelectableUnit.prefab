@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: SelectableUnitViewModel.Icon
+  viewModelPropertyName: UnitData.Icon
   viewPropertyName: UnityEngine.UI.Image.sprite
 --- !u!1 &1136449992
 GameObject:
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: SelectableUnitViewModel.DisplayName
+  viewModelPropertyName: UnitData.DisplayName
   viewPropertyName: TMPro.TextMeshProUGUI.text
 --- !u!1 &6859528956718802505
 GameObject:
@@ -405,6 +405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6859528957011414965}
   - component: {fileID: 215498576556705415}
+  - component: {fileID: 189111862296653107}
   m_Layer: 0
   m_Name: SelectableUnit
   m_TagString: Untagged
@@ -448,6 +449,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_unitSelectedEvent: {fileID: 11400000, guid: 9b9d259cf6fa10e4a942152c26210952, type: 2}
+--- !u!114 &189111862296653107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6859528957011414964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b905be31848626347b42127c2012dd5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewModelPropertyName: SelectableUnitViewModel.UnitData
+  viewModelTypeName: UnitData
 --- !u!1 &6859528957125188694
 GameObject:
   m_ObjectHideFlags: 0
