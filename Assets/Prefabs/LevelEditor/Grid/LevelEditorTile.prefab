@@ -493,7 +493,6 @@ GameObject:
   m_Component:
   - component: {fileID: 699192049956368448}
   - component: {fileID: 1499036523794646882}
-  - component: {fileID: 3000416187432413954}
   m_Layer: 5
   m_Name: LevelEditorTile
   m_TagString: Untagged
@@ -535,6 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84dd30181f99a244b2aed500b7bed67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_itemViewModel: {fileID: 7476521750122085819}
   m_directionArrows:
   - {fileID: 8909564496088402309}
   - {fileID: 8707778678446134215}
@@ -544,20 +544,6 @@ MonoBehaviour:
   - {fileID: 2205609378063978570}
   - {fileID: 2887430978887840001}
   - {fileID: 3553884543768535390}
---- !u!114 &3000416187432413954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5802348691254684870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b905be31848626347b42127c2012dd5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewModelPropertyName: LevelEditorGridTileViewModel.Unit
-  viewModelTypeName: SelectableUnitViewModel
 --- !u!1 &7230012123120220662
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,7 +733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: UnitData.Icon
+  viewModelPropertyName: LevelEditorGridTileItemViewModel.Icon
   viewPropertyName: UnityEngine.UI.Image.sprite
 --- !u!1 &8031733250478210416
 GameObject:
@@ -795,7 +781,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6267030071246096265}
-  - component: {fileID: 7239221510771515205}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -827,20 +812,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7239221510771515205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8609661762668991385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b905be31848626347b42127c2012dd5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewModelPropertyName: SelectableUnitViewModel.UnitData
-  viewModelTypeName: UnitData
 --- !u!1 &8803871726691874104
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,9 +821,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8138327457655678227}
+  - component: {fileID: 7476521750122085819}
   - component: {fileID: 9168124081782127405}
   m_Layer: 5
-  m_Name: Unit
+  m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -879,6 +851,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7476521750122085819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803871726691874104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9710c117b5ac69042ad4de3b4ce76fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9168124081782127405
 MonoBehaviour:
   m_ObjectHideFlags: 0

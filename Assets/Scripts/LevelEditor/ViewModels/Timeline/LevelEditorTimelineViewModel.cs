@@ -18,7 +18,16 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
     [SerializeField] 
     private RectTransform m_entriesContainer;
+
+    [SerializeField] 
+    private SaveFrameGameEvent m_saveFrameEvent;
     
+    [SerializeField] 
+    private LoadFrameGameEvent m_loadFrameEvent;
+
+    [SerializeField] 
+    private FrameSelectedGameEvent m_frameSelectedEvent;
+
     private List<LevelEditorTimelineFrameViewModel> m_framesOrdered = new List<LevelEditorTimelineFrameViewModel>();
     
     private PropertyChangedEventArgs m_selectedFrameProp = new PropertyChangedEventArgs(nameof(SelectedFrame));
@@ -33,10 +42,15 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         }
         set
         {
+            LevelEditorTimelineFrameViewModel oldFrame = SelectedFrame;
+            
             m_selectedFrame = value;
             OnPropertyChanged(m_selectedFrameProp);
 
             IsFrameSelected = m_selectedFrame != null;
+            
+            if(m_frameSelectedEvent != null)
+                m_frameSelectedEvent.Raise(new FrameSelectedEventData() {m_oldFrame = oldFrame, m_newFrame = value});
         }
     }
 
@@ -102,7 +116,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
             return;
         
         RemoveFrame(m_selectedFrame);
-        m_selectedFrame = null;
+        SelectedFrame = null;
     }
     
     private void RemoveFrame(LevelEditorTimelineFrameViewModel frame)
@@ -180,11 +194,28 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     {
         if(SelectedFrame == frame)
             return;
-        
-        if(SelectedFrame != null)
-            SelectedFrame.Select(false);
 
+        if (SelectedFrame != null)
+        {
+            InvokeSaveFrame();
+            SelectedFrame.Select(false);
+        }
+        
         SelectedFrame = frame;
         SelectedFrame.Select(true);
+
+        InvokeLoadFrame();
+    }
+
+    private void InvokeSaveFrame()
+    {
+        if(m_saveFrameEvent != null)
+            m_saveFrameEvent.Raise();
+    }
+    
+    private void InvokeLoadFrame()
+    {
+        if(m_loadFrameEvent != null)
+            m_loadFrameEvent.Raise();
     }
 }

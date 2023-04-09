@@ -99,6 +99,16 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         }
     }
 
+    public void Reset()
+    {
+        foreach (LevelEditorGridTileViewModel tile in m_tiles)
+        {
+            tile.Reset();
+        }
+
+        SelectedTile = null;
+    }
+    
     private void OnUnitSelected(UnitData selectedUnit)
     {
         if(m_selectedTile == null)
@@ -124,6 +134,8 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
     
     private void OnFrameLoaded(TimelineFrameData frameData)
     {
+        Reset();
+        
         for (int y = 0; y < c_gridSizeY; y++)
         {
             for (int x = 0; x < c_gridSizeX; x++)
@@ -131,27 +143,17 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
                 GridTileState cache = frameData.m_cachedTiles[x, y];
 
                 LevelEditorGridTileViewModel tile = m_tiles[x, y];
-                
-                tile.Select(false);
 
-                if (!string.IsNullOrEmpty(cache.m_unitId) && LevelEditor.UnitsMap.ContainsKey(cache.m_unitId))
-                {
-                    UnitData cachedUnit = LevelEditor.UnitsMap[cache.m_unitId];
-                    
-                    tile.AttachUnit(cachedUnit);
-                }
-                else
-                {
-                    Debug.LogError($"Couldn't load unit {cache.m_unitId} because it doesn't exist");
-                }
-                
-                
+                tile.LoadFromCache(cache);
             }
         }
+    }
 
-        foreach (LevelEditorGridTileViewModel tile in m_tiles)
+    public void OnFrameSelected(FrameSelectedEventData data)
+    {
+        if (data.m_newFrame == null)
         {
-            tile.Reset();
+            Reset();
         }
     }
 }

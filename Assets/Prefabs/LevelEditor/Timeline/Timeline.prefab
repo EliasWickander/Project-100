@@ -1066,6 +1066,9 @@ MonoBehaviour:
   m_slider: {fileID: 2241059169447836007}
   m_timelineFramePrefab: {fileID: 531106599340064134, guid: 75fb42c874e9a1f4fb6c519e3433283b, type: 3}
   m_entriesContainer: {fileID: 2241059168587552823}
+  m_saveFrameEvent: {fileID: 11400000, guid: 8d93d4964f9aee64ba16e67f4382f9cd, type: 2}
+  m_loadFrameEvent: {fileID: 11400000, guid: 0d2f66f215ccb4142b04bcd7053c801f, type: 2}
+  m_frameSelectedEvent: {fileID: 11400000, guid: cc6dd9b526c25c4438ee15a544646b5f, type: 2}
 --- !u!1 &2241059169491504568
 GameObject:
   m_ObjectHideFlags: 0

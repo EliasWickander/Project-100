@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
-public class GridTileState
+public struct GridTileState
 {
     public string m_unitId;
     public Vector3 m_direction;
@@ -15,6 +15,9 @@ public class GridTileState
 [Binding]
 public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] 
+    private LevelEditorGridTileItemViewModel m_itemViewModel;
+    
     [SerializeField] 
     private UnitDirectionArrowViewModel[] m_directionArrows;
     
@@ -36,25 +39,6 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         {
             m_selected = value;
             OnPropertyChanged(m_selectedProp);
-        }
-    }
-
-    private readonly PropertyChangedEventArgs m_unitProp = new PropertyChangedEventArgs(nameof(Unit));
-    private UnitData m_unit = null;
-
-    [Binding]
-    public UnitData Unit
-    {
-        get
-        {
-            return m_unit;
-        }
-        set
-        {
-            m_unit = value;
-            OnPropertyChanged(m_unitProp);
-
-            m_tileState.m_unitId = m_unit != null ? m_unit.Id : null;
         }
     }
 
@@ -119,29 +103,34 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
 
     public void AttachUnit(UnitData unit)
     {
-        if(Unit == unit || unit == null)
+        if(m_itemViewModel.Unit == unit || unit == null)
             return;
         
-        Unit = unit;
+        m_itemViewModel.Unit = unit;
+        
         HasUnitAttached = true;
+        
+        m_tileState.m_unitId = unit.Id;
     }
 
     [Binding]
     public void DetachUnit()
     {
-        if(Unit == null)
+        if(m_itemViewModel.Unit == null)
             return;
 
         HasUnitAttached = false;
-        Unit = null;
+        m_itemViewModel.Unit = null;
 
+        m_tileState.m_unitId = null;
+        
         if (SelectedDirectionArrow != null)
         {
             SelectedDirectionArrow.Select(false);
             SelectedDirectionArrow = null;
         }
     }
-    
+
     private void OnSelectedDirection(UnitDirectionArrowViewModel selectedArrow)
     {
         if (SelectedDirectionArrow != null)
@@ -162,7 +151,26 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         DetachUnit();
         Select(false);
     }
-    
+
+    public void LoadFromCache(GridTileState cache)
+    {
+        //Attach unit from cache data
+        if (!string.IsNullOrEmpty(cache.m_unitId) && LevelEditor.UnitsMap.ContainsKey(cache.m_unitId))
+        {
+            UnitData cachedUnit = LevelEditor.UnitsMap[cache.m_unitId];
+                    
+            AttachUnit(cachedUnit);
+        }
+
+        //Set direction from cache data
+        foreach (UnitDirectionArrowViewModel arrow in m_directionArrows)
+        {
+            if (arrow.m_direction == cache.m_direction)
+            {
+                arrow.Select(true);
+            }
+        }
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         OnClicked?.Invoke(this);

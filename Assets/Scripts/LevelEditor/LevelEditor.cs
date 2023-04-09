@@ -53,7 +53,7 @@ public class LevelEditor : ViewModelMonoBehaviour
     public void SaveFrame()
     {
         LevelEditorTimelineFrameViewModel selectedFrame = m_timeline.SelectedFrame;
-
+        
         if (selectedFrame != null)
         {
             foreach (LevelEditorGridTileViewModel tile in m_grid.Tiles)

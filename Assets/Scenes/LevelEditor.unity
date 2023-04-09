@@ -248,7 +248,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_grid: {fileID: 429467648}
   m_timeline: {fileID: 1241489818}
-  m_frameLoadedEvent: {fileID: 11400000, guid: 04c23bd5e3ab1d64abce364a94b25e18, type: 2}
 --- !u!114 &258868203
 MonoBehaviour:
   m_ObjectHideFlags: 0
