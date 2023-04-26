@@ -120,6 +120,6 @@ public class LevelEditor : ViewModelMonoBehaviour
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         
-        File.WriteAllText(Application.streamingAssetsPath + $"/Level_{levelData.m_id}", levelDataJson);
+        File.WriteAllText(Application.streamingAssetsPath + $"/Levels/Level_{levelData.m_id}.json", levelDataJson);
     }
 }

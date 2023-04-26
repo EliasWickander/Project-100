@@ -47,6 +47,7 @@ GameObject:
   m_Component:
   - component: {fileID: 602917286512620977}
   - component: {fileID: 2240616354419831745}
+  - component: {fileID: 5138362172647422350}
   m_Layer: 5
   m_Name: LevelsPanel
   m_TagString: Untagged
@@ -90,6 +91,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_panelData: {fileID: 11400000, guid: ef410c35d9a0d3b42a931055ee7bdf0d, type: 2}
+--- !u!114 &5138362172647422350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938527593432137927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de8239eb4fcbab14b957c1ccc38926cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1849823431726619751
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,7 +473,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4743013119163140028}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9757054
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -475,6 +488,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8730816141998730041}
   - component: {fileID: 2914707951787693164}
+  - component: {fileID: 8178804673969702118}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -499,7 +513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030517578}
+  m_AnchoredPosition: {x: 0, y: 0.00018310547}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2914707951787693164
@@ -528,6 +542,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8178804673969702118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262297697674281967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c23177a0c9e5d141b36d39458251bda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewModelPropertyName: LevelsPanelViewModel.Levels
+  templatesRoot: {fileID: 8548222871238684509, guid: dd5ca5a773f3e344eb0569cc04a53e28, type: 3}
 --- !u!1 &4626183878947905485
 GameObject:
   m_ObjectHideFlags: 0
