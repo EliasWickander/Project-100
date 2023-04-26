@@ -10,6 +10,8 @@ using Util.UnityMVVM;
 [Binding]
 public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 {
+    public static LevelEditorGridViewModel Instance { get; private set; }
+    
     [SerializeField] 
     private UnitSelectedGameEvent m_unitSelectedEvent;
 
@@ -43,21 +45,25 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
     [Binding]
     public bool HasTileSelected => SelectedTile != null;
 
+    public LoadFrameGameEvent m_loadFrameEvent;
+
     private void Awake()
     {
+        Instance = this;
+        
         SetupGrid();
     }
 
     private void OnEnable()
     {
-        LevelEditor.OnFrameLoaded += OnFrameLoaded;
+        m_loadFrameEvent.RegisterListener(OnFrameLoaded);
         m_unitSelectedEvent.RegisterListener(OnUnitSelected);
         SetupTiles();
     }
 
     private void OnDisable()
     {
-        LevelEditor.OnFrameLoaded -= OnFrameLoaded;
+        m_loadFrameEvent.UnregisterListener(OnFrameLoaded);
         m_unitSelectedEvent.UnregisterListener(OnUnitSelected);
        
         foreach (LevelEditorGridTileViewModel tile in m_tiles)
@@ -132,15 +138,17 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         SelectedTile = clickedTile;
     }
     
-    private void OnFrameLoaded(TimelineFrameData frameData)
+    private void OnFrameLoaded(LevelEditorTimelineFrameViewModel frame)
     {
+        TimelineFrameData frameData = frame.Data;
+        
         Reset();
         
         for (int y = 0; y < c_gridSizeY; y++)
         {
             for (int x = 0; x < c_gridSizeX; x++)
             {
-                GridTileState cache = frameData.m_cachedTiles[x, y];
+                GridTileState cache = frameData.m_tileStates[x, y];
 
                 LevelEditorGridTileViewModel tile = m_tiles[x, y];
 

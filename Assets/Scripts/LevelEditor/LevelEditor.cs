@@ -17,7 +17,6 @@ public class LevelEditor : ViewModelMonoBehaviour
 
     private static Dictionary<string, UnitData> m_unitsMap;
     public static Dictionary<string, UnitData> UnitsMap => m_unitsMap;
-    public static event Action<TimelineFrameData> OnFrameLoaded;
 
     private void Awake()
     {
@@ -49,27 +48,10 @@ public class LevelEditor : ViewModelMonoBehaviour
             m_unitsMap.Add(unit.m_id, unit);
         }
     }
-    
-    public void SaveFrame()
-    {
-        LevelEditorTimelineFrameViewModel selectedFrame = m_timeline.SelectedFrame;
-        
-        if (selectedFrame != null)
-        {
-            foreach (LevelEditorGridTileViewModel tile in m_grid.Tiles)
-            {
-                selectedFrame.SavedState.m_cachedTiles[tile.GridPos.x, tile.GridPos.y] = tile.TileState;
-            }
-        }
-    }
 
-    public void LoadFrame()
+    public void SaveLevel()
     {
-        LevelEditorTimelineFrameViewModel selectedFrame = m_timeline.SelectedFrame;
-
-        if (selectedFrame != null)
-        {
-            OnFrameLoaded?.Invoke(selectedFrame.SavedState);
-        }
+        // List<TimelineFrameData> 
+        // Newtonsoft.Json.JsonConvert.SerializeObject()
     }
 }

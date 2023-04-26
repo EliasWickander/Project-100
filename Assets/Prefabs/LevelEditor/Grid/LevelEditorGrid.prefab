@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_unitSelectedEvent: {fileID: 11400000, guid: 9b9d259cf6fa10e4a942152c26210952, type: 2}
+  m_loadFrameEvent: {fileID: 11400000, guid: 0d2f66f215ccb4142b04bcd7053c801f, type: 2}
 --- !u!114 &2828568626668733197
 MonoBehaviour:
   m_ObjectHideFlags: 0

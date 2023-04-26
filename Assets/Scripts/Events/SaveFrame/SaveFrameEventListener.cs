@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Util.Events;
 
-public class SaveFrameEventListener : GameEventListener<SaveFrameGameEvent>
+public class SaveFrameEventListener : GameEventListener<LevelEditorTimelineFrameViewModel, SaveFrameGameEvent>
 {
 
 }

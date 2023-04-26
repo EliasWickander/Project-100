@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Util.Events;
 
-public class LoadFrameEventTrigger : GameEventTrigger<LoadFrameGameEvent>
+public class LoadFrameEventTrigger : GameEventTrigger<LevelEditorTimelineFrameViewModel, LoadFrameGameEvent>
 {
 
 }

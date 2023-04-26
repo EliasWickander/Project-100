@@ -8,7 +8,9 @@ using Util.UnityMVVM;
 
 public class TimelineFrameData
 {
-    public GridTileState[,] m_cachedTiles;
+    public GridTileState[,] m_tileStates;
+    public Vector3 m_position;
+    public float m_timeStamp;
 }
 
 [Binding]
@@ -65,17 +67,29 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
         }
     }
 
-    private TimelineFrameData m_savedState;
-    public TimelineFrameData SavedState => m_savedState;
+    private TimelineFrameData m_data;
+    public TimelineFrameData Data => m_data;
     
     public event Action<LevelEditorTimelineFrameViewModel> OnClicked;
+
+    private SaveFrameGameEvent m_saveFrameEvent;
     
-    public void Init(Vector2 position, float timeStamp)
+    public void Init(Vector2 position, float timeStamp, SaveFrameGameEvent saveFrameEvent)
     {
         Position = position;
         TimeStamp = timeStamp;
+        m_saveFrameEvent = saveFrameEvent;
         
-        SetupSavedState();
+        SetupFrameData();
+        
+        if(m_saveFrameEvent != null)
+            m_saveFrameEvent.RegisterListener(OnFrameSaved);
+    }
+
+    private void OnDisable()
+    {
+        if(m_saveFrameEvent != null)
+            m_saveFrameEvent.UnregisterListener(OnFrameSaved);
     }
 
     public void Select(bool isSelected)
@@ -83,13 +97,32 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
         IsSelected = isSelected;
     }
 
-    private void SetupSavedState()
+    private void OnFrameSaved(LevelEditorTimelineFrameViewModel frame)
+    {
+        if(frame != this)
+            return;
+
+        m_data.m_position = Position;
+        m_data.m_timeStamp = TimeStamp;
+        
+        LevelEditorGridViewModel grid = LevelEditorGridViewModel.Instance;
+
+        if (grid != null)
+        {
+            foreach (LevelEditorGridTileViewModel tile in grid.Tiles)
+            {
+                m_data.m_tileStates[tile.GridPos.x, tile.GridPos.y] = tile.TileState;
+            }   
+        }
+    }
+    
+    private void SetupFrameData()
     {
         TimelineFrameData frameData = new TimelineFrameData();
         
-        frameData.m_cachedTiles = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY];
+        frameData.m_tileStates = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY];
 
-        m_savedState = frameData;
+        m_data = frameData;
     }
     
     public void OnPointerClick(PointerEventData eventData)

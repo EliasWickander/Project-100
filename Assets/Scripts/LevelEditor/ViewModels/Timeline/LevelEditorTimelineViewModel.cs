@@ -100,7 +100,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
         newFrame.OnClicked += OnFrameButtonClicked;
         
-        newFrame.Init(new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y), m_slider.value);
+        newFrame.Init(new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y), m_slider.value, m_saveFrameEvent);
         
         m_framesOrdered.Add(newFrame);
 
@@ -197,25 +197,16 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
         if (SelectedFrame != null)
         {
-            InvokeSaveFrame();
+            if(m_saveFrameEvent != null)
+                m_saveFrameEvent.Raise(SelectedFrame);
+            
             SelectedFrame.Select(false);
         }
         
         SelectedFrame = frame;
         SelectedFrame.Select(true);
 
-        InvokeLoadFrame();
-    }
-
-    private void InvokeSaveFrame()
-    {
-        if(m_saveFrameEvent != null)
-            m_saveFrameEvent.Raise();
-    }
-    
-    private void InvokeLoadFrame()
-    {
         if(m_loadFrameEvent != null)
-            m_loadFrameEvent.Raise();
+            m_loadFrameEvent.Raise(SelectedFrame);
     }
 }
