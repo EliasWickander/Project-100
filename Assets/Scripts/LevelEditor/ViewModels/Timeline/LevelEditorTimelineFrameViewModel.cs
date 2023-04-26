@@ -8,9 +8,9 @@ using Util.UnityMVVM;
 
 public class TimelineFrameData
 {
-    public GridTileState[,] m_tileStates;
     public Vector3 m_position;
     public float m_timeStamp;
+    public GridTileState[,] m_tileStates;
 }
 
 [Binding]
@@ -102,6 +102,11 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
         if(frame != this)
             return;
 
+        SaveFrame();
+    }
+
+    public void SaveFrame()
+    {
         m_data.m_position = Position;
         m_data.m_timeStamp = TimeStamp;
         
@@ -115,7 +120,6 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
             }   
         }
     }
-    
     private void SetupFrameData()
     {
         TimelineFrameData frameData = new TimelineFrameData();

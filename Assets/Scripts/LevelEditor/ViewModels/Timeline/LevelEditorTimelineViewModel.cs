@@ -29,6 +29,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     private FrameSelectedGameEvent m_frameSelectedEvent;
 
     private List<LevelEditorTimelineFrameViewModel> m_framesOrdered = new List<LevelEditorTimelineFrameViewModel>();
+    public List<LevelEditorTimelineFrameViewModel> FramesOrdered => m_framesOrdered;
     
     private PropertyChangedEventArgs m_selectedFrameProp = new PropertyChangedEventArgs(nameof(SelectedFrame));
     private LevelEditorTimelineFrameViewModel m_selectedFrame = null;

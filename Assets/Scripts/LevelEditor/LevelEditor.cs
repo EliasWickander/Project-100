@@ -1,9 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using Util.AdvancedTypes;
 using Util.UnityMVVM;
+
+public class LevelData
+{
+    public string m_id;
+    public string m_name;
+    public List<TimelineFrameData> m_frames;
+}
 
 [Binding]
 public class LevelEditor : ViewModelMonoBehaviour
@@ -17,6 +27,25 @@ public class LevelEditor : ViewModelMonoBehaviour
 
     private static Dictionary<string, UnitData> m_unitsMap;
     public static Dictionary<string, UnitData> UnitsMap => m_unitsMap;
+
+    private PropertyChangedEventArgs m_levelNameProp = new PropertyChangedEventArgs(nameof(LevelName));
+    private string m_levelName;
+
+    [Binding]
+    public string LevelName
+    {
+        get
+        {
+            return m_levelName;
+        }
+        set
+        {
+            m_levelName = value;
+            OnPropertyChanged(m_levelNameProp);
+        }
+    }
+    
+    private string m_loadedLevelPath;
 
     private void Awake()
     {
@@ -51,7 +80,46 @@ public class LevelEditor : ViewModelMonoBehaviour
 
     public void SaveLevel()
     {
-        // List<TimelineFrameData> 
-        // Newtonsoft.Json.JsonConvert.SerializeObject()
+        //Save current frame state first
+        if(m_timeline.SelectedFrame != null)
+            m_timeline.SelectedFrame.SaveFrame();
+
+        LevelData levelData = new LevelData();
+        
+        //If not first time loading level, keep
+        if (!string.IsNullOrEmpty(m_loadedLevelPath))
+        {
+            string oldLevelDataJson = File.ReadAllText(m_loadedLevelPath);
+
+            LevelData oldLevelData = JsonConvert.DeserializeObject<LevelData>(oldLevelDataJson);
+
+            if (oldLevelData != null)
+            {
+                levelData.m_id = oldLevelData.m_id;
+            }
+        }
+        else
+        {
+            //Create unique level id
+            levelData.m_id = Guid.NewGuid().ToString("N");
+        }
+
+        levelData.m_name = LevelName;
+        
+        //Convert all frames to json
+        levelData.m_frames = new List<TimelineFrameData>();
+
+        foreach (LevelEditorTimelineFrameViewModel frame in m_timeline.FramesOrdered)
+        {
+            levelData.m_frames.Add(frame.Data);
+        }
+
+        string levelDataJson = JsonConvert.SerializeObject(levelData, Formatting.None,
+            new JsonSerializerSettings()
+            { 
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        
+        File.WriteAllText(Application.streamingAssetsPath + $"/Level_{levelData.m_id}", levelDataJson);
     }
 }
