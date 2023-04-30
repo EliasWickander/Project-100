@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class TimelineSlider : Slider
+public class TimelineSlider : CustomSlider
 {
-    public void SetValue(float newValue)
-    {
-        value = newValue;
-    }
+	
 }

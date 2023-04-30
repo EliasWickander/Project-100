@@ -3659,12 +3659,24 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2241059168966886573, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2241059169393136947, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2241059169447836007, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+      propertyPath: m_fillRect
+      value: 
+      objectReference: {fileID: 2241059169885529688}
+    - target: {fileID: 2241059169447836007, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+      propertyPath: m_handleRect
+      value: 
+      objectReference: {fileID: 2241059169885529690}
+    - target: {fileID: 2241059169447836007, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+      propertyPath: m_fillContainerRect
+      value: 
+      objectReference: {fileID: 2241059169885529689}
     - target: {fileID: 2241059169471464217, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3755,6 +3767,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+--- !u!224 &2241059169885529688 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2241059168966886573, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+  m_PrefabInstance: {fileID: 2241059169885529687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2241059169885529689 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2241059169877111509, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+  m_PrefabInstance: {fileID: 2241059169885529687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2241059169885529690 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2241059169393136947, guid: 88b09c3f80a208741b7f00b8673b37a3, type: 3}
+  m_PrefabInstance: {fileID: 2241059169885529687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2586652386760378558
 PrefabInstance:
   m_ObjectHideFlags: 0

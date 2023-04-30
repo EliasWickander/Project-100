@@ -77,7 +77,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
             return;
         }
 
-        m_slider.onValueChanged.AddListener(OnHandleMoved);
+        m_slider.OnValueChanged.AddListener(OnHandleMoved);
     }
 
     [Binding]
@@ -85,7 +85,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     {
         ResetFrames();
         
-        m_slider.onValueChanged.RemoveListener(OnHandleMoved);
+        m_slider.OnValueChanged.RemoveListener(OnHandleMoved);
     }
 
     //Add frame at current timeline selection
@@ -95,8 +95,8 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         if(m_slider == null)
             return;
 
-        Vector2 handlePosWithOffset = new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y);
-        float timeStamp = m_slider.value;
+        Vector2 handlePosWithOffset = new Vector2(m_slider.HandleRect.position.x, m_entriesContainer.position.y);
+        float timeStamp = m_slider.Value;
         
         LevelEditorTimelineFrameViewModel addedFrame = AddFrame(handlePosWithOffset, timeStamp);
 
@@ -177,7 +177,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         float epsilon = 0.01f;
         
         //Select previous frame if value has not yet reached currently selected frame
-        if (m_slider.value < m_selectedFrame.TimeStamp - epsilon && selectedFrameIndex > 0)
+        if (m_slider.Value < m_selectedFrame.TimeStamp - epsilon && selectedFrameIndex > 0)
         {
             LevelEditorTimelineFrameViewModel prevFrame = m_framesOrdered[selectedFrameIndex - 1];
                 
@@ -190,7 +190,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         {
             LevelEditorTimelineFrameViewModel nextFrame = m_framesOrdered[selectedFrameIndex + 1];
 
-            if (Mathf.Abs(nextFrame.TimeStamp - m_slider.value) < epsilon)
+            if (Mathf.Abs(nextFrame.TimeStamp - m_slider.Value) < epsilon)
             {
                 SelectFrame(nextFrame);
                 return;
@@ -202,7 +202,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     {
         SelectFrame(frame);
         
-        m_slider.SetValue(frame.TimeStamp);
+        m_slider.Set(frame.TimeStamp);
     }
     
     private void SelectFrame(LevelEditorTimelineFrameViewModel frame)
