@@ -104,13 +104,18 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
 	private float m_normalizedValue;
 	public UnityEvent<float> OnValueChanged;
 
-	private void OnValidate()
+	protected virtual void Awake()
+	{
+		
+	}
+
+	protected virtual void OnValidate()
 	{
 		Set(m_value, false);
 		UpdateVisuals();
 	}
 
-	private void OnEnable()
+	protected virtual void OnEnable()
 	{
 		Set(m_value, false);
 		UpdateVisuals();

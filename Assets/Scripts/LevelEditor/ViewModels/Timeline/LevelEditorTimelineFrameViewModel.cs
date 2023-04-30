@@ -8,7 +8,6 @@ using Util.UnityMVVM;
 
 public class TimelineFrameData
 {
-    public Vector2 m_position;
     public float m_timeStamp;
     public GridTileState[,] m_tileStates;
 }
@@ -81,7 +80,6 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
         
         m_data = new TimelineFrameData()
         {
-            m_position = Position,
             m_timeStamp = TimeStamp,
             m_tileStates = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY]
         };
@@ -113,7 +111,6 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
 
     public void SaveFrame()
     {
-        m_data.m_position = Position;
         m_data.m_timeStamp = TimeStamp;
         
         LevelEditorGridViewModel grid = LevelEditorGridViewModel.Instance;

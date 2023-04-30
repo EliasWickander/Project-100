@@ -95,22 +95,24 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         if(m_slider == null)
             return;
 
-        Vector2 handlePosWithOffset = new Vector2(m_slider.HandleRect.position.x, m_entriesContainer.position.y);
         float timeStamp = m_slider.Value;
         
-        LevelEditorTimelineFrameViewModel addedFrame = AddFrame(handlePosWithOffset, timeStamp);
+        LevelEditorTimelineFrameViewModel addedFrame = AddFrame(timeStamp);
 
         SelectFrame(addedFrame);
     }
 
     //Add frame at position
-    public LevelEditorTimelineFrameViewModel AddFrame(Vector2 position, float timeStamp)
+    public LevelEditorTimelineFrameViewModel AddFrame(float timeStamp)
     {
+        Vector2 positionAtTimeStamp = m_slider.GetHandlePositionFromTimestamp(timeStamp);
+        positionAtTimeStamp.y = m_entriesContainer.position.y;
+        
         LevelEditorTimelineFrameViewModel newFrame = Instantiate(m_timelineFramePrefab, m_entriesContainer);
 
         newFrame.OnClicked += OnFrameButtonClicked;
         
-        newFrame.Init(position, timeStamp, m_saveFrameEvent);
+        newFrame.Init(positionAtTimeStamp, timeStamp, m_saveFrameEvent);
         
         m_framesOrdered.Add(newFrame);
 
@@ -233,7 +235,7 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         {
             foreach (TimelineFrameData frameData in level.m_frames)
             {
-                LevelEditorTimelineFrameViewModel frame = AddFrame(frameData.m_position, frameData.m_timeStamp);
+                LevelEditorTimelineFrameViewModel frame = AddFrame(frameData.m_timeStamp);
             
                 frame.Copy(frameData);
             }
