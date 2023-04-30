@@ -8,7 +8,7 @@ using Util.UnityMVVM;
 
 public class TimelineFrameData
 {
-    public Vector3 m_position;
+    public Vector2 m_position;
     public float m_timeStamp;
     public GridTileState[,] m_tileStates;
 }
@@ -78,10 +78,16 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
     {
         Position = position;
         TimeStamp = timeStamp;
+        
+        m_data = new TimelineFrameData()
+        {
+            m_position = Position,
+            m_timeStamp = TimeStamp,
+            m_tileStates = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY]
+        };
+        
         m_saveFrameEvent = saveFrameEvent;
-        
-        SetupFrameData();
-        
+
         if(m_saveFrameEvent != null)
             m_saveFrameEvent.RegisterListener(OnFrameSaved);
     }
@@ -120,14 +126,14 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
             }   
         }
     }
-    private void SetupFrameData()
-    {
-        TimelineFrameData frameData = new TimelineFrameData();
-        
-        frameData.m_tileStates = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY];
 
-        m_data = frameData;
-    }
+    public void Copy(TimelineFrameData data)
+    {
+        if(data == null)
+            return;
+        
+        m_data = data;
+    } 
     
     public void OnPointerClick(PointerEventData eventData)
     {

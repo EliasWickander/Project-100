@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Util.AdvancedTypes;
 using Util.UnityMVVM;
 
@@ -19,6 +20,13 @@ public class LevelData
 public class LevelEditor : ViewModelMonoBehaviour
 {
     public static LevelEditor Instance { get; private set; }
+
+    [SerializeField] 
+    private EditorLevelSavedGameEvent m_editorLevelSavedEvent;
+
+    [SerializeField]
+    private EditorLoadLevelGameEvent m_editorLoadLevelEvent;
+    
     public LevelEditorGridViewModel m_grid;
     public LevelEditorTimelineViewModel m_timeline;
 
@@ -44,8 +52,6 @@ public class LevelEditor : ViewModelMonoBehaviour
             OnPropertyChanged(m_levelNameProp);
         }
     }
-    
-    private string m_loadedLevelPath;
 
     private void Awake()
     {
@@ -64,6 +70,12 @@ public class LevelEditor : ViewModelMonoBehaviour
         SetupUnitMap();
     }
 
+    private void Start()
+    {
+        if(LevelEditorContext.s_currentEditedLevel != null)
+            LoadLevel(LevelEditorContext.s_currentEditedLevel);
+    }
+
     private void SetupUnitMap()
     {
         foreach (UnitData unit in m_units)
@@ -78,6 +90,16 @@ public class LevelEditor : ViewModelMonoBehaviour
         }
     }
 
+    public void LoadLevel(LevelData level)
+    {
+        if(level == null)
+            return;
+
+        LevelName = level.m_name;
+        
+        if (m_editorLoadLevelEvent != null)
+            m_editorLoadLevelEvent.Raise(level);
+    }
     public void SaveLevel()
     {
         //Save current frame state first
@@ -86,23 +108,8 @@ public class LevelEditor : ViewModelMonoBehaviour
 
         LevelData levelData = new LevelData();
         
-        //If not first time loading level, keep
-        if (!string.IsNullOrEmpty(m_loadedLevelPath))
-        {
-            string oldLevelDataJson = File.ReadAllText(m_loadedLevelPath);
-
-            LevelData oldLevelData = JsonConvert.DeserializeObject<LevelData>(oldLevelDataJson);
-
-            if (oldLevelData != null)
-            {
-                levelData.m_id = oldLevelData.m_id;
-            }
-        }
-        else
-        {
-            //Create unique level id
-            levelData.m_id = Guid.NewGuid().ToString("N");
-        }
+        //Keep id if editing existing level, if not make a new id
+        levelData.m_id = LevelEditorContext.s_currentEditedLevel != null ? LevelEditorContext.s_currentEditedLevel.m_id : Guid.NewGuid().ToString("N");
 
         levelData.m_name = LevelName;
         
@@ -121,5 +128,8 @@ public class LevelEditor : ViewModelMonoBehaviour
             });
         
         File.WriteAllText(Application.streamingAssetsPath + $"/Levels/Level_{levelData.m_id}.json", levelDataJson);
+        
+        if(m_editorLevelSavedEvent != null)
+            m_editorLevelSavedEvent.Raise(levelData);
     }
 }

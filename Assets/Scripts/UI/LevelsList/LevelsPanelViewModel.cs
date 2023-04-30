@@ -5,11 +5,15 @@ using System.ComponentModel;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Util.UnityMVVM;
 
 [Binding]
 public class LevelsPanelViewModel : ViewModelMonoBehaviour
 {
+    [SerializeField] 
+    private LoadLevelGameEvent m_loadLevelEvent;
+    
     private PropertyChangedEventArgs m_levelsProp = new PropertyChangedEventArgs(nameof(Levels));
     private ObservableList<LevelEntryViewModel> m_levels = new ObservableList<LevelEntryViewModel>();
 
@@ -39,7 +43,7 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
 
     private void SyncLevelsFromDisk()
     {
-        Levels.Clear();
+        ClearLevels();
         
         string[] levels = Directory.GetFiles(LevelsPath, "*.json");
 
@@ -53,9 +57,30 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
                 LevelEntryViewModel newLevelEntry = new LevelEntryViewModel();
 
                 newLevelEntry.Init(levelData);
+
+                newLevelEntry.OnEntryPressed += OnEntryPressed;
                 
                 Levels.Add(newLevelEntry);
             }
         }
+    }
+
+    private void ClearLevels()
+    {
+        foreach (var level in Levels)
+        {
+            level.OnEntryPressed -= OnEntryPressed;
+        }
+        
+        Levels.Clear();
+    }
+
+    private void OnEntryPressed(LevelEntryViewModel entry)
+    {
+        if(entry == null)
+            return;
+        
+        if(m_loadLevelEvent != null)
+            m_loadLevelEvent.Raise(new LoadLevelEventData() {m_levelData = entry.LevelData, m_editMode = true});
     }
 }

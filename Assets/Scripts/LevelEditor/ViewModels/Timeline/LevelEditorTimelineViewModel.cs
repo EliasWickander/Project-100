@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Util.UnityMVVM;
 
 [Binding]
@@ -91,40 +88,59 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         m_slider.onValueChanged.RemoveListener(OnHandleMoved);
     }
 
+    //Add frame at current timeline selection
     [Binding]
     public void AddFrame()
     {
         if(m_slider == null)
             return;
 
+        Vector2 handlePosWithOffset = new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y);
+        float timeStamp = m_slider.value;
+        
+        LevelEditorTimelineFrameViewModel addedFrame = AddFrame(timeStamp);
+
+        SelectFrame(addedFrame);
+    }
+
+    //Add frame with time stamp
+    public LevelEditorTimelineFrameViewModel AddFrame(float timeStamp)
+    {
         LevelEditorTimelineFrameViewModel newFrame = Instantiate(m_timelineFramePrefab, m_entriesContainer);
 
         newFrame.OnClicked += OnFrameButtonClicked;
+     
+        Vector2 handlePosWithOffset = new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y);
         
-        newFrame.Init(new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y), m_slider.value, m_saveFrameEvent);
+        newFrame.Init(position, timeStamp, m_saveFrameEvent);
         
         m_framesOrdered.Add(newFrame);
 
         m_framesOrdered = m_framesOrdered.OrderBy(item => item.TimeStamp).ToList();
 
-        SelectFrame(newFrame);
+        return newFrame;
     }
 
     [Binding]
-    public void RemoveFrame()
+    public void RemoveSelectedFrame()
     {
-        if (m_selectedFrame == null)
+        if (SelectedFrame == null)
             return;
         
-        RemoveFrame(m_selectedFrame);
-        SelectedFrame = null;
+        RemoveFrame(SelectedFrame);
     }
     
     private void RemoveFrame(LevelEditorTimelineFrameViewModel frame)
     {
+        if(frame == null)
+            return;
+        
         if(!m_framesOrdered.Contains(frame))
             return;
-            
+
+        if (SelectedFrame == frame)
+            SelectedFrame = null;
+        
         frame.OnClicked -= OnFrameButtonClicked;
 
         m_framesOrdered.Remove(frame);
@@ -209,5 +225,22 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
         if(m_loadFrameEvent != null)
             m_loadFrameEvent.Raise(SelectedFrame);
+    }
+
+    public void LoadLevel(LevelData level)
+    {
+        ResetFrames();
+
+        if (level.m_frames.Count > 0)
+        {
+            foreach (TimelineFrameData frameData in level.m_frames)
+            {
+                LevelEditorTimelineFrameViewModel frame = AddFrame(frameData.m_position, frameData.m_timeStamp);
+            
+                frame.Copy(frameData);
+            }
+            
+            SelectFrame(m_framesOrdered[0]);
+        }
     }
 }

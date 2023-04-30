@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 2880983711013087449}
   - component: {fileID: 240322917998119262}
   - component: {fileID: 8627210368749739126}
+  - component: {fileID: 7417327662766424347}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -274,6 +275,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7417327662766424347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094949104390593999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c67121ad111cd4c498f11841b68ed7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewModelMethodName: LevelEntryViewModel.OnPressed
+  viewEventName: UnityEngine.UI.Button.onClick
 --- !u!1 &8548222871238684509
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &785696617082593676
 RectTransform:
   m_ObjectHideFlags: 0

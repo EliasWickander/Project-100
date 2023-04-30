@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,6 +39,8 @@ public class LevelEntryViewModel : ViewModel
         }
     }
 
+    public event Action<LevelEntryViewModel> OnEntryPressed;
+
     public void Init(LevelData levelData)
     {
         LevelData = levelData;
@@ -46,5 +49,11 @@ public class LevelEntryViewModel : ViewModel
     private void UpdateVariables()
     {
         Name = LevelData != null ? LevelData.m_name : null;
+    }
+
+    [Binding]
+    public void OnPressed()
+    {
+        OnEntryPressed?.Invoke(this);
     }
 }
