@@ -98,19 +98,17 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         Vector2 handlePosWithOffset = new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y);
         float timeStamp = m_slider.value;
         
-        LevelEditorTimelineFrameViewModel addedFrame = AddFrame(timeStamp);
+        LevelEditorTimelineFrameViewModel addedFrame = AddFrame(handlePosWithOffset, timeStamp);
 
         SelectFrame(addedFrame);
     }
 
-    //Add frame with time stamp
-    public LevelEditorTimelineFrameViewModel AddFrame(float timeStamp)
+    //Add frame at position
+    public LevelEditorTimelineFrameViewModel AddFrame(Vector2 position, float timeStamp)
     {
         LevelEditorTimelineFrameViewModel newFrame = Instantiate(m_timelineFramePrefab, m_entriesContainer);
 
         newFrame.OnClicked += OnFrameButtonClicked;
-     
-        Vector2 handlePosWithOffset = new Vector2(m_slider.handleRect.position.x, m_entriesContainer.position.y);
         
         newFrame.Init(position, timeStamp, m_saveFrameEvent);
         
