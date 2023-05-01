@@ -59,18 +59,42 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
             {
                 LevelEntryViewModel newLevelEntry = Instantiate(m_levelEntryPrefab, m_levelsContainer);
                 newLevelEntry.LevelData = levelData;
-
+                newLevelEntry.LevelPath = level;
+                
+                newLevelEntry.OnRemovedEvent += RemoveLevelFromDisk;
                 Levels.Add(newLevelEntry);
             }
         }
     }
 
+    private void RemoveLevelFromDisk(LevelEntryViewModel entry)
+    {
+        entry.OnRemovedEvent -= RemoveLevelFromDisk;
+        
+        RemoveLevel(entry);
+        
+        RemoveLevelFromDisk(entry.LevelPath);
+    }
+
+    private void RemoveLevelFromDisk(string path)
+    {
+        if(File.Exists(path))
+            File.Delete(path);
+    }
+
+    private void RemoveLevel(LevelEntryViewModel entry)
+    {
+        entry.OnRemovedEvent -= RemoveLevelFromDisk;
+            
+        Destroy(entry.gameObject);
+        m_levels.Remove(entry);
+    }
+    
     private void ClearLevels()
     {
         for (int i = m_levels.Count - 1; i >= 0; i--)
         {
-            Destroy(m_levels[i].gameObject);
-            m_levels.RemoveAt(i);
+            RemoveLevel(m_levels[i]);
         }
         
         m_levels.Clear();

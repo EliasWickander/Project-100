@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
 [Binding]
-public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] 
     private LoadLevelEditorEvent m_loadLevelEditorEvent;
@@ -26,6 +26,24 @@ public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerDownHandler, 
             UpdateVariables();
         }
     }
+
+    private PropertyChangedEventArgs m_levelPathProp = new PropertyChangedEventArgs(nameof(LevelPath));
+    private string m_levelPath;
+
+    [Binding]
+    public string LevelPath
+    {
+        get
+        {
+            return m_levelPath;
+        }
+        set
+        {
+            m_levelPath = value;
+            OnPropertyChanged(m_levelPath);
+        }
+    }
+    
     private PropertyChangedEventArgs m_nameProp = new PropertyChangedEventArgs(nameof(Name));
     private string m_name;
 
@@ -60,25 +78,33 @@ public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerDownHandler, 
         }
     }
 
+    public event Action<LevelEntryViewModel> OnRemovedEvent;
+    
     private void UpdateVariables()
     {
         Name = LevelData != null ? LevelData.m_name : null;
     }
+    
+    [Binding]
+    public void OnLoadButtonPressed()
+    {
+        if(m_loadLevelEditorEvent != null)
+            m_loadLevelEditorEvent.Raise(new LoadLevelEditorEventData() {m_levelToLoad = LevelData});
+    }
 
-    public void OnPointerDown(PointerEventData eventData)
+    [Binding]
+    public void OnRemoveButtonPressed()
+    {
+        OnRemovedEvent?.Invoke(this);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
         IsHovered = true;
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData)
     {
         IsHovered = false;
-    }
-    
-    [Binding]
-    public void OnPressed()
-    {
-        if(m_loadLevelEditorEvent != null)
-            m_loadLevelEditorEvent.Raise(new LoadLevelEditorEventData() {m_levelToLoad = LevelData});
     }
 }
