@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_sceneTransitionEvent: {fileID: 11400000, guid: 1291c2f463e7b25409d1c72e6d15a915, type: 2}
-  m_gameScene: Assets/Scenes/Level_1.unity
+  m_gameScene: Assets/Scenes/Arena.unity
 --- !u!4 &436401865
 Transform:
   m_ObjectHideFlags: 0

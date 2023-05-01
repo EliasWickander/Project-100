@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbd4ea27e68449d4ebcd62c8ad55a85e, type: 3}
-  m_Name: LevelsPanel
+  m_Name: CustomLevelsPanel
   m_EditorClassIdentifier: 
-  m_uiPanelPrefab: {fileID: 2240616354419831745, guid: 083e1b1a580d7844493d38b5f1067364, type: 3}
+  m_uiPanelPrefab: {fileID: 2240616354419831745, guid: cae074cacc288c74298be3d9f636e386, type: 3}
   m_activeOnStart: 0

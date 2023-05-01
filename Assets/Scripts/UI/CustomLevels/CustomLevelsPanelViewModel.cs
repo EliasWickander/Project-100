@@ -9,19 +9,19 @@ using UnityEngine.Serialization;
 using Util.UnityMVVM;
 
 [Binding]
-public class LevelsPanelViewModel : ViewModelMonoBehaviour
+public class CustomLevelsPanelViewModel : ViewModelMonoBehaviour
 {
     [SerializeField]
     private Transform m_levelsContainer;
 
     [SerializeField]
-    private LevelEntryViewModel m_levelEntryPrefab;
+    private CustomLevelEntryViewModel m_levelEntryPrefab;
 
     private PropertyChangedEventArgs m_levelsProp = new PropertyChangedEventArgs(nameof(Levels));
-    private ObservableList<LevelEntryViewModel> m_levels = new ObservableList<LevelEntryViewModel>();
+    private ObservableList<CustomLevelEntryViewModel> m_levels = new ObservableList<CustomLevelEntryViewModel>();
 
     [Binding]
-    public ObservableList<LevelEntryViewModel> Levels
+    public ObservableList<CustomLevelEntryViewModel> Levels
     {
         get
         {
@@ -57,35 +57,16 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
 
             if (levelData != null)
             {
-                LevelEntryViewModel newLevelEntry = Instantiate(m_levelEntryPrefab, m_levelsContainer);
+                CustomLevelEntryViewModel newLevelEntry = Instantiate(m_levelEntryPrefab, m_levelsContainer);
                 newLevelEntry.LevelData = levelData;
-                newLevelEntry.LevelPath = level;
-                
-                newLevelEntry.OnRemovedEvent += RemoveLevelFromDisk;
+
                 Levels.Add(newLevelEntry);
             }
         }
     }
-
-    private void RemoveLevelFromDisk(LevelEntryViewModel entry)
+    
+    private void RemoveLevel(CustomLevelEntryViewModel entry)
     {
-        entry.OnRemovedEvent -= RemoveLevelFromDisk;
-        
-        RemoveLevel(entry);
-        
-        RemoveLevelFromDisk(entry.LevelPath);
-    }
-
-    private void RemoveLevelFromDisk(string path)
-    {
-        if(File.Exists(path))
-            File.Delete(path);
-    }
-
-    private void RemoveLevel(LevelEntryViewModel entry)
-    {
-        entry.OnRemovedEvent -= RemoveLevelFromDisk;
-            
         Destroy(entry.gameObject);
         m_levels.Remove(entry);
     }

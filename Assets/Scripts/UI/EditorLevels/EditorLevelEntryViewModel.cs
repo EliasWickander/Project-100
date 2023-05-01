@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
 [Binding]
-public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EditorLevelEntryViewModel : ViewModelMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] 
     private LoadLevelEditorEvent m_loadLevelEditorEvent;
@@ -78,7 +78,7 @@ public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerEnterHandler,
         }
     }
 
-    public event Action<LevelEntryViewModel> OnRemovedEvent;
+    public event Action<EditorLevelEntryViewModel> OnRemovedEvent;
     
     private void UpdateVariables()
     {

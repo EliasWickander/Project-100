@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: LevelEntryViewModel.Name
+  viewModelPropertyName: EditorLevelEntryViewModel.Name
   viewPropertyName: TMPro.TextMeshProUGUI.text
 --- !u!1 &2921168309512872997
 GameObject:
@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67121ad111cd4c498f11841b68ed7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewModelMethodName: LevelEntryViewModel.OnRemoveButtonPressed
+  viewModelMethodName: EditorLevelEntryViewModel.OnRemoveButtonPressed
   viewEventName: UnityEngine.UI.Button.onClick
 --- !u!1 &4094949104390593999
 GameObject:
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67121ad111cd4c498f11841b68ed7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewModelMethodName: LevelEntryViewModel.OnLoadButtonPressed
+  viewModelMethodName: EditorLevelEntryViewModel.OnLoadButtonPressed
   viewEventName: UnityEngine.UI.Button.onClick
 --- !u!1 &6758895568087555504
 GameObject:
@@ -477,7 +477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: LevelEntryViewModel.IsHovered
+  viewModelPropertyName: EditorLevelEntryViewModel.IsHovered
 --- !u!1 &8548222871238684509
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 785696617082593676}
   - component: {fileID: 607345479117924911}
   m_Layer: 5
-  m_Name: LevelEntry
+  m_Name: EditorLevelEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
