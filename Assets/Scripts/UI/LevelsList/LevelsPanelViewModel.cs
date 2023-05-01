@@ -11,9 +11,12 @@ using Util.UnityMVVM;
 [Binding]
 public class LevelsPanelViewModel : ViewModelMonoBehaviour
 {
-    [SerializeField] 
-    private LoadLevelEditorEvent m_loadLevelEditorEvent;
-    
+    [SerializeField]
+    private Transform m_levelsContainer;
+
+    [SerializeField]
+    private LevelEntryViewModel m_levelEntryPrefab;
+
     private PropertyChangedEventArgs m_levelsProp = new PropertyChangedEventArgs(nameof(Levels));
     private ObservableList<LevelEntryViewModel> m_levels = new ObservableList<LevelEntryViewModel>();
 
@@ -54,12 +57,9 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
 
             if (levelData != null)
             {
-                LevelEntryViewModel newLevelEntry = new LevelEntryViewModel();
+                LevelEntryViewModel newLevelEntry = Instantiate(m_levelEntryPrefab, m_levelsContainer);
+                newLevelEntry.LevelData = levelData;
 
-                newLevelEntry.Init(levelData);
-
-                newLevelEntry.OnEntryPressed += OnEntryPressed;
-                
                 Levels.Add(newLevelEntry);
             }
         }
@@ -67,20 +67,12 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
 
     private void ClearLevels()
     {
-        foreach (var level in Levels)
+        for (int i = m_levels.Count - 1; i >= 0; i--)
         {
-            level.OnEntryPressed -= OnEntryPressed;
+            Destroy(m_levels[i].gameObject);
+            m_levels.RemoveAt(i);
         }
         
-        Levels.Clear();
-    }
-
-    private void OnEntryPressed(LevelEntryViewModel entry)
-    {
-        if(entry == null)
-            return;
-
-        if(m_loadLevelEditorEvent != null)
-            m_loadLevelEditorEvent.Raise(new LoadLevelEditorEventData() {m_levelToLoad = entry.LevelData});
+        m_levels.Clear();
     }
 }

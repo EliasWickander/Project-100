@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
 [Binding]
-public class LevelEntryViewModel : ViewModel
+public class LevelEntryViewModel : ViewModelMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    [SerializeField] 
+    private LoadLevelEditorEvent m_loadLevelEditorEvent;
+    
     private LevelData m_levelData;
 
     public LevelData LevelData
@@ -39,21 +43,42 @@ public class LevelEntryViewModel : ViewModel
         }
     }
 
-    public event Action<LevelEntryViewModel> OnEntryPressed;
+    private PropertyChangedEventArgs m_isHoveredProp = new PropertyChangedEventArgs(nameof(IsHovered));
+    private bool m_isHovered = false;
 
-    public void Init(LevelData levelData)
+    [Binding]
+    public bool IsHovered
     {
-        LevelData = levelData;
+        get
+        {
+            return m_isHovered;
+        }
+        set
+        {
+            m_isHovered = value;
+            OnPropertyChanged(m_isHoveredProp);
+        }
     }
-    
+
     private void UpdateVariables()
     {
         Name = LevelData != null ? LevelData.m_name : null;
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        IsHovered = true;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        IsHovered = false;
+    }
+    
     [Binding]
     public void OnPressed()
     {
-        OnEntryPressed?.Invoke(this);
+        if(m_loadLevelEditorEvent != null)
+            m_loadLevelEditorEvent.Raise(new LoadLevelEditorEventData() {m_levelToLoad = LevelData});
     }
 }
