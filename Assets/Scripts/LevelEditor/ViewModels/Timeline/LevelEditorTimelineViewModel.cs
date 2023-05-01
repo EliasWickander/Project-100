@@ -28,6 +28,8 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
     private List<LevelEditorTimelineFrameViewModel> m_framesOrdered = new List<LevelEditorTimelineFrameViewModel>();
     public List<LevelEditorTimelineFrameViewModel> FramesOrdered => m_framesOrdered;
+
+    private List<float> m_timeStampsUsed = new List<float>();
     
     private PropertyChangedEventArgs m_selectedFrameProp = new PropertyChangedEventArgs(nameof(SelectedFrame));
     private LevelEditorTimelineFrameViewModel m_selectedFrame = null;
@@ -72,7 +74,8 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
     private void Awake()
     {
-        AddFrame();
+        if(!m_timeStampsUsed.Contains(m_slider.Value))
+            AddFrame();
     }
 
     private void OnEnable()
@@ -102,6 +105,9 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
 
         float timeStamp = m_slider.Value;
         
+        if(m_timeStampsUsed.Contains(timeStamp))
+            return;
+        
         LevelEditorTimelineFrameViewModel addedFrame = AddFrame(timeStamp);
 
         SelectFrame(addedFrame);
@@ -119,8 +125,9 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         
         newFrame.Init(positionAtTimeStamp, timeStamp, m_saveFrameEvent);
         
+        m_timeStampsUsed.Add(timeStamp);
+        
         m_framesOrdered.Add(newFrame);
-
         m_framesOrdered = m_framesOrdered.OrderBy(item => item.TimeStamp).ToList();
 
         return newFrame;
@@ -130,6 +137,10 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     public void RemoveSelectedFrame()
     {
         if (SelectedFrame == null)
+            return;
+        
+        //Cannot remove root frame
+        if(SelectedFrame == m_framesOrdered[0])
             return;
         
         RemoveFrame(SelectedFrame);
@@ -144,12 +155,18 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
             return;
 
         if (SelectedFrame == frame)
-            SelectedFrame = null;
-        
+        {
+            //Select previous frame
+            int selectedFrameIndex = m_framesOrdered.IndexOf(SelectedFrame);
+            
+            SelectFrame(m_framesOrdered[selectedFrameIndex - 1]);
+        }
+
         frame.OnClicked -= OnFrameButtonClicked;
 
+        m_timeStampsUsed.Remove(frame.TimeStamp);
         m_framesOrdered.Remove(frame);
-        
+
         Destroy(frame.gameObject);
     }
 
