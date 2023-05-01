@@ -9,7 +9,7 @@ using Util.UnityMVVM;
 public struct GridTileState
 {
     public string m_unitId;
-    public Vector3 m_direction;
+    public Vector2 m_direction;
 }
 
 [Binding]

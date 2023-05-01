@@ -159,7 +159,8 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
             //Select previous frame
             int selectedFrameIndex = m_framesOrdered.IndexOf(SelectedFrame);
             
-            SelectFrame(m_framesOrdered[selectedFrameIndex - 1]);
+            if(selectedFrameIndex > 0)
+                SelectFrame(m_framesOrdered[selectedFrameIndex - 1]);
         }
 
         frame.OnClicked -= OnFrameButtonClicked;

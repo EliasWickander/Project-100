@@ -12,7 +12,7 @@ using Util.UnityMVVM;
 public class LevelsPanelViewModel : ViewModelMonoBehaviour
 {
     [SerializeField] 
-    private LoadLevelGameEvent m_loadLevelEvent;
+    private LoadLevelEditorEvent m_loadLevelEditorEvent;
     
     private PropertyChangedEventArgs m_levelsProp = new PropertyChangedEventArgs(nameof(Levels));
     private ObservableList<LevelEntryViewModel> m_levels = new ObservableList<LevelEntryViewModel>();
@@ -79,8 +79,8 @@ public class LevelsPanelViewModel : ViewModelMonoBehaviour
     {
         if(entry == null)
             return;
-        
-        if(m_loadLevelEvent != null)
-            m_loadLevelEvent.Raise(new LoadLevelEventData() {m_levelData = entry.LevelData, m_editMode = true});
+
+        if(m_loadLevelEditorEvent != null)
+            m_loadLevelEditorEvent.Raise(new LoadLevelEditorEventData() {m_levelToLoad = entry.LevelData});
     }
 }

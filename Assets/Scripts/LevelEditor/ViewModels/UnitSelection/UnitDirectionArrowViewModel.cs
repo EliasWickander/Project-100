@@ -9,7 +9,7 @@ public class UnitDirectionArrowViewModel : ViewModelMonoBehaviour
 {
     public Color m_defaultColor = Color.gray;
     public Color m_selectedColor = Color.green;
-    public Vector3 m_direction;
+    public Vector2 m_direction;
     
     public event Action<UnitDirectionArrowViewModel> OnClickedEvent;
 
