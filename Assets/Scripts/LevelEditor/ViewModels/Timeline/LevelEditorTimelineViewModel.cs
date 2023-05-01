@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -68,6 +69,12 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
             OnPropertyChanged(m_isFrameSelectedProp);
         }
     }
+
+    private void Awake()
+    {
+        AddFrame();
+    }
+
     private void OnEnable()
     {
         if (m_slider == null)
@@ -83,8 +90,6 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     [Binding]
     private void OnDisable()
     {
-        ResetFrames();
-        
         m_slider.OnValueChanged.RemoveListener(OnHandleMoved);
     }
 
@@ -170,36 +175,119 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
     {
         if(m_framesOrdered.Count <= 0)
             return;
-        
-        if (m_selectedFrame == null)
-            SelectFrame(m_framesOrdered[0]);
 
-        int selectedFrameIndex = m_framesOrdered.IndexOf(m_selectedFrame);
-
-        float epsilon = 0.01f;
+        var firstFrame = m_framesOrdered[0];
         
-        //Select previous frame if value has not yet reached currently selected frame
-        if (m_slider.Value < m_selectedFrame.TimeStamp - epsilon && selectedFrameIndex > 0)
+        //No frame selected if slider handle is before first frame, should never happen though
+        if (m_slider.Value < firstFrame.TimeStamp)
         {
-            LevelEditorTimelineFrameViewModel prevFrame = m_framesOrdered[selectedFrameIndex - 1];
-                
-            SelectFrame(prevFrame);
+            SelectFrame(null);
             return;
         }
-
-        //Select next frame if value is approximately time stamp of next frame
-        if (selectedFrameIndex < m_framesOrdered.Count - 1)
+        
+        var selectedFrame = m_selectedFrame != null ? m_selectedFrame : firstFrame;
+        
+        int selectedFrameIndex = m_framesOrdered.IndexOf(selectedFrame);
+        
+        if (m_slider.Value >= selectedFrame.TimeStamp)
         {
+            //If selected frame is last frame, keep it selected
+            if (selectedFrameIndex >= m_framesOrdered.Count - 1)
+                return;
+            
             LevelEditorTimelineFrameViewModel nextFrame = m_framesOrdered[selectedFrameIndex + 1];
 
-            if (Mathf.Abs(nextFrame.TimeStamp - m_slider.Value) < epsilon)
+            //If timeline timestamp still hasn't reached next frame, keep this frame selected
+            if (m_slider.Value < nextFrame.TimeStamp)
+                return;
+
+            //If reached next frame is the last one in timeline, select it right away
+            if (selectedFrameIndex >= m_framesOrdered.Count - 2)
             {
                 SelectFrame(nextFrame);
                 return;
             }
+            
+            LevelEditorTimelineFrameViewModel frameAfterNext = m_framesOrdered[selectedFrameIndex + 2];
+
+            //Select reached next frame if timeline timestamp hasn't reached the frame after that one
+            if (m_slider.Value < frameAfterNext.TimeStamp)
+            {
+                SelectFrame(nextFrame);
+                return;
+            }
+
+            //Find closest frame after currently selected frame that timeline timestamp has reached 
+            List<LevelEditorTimelineFrameViewModel> nextFrames = new List<LevelEditorTimelineFrameViewModel>(m_framesOrdered);
+            
+            for(int i = m_framesOrdered.Count - 1; i >= 0; i--)
+            {
+                if (i < selectedFrameIndex)
+                    break;
+                
+                nextFrames.Add(m_framesOrdered[i]);
+            }
+            
+            var closestPassedFrame = GetClosestPassedFrame(nextFrames);
+
+            SelectFrame(closestPassedFrame);
+
+        }
+        else
+        {
+            if (selectedFrameIndex > 0)
+            {
+                LevelEditorTimelineFrameViewModel prevFrame = m_framesOrdered[selectedFrameIndex - 1];
+
+                //If timeline timestamp has reached previous frame, select it right away
+                if (m_slider.Value >= prevFrame.TimeStamp)
+                {
+                    SelectFrame(prevFrame);
+                    return;
+                }
+            }
+
+            //Find closest frame previous to currently selected frame that timeline timestamp has reached 
+            List<LevelEditorTimelineFrameViewModel> previousFrames = new List<LevelEditorTimelineFrameViewModel>();
+
+            for(int i = 0; i < m_framesOrdered.Count; i++)
+            {
+                if (i >= selectedFrameIndex)
+                    break;
+                
+                previousFrames.Add(m_framesOrdered[i]);
+            }
+
+            var closestPassedFrame = GetClosestPassedFrame(previousFrames);
+
+            SelectFrame(closestPassedFrame);
         }
     }
 
+    private LevelEditorTimelineFrameViewModel GetClosestPassedFrame(List<LevelEditorTimelineFrameViewModel> frames)
+    {
+        if (frames == null || frames.Count <= 0)
+            return null;
+        
+        LevelEditorTimelineFrameViewModel closestFrame = frames[0];
+        float closestDist = Mathf.Infinity;
+        
+        foreach (var frame in frames)
+        {
+            if (frame.TimeStamp <= m_slider.Value)
+            {
+                float dist = m_slider.Value - frame.TimeStamp;
+
+                if (dist < closestDist)
+                {
+                    closestFrame = frame;
+                    closestDist = dist;
+                }
+            }
+        }
+
+        return closestFrame;
+    }
     private void OnFrameButtonClicked(LevelEditorTimelineFrameViewModel frame)
     {
         SelectFrame(frame);
@@ -221,10 +309,14 @@ public class LevelEditorTimelineViewModel : ViewModelMonoBehaviour
         }
         
         SelectedFrame = frame;
-        SelectedFrame.Select(true);
 
-        if(m_loadFrameEvent != null)
-            m_loadFrameEvent.Raise(SelectedFrame);
+        if (SelectedFrame != null)
+        {
+            SelectedFrame.Select(true);
+
+            if(m_loadFrameEvent != null)
+                m_loadFrameEvent.Raise(SelectedFrame);   
+        }
     }
 
     public void LoadLevel(LevelData level)
