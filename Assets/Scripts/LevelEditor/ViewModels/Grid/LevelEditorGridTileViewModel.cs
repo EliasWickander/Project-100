@@ -76,6 +76,23 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         }
     }
 
+    private PropertyChangedEventArgs m_isOutsideTileProp = new PropertyChangedEventArgs(nameof(IsOutsideTile));
+    private bool m_isOutsideTile = false;
+
+    [Binding]
+    public bool IsOutsideTile
+    {
+        get
+        {
+            return m_isOutsideTile;
+        }
+        set
+        {
+            m_isOutsideTile = value;
+            OnPropertyChanged(m_isOutsideTileProp);
+        }
+    }
+    
     private GridTileState m_tileState = new GridTileState();
 
     public GridTileState TileState => m_tileState;

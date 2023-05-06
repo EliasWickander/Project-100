@@ -18,6 +18,10 @@ public class LevelEditorGridSpawner : MonoBehaviour
 
     public LevelEditorGridTileViewModel[,] Spawn(int gridSizeX, int gridSizeY, OnTileSpawnedDelegate onTileSpawned = null)
     {
+        //Add extra outside tiles
+        gridSizeX += 2;
+        gridSizeY += 2;
+        
         FitToGridLayout(gridSizeX, gridSizeY);
         var tiles = new LevelEditorGridTileViewModel[gridSizeX, gridSizeY];
 
@@ -33,6 +37,16 @@ public class LevelEditorGridSpawner : MonoBehaviour
                 
                 tile.GridPos = new Vector2Int(x, y);
                 
+                //Outside tiles
+                if (x == 0 || x == gridSizeX - 1 || y == 0 || y == gridSizeY - 1)
+                {
+                    tile.IsOutsideTile = true;
+                }
+                else
+                {
+                    tile.IsOutsideTile = false;
+                }
+                    
                 tiles[x, y] = tile;
 
                 count++;
