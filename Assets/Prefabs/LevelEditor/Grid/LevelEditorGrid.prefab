@@ -30,8 +30,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2244444322673149331}
   - {fileID: 6432196485494588076}
+  - {fileID: 6728818345157795367}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_arenaConfig: {fileID: 11400000, guid: 62dbddd1154d018408bd5732c0dab0a3, type: 2}
-  m_gridSpawner: {fileID: 7006592981769019577}
+  m_gridSpawner: {fileID: 2123126994593952484}
   m_unitSelectedEvent: {fileID: 11400000, guid: 9b9d259cf6fa10e4a942152c26210952, type: 2}
   m_loadFrameEvent: {fileID: 11400000, guid: 0d2f66f215ccb4142b04bcd7053c801f, type: 2}
 --- !u!114 &2828568626668733197
@@ -160,6 +160,60 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2768398562531841261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6728818345157795367}
+  - component: {fileID: 2123126994593952484}
+  m_Layer: 5
+  m_Name: Tiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6728818345157795367
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768398562531841261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2244444322673149331}
+  m_Father: {fileID: 1465356023852300467}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2123126994593952484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768398562531841261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a04cced5c925b440aefbd7dcf04cbcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_gridTilePrefab: {fileID: 1499036523794646882, guid: a278984f1a6571141bea7e100e3bdc77, type: 3}
+  m_outsideTilePrefab: {fileID: 1499036523794646882, guid: a278984f1a6571141bea7e100e3bdc77, type: 3}
+  m_tilesContainer: {fileID: 2244444322673149331}
+  m_tilesGridLayoutGroup: {fileID: 4625951627440069671}
 --- !u!1 &5523929133490463054
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,10 +223,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2244444322673149331}
-  - component: {fileID: 7006592981769019577}
   - component: {fileID: 4625951627440069671}
   m_Layer: 5
-  m_Name: Content
+  m_Name: GridTiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,34 +238,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5523929133490463054}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1465356023852300467}
+  m_Father: {fileID: 6728818345157795367}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -60, y: -60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7006592981769019577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5523929133490463054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a04cced5c925b440aefbd7dcf04cbcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_tilePrefab: {fileID: 1499036523794646882, guid: a278984f1a6571141bea7e100e3bdc77, type: 3}
-  m_tilesContainer: {fileID: 2244444322673149331}
-  m_tilesGridLayoutGroup: {fileID: 4625951627440069671}
 --- !u!114 &4625951627440069671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +307,7 @@ RectTransform:
   m_Children:
   - {fileID: 9006130332569484913}
   m_Father: {fileID: 1465356023852300467}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

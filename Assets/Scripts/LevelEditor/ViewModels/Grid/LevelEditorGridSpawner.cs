@@ -6,42 +6,52 @@ using UnityEngine.UI;
 public class LevelEditorGridSpawner : MonoBehaviour
 {
     [SerializeField] 
-    private LevelEditorGridTileViewModel m_tilePrefab;
+    private LevelEditorGridTileViewModel m_gridTilePrefab;
 
+    [SerializeField] 
+    private LevelEditorGridTileViewModel m_outsideTilePrefab;
+    
     [SerializeField] 
     private RectTransform m_tilesContainer;
 
     [SerializeField] 
     private GridLayoutGroup m_tilesGridLayoutGroup;
 
-    public delegate void OnTileSpawnedDelegate(LevelEditorGridTileViewModel tile);
+    public delegate void OnGridTileSpawnedDelegate(LevelEditorGridTileViewModel tile);
+    public delegate void OnOutsideTileSpawnedDelegate(LevelEditorGridTileViewModel tile);
 
-    public LevelEditorGridTileViewModel[,] Spawn(int gridSizeX, int gridSizeY, OnTileSpawnedDelegate onTileSpawned = null)
+    public void Spawn(int gridSizeX, int gridSizeY, OnGridTileSpawnedDelegate onGridTileSpawned = null, OnOutsideTileSpawnedDelegate onOutsideTileSpawned = null)
     {
+        //Make space for outside tiles
+        gridSizeX += 2;
+        gridSizeY += 2;
+        
         FitToGridLayout(gridSizeX, gridSizeY);
-        var tiles = new LevelEditorGridTileViewModel[gridSizeX, gridSizeY];
-
-        int count = 0;
 
         for (int y = 0; y < gridSizeY; y++)
         {
             for (int x = 0; x < gridSizeX; x++)
             {
-                LevelEditorGridTileViewModel tile = Instantiate(m_tilePrefab, m_tilesContainer);
+                if (x == 0 || x == gridSizeX - 1 || y == 0 || y == gridSizeY - 1)
+                {
+                    LevelEditorGridTileViewModel outsideTile = Instantiate(m_outsideTilePrefab, m_tilesContainer);
 
-                tile.name = $"Tile {count + 1}";
+                    outsideTile.IsOutsideTile = true;
+                    
+                    onOutsideTileSpawned?.Invoke(outsideTile);
+                }
+                else
+                {
+                    LevelEditorGridTileViewModel gridTile = Instantiate(m_gridTilePrefab, m_tilesContainer);
+
+                    gridTile.IsOutsideTile = false;
                 
-                tile.GridPos = new Vector2Int(x, y);
+                    gridTile.GridPos = new Vector2Int(x - 1, y - 1);
 
-                tiles[x, y] = tile;
-
-                count++;
-
-                onTileSpawned?.Invoke(tiles[x, y]);
+                    onGridTileSpawned?.Invoke(gridTile);   
+                }
             }
         }
-
-        return tiles;
     }
 
     private void FitToGridLayout(int gridSizeX, int gridSizeY)

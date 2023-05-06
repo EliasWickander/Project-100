@@ -61,7 +61,9 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         
         Instance = this;
 
-        m_tiles = m_gridSpawner.Spawn(s_gridSizeX, s_gridSizeY, OnTileSpawned);
+        m_tiles = new LevelEditorGridTileViewModel[s_gridSizeX, s_gridSizeY];
+        
+        m_gridSpawner.Spawn(s_gridSizeX, s_gridSizeY, OnTileSpawned);
     }
 
     private void OnEnable()
@@ -87,6 +89,15 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
     private void OnTileSpawned(LevelEditorGridTileViewModel tile)
     {
         tile.OnClicked += OnTileClicked;
+
+        if (!tile.IsOutsideTile)
+        {
+            m_tiles[tile.GridPos.x, tile.GridPos.y] = tile;   
+        }
+        else
+        {
+            
+        }
     }
     
     public void Reset()
