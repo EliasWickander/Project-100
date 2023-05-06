@@ -128,9 +128,9 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         
         Reset();
         
-        for (int y = 0; y < s_gridSizeY; y++)
+        for (int y = 0; y < s_gridSizeY + 2; y++)
         {
-            for (int x = 0; x < s_gridSizeX; x++)
+            for (int x = 0; x < s_gridSizeX + 2; x++)
             {
                 GridTileState cache = frameData.m_tileStates[x, y];
 
