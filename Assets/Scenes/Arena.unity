@@ -407,8 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_debug: 1
+  m_arenaConfig: {fileID: 11400000, guid: 62dbddd1154d018408bd5732c0dab0a3, type: 2}
   m_worldSize: {x: 10, y: 10}
-  m_nodeRadius: 0.5
 --- !u!4 &640538141
 Transform:
   m_ObjectHideFlags: 0

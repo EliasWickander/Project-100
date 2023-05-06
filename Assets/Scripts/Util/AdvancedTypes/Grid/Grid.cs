@@ -56,7 +56,6 @@ namespace Util.AdvancedTypes
 			if(createOnConstruct)
 				CreateGrid();
 		}
-
 		/// <summary>
 		/// Creates grid
 		/// </summary>

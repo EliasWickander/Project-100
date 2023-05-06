@@ -81,7 +81,7 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
         m_data = new TimelineFrameData()
         {
             m_timeStamp = TimeStamp,
-            m_tileStates = new GridTileState[LevelEditorGridViewModel.c_gridSizeX, LevelEditorGridViewModel.c_gridSizeY]
+            m_tileStates = new GridTileState[LevelEditorGridViewModel.s_gridSizeX, LevelEditorGridViewModel.s_gridSizeY]
         };
         
         m_saveFrameEvent = saveFrameEvent;

@@ -9,12 +9,12 @@ public class WorldGrid : MonoBehaviour
 {
     [SerializeField] 
     private bool m_debug = true;
+
+    [SerializeField] 
+    private ArenaConfig m_arenaConfig;
     
     [SerializeField] 
     private Vector2 m_worldSize = new Vector2(10, 10);
-    
-    [SerializeField] 
-    private float m_nodeRadius = 0.2f;
 
     private Grid<GridNode> m_grid = null;
     public Grid<GridNode> Grid => m_grid;
@@ -26,7 +26,7 @@ public class WorldGrid : MonoBehaviour
 
     private void CreateGrid()
     {
-        m_grid = new Grid<GridNode>(transform.position, m_worldSize, m_nodeRadius);
+        m_grid = new Grid<GridNode>(transform.position, m_worldSize, (m_worldSize.x / m_arenaConfig.TilesPerRow) * 0.5f);
     }
     
     private void OnDrawGizmos()

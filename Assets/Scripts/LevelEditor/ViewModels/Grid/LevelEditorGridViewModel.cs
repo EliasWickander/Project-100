@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Util.AdvancedTypes;
 using Util.UnityMVVM;
 
@@ -11,12 +12,18 @@ using Util.UnityMVVM;
 public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 {
     public static LevelEditorGridViewModel Instance { get; private set; }
-    
+
+    [SerializeField] 
+    private ArenaConfig m_arenaConfig;
+
+    [SerializeField] 
+    private LevelEditorGridSpawner m_gridSpawner;
+
     [SerializeField] 
     private UnitSelectedGameEvent m_unitSelectedEvent;
 
-    public const int c_gridSizeX = 9;
-    public const int c_gridSizeY = 9;
+    public static int s_gridSizeX = 10;
+    public static int s_gridSizeY = 10;
     
     private LevelEditorGridTileViewModel[,] m_tiles;
 
@@ -49,62 +56,39 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        s_gridSizeX = m_arenaConfig.TilesPerRow;
+        s_gridSizeY = m_arenaConfig.TilesPerRow;
         
-        SetupGrid();
+        Instance = this;
+
+        m_tiles = m_gridSpawner.Spawn(s_gridSizeX, s_gridSizeY, OnTileSpawned);
     }
 
     private void OnEnable()
     {
         m_loadFrameEvent.RegisterListener(OnFrameLoaded);
         m_unitSelectedEvent.RegisterListener(OnUnitSelected);
-        SetupTiles();
     }
 
     private void OnDisable()
     {
         m_loadFrameEvent.UnregisterListener(OnFrameLoaded);
         m_unitSelectedEvent.UnregisterListener(OnUnitSelected);
-       
+    }
+
+    private void OnDestroy()
+    {
         foreach (LevelEditorGridTileViewModel tile in m_tiles)
         {
             tile.OnClicked -= OnTileClicked;
-            
-            tile.Select(false);
         }
     }
 
-    private void SetupGrid()
+    private void OnTileSpawned(LevelEditorGridTileViewModel tile)
     {
-        LevelEditorGridTileViewModel[] tiles = GetComponentsInChildren<LevelEditorGridTileViewModel>();
-
-        m_tiles = new LevelEditorGridTileViewModel[c_gridSizeX, c_gridSizeY];
-
-        int count = 0;
-
-        for (int y = 0; y < c_gridSizeY; y++)
-        {
-            for (int x = 0; x < c_gridSizeX; x++)
-            {
-                LevelEditorGridTileViewModel tile = tiles[count];
-
-                tile.GridPos = new Vector2Int(x, y);
-                
-                m_tiles[x, y] = tile;
-
-                count++;
-            }
-        }
+        tile.OnClicked += OnTileClicked;
     }
     
-    private void SetupTiles()
-    {
-        foreach (LevelEditorGridTileViewModel tile in m_tiles)
-        {
-            tile.OnClicked += OnTileClicked;
-        }
-    }
-
     public void Reset()
     {
         foreach (LevelEditorGridTileViewModel tile in m_tiles)
@@ -144,9 +128,9 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         
         Reset();
         
-        for (int y = 0; y < c_gridSizeY; y++)
+        for (int y = 0; y < s_gridSizeY; y++)
         {
-            for (int x = 0; x < c_gridSizeX; x++)
+            for (int x = 0; x < s_gridSizeX; x++)
             {
                 GridTileState cache = frameData.m_tileStates[x, y];
 
