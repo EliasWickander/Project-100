@@ -13,7 +13,7 @@ public struct TileState
 }
 
 [Binding]
-public class LevelEditorTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
+public abstract class LevelEditorTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
     [SerializeField] 
     private LevelEditorGridTileItemViewModel m_itemViewModel;
@@ -74,23 +74,6 @@ public class LevelEditorTileViewModel : ViewModelMonoBehaviour, IPointerClickHan
         }
     }
 
-    private PropertyChangedEventArgs m_isOutsideTileProp = new PropertyChangedEventArgs(nameof(IsOutsideTile));
-    private bool m_isOutsideTile = false;
-
-    [Binding]
-    public bool IsOutsideTile
-    {
-        get
-        {
-            return m_isOutsideTile;
-        }
-        set
-        {
-            m_isOutsideTile = value;
-            OnPropertyChanged(m_isOutsideTileProp);
-        }
-    }
-    
     private TileState m_tileState = new TileState();
 
     public TileState TileState => m_tileState;

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class LevelEditorGridSpawner : MonoBehaviour
 {
     [SerializeField] 
-    private LevelEditorTileViewModel m_gridTilePrefab;
+    private LevelEditorGridTileViewModel m_gridTilePrefab;
 
     [SerializeField] 
-    private LevelEditorTileViewModel m_outsideTilePrefab;
+    private LevelEditorOutsideTileViewModel m_outsideTilePrefab;
     
     [SerializeField] 
     private RectTransform m_tilesContainer;
@@ -19,10 +19,10 @@ public class LevelEditorGridSpawner : MonoBehaviour
 
     public delegate void OnTileSpawnedDelegate(LevelEditorTileViewModel tile);
 
-    public void Spawn(int gridSizeX, int gridSizeY, out LevelEditorTileViewModel[,] outGridTiles, out LevelEditorTileViewModel[] outOutsideTiles, OnTileSpawnedDelegate onTileSpawned = null)
+    public void Spawn(int gridSizeX, int gridSizeY, out LevelEditorGridTileViewModel[,] outGridTiles, out LevelEditorOutsideTileViewModel[] outOutsideTiles, OnTileSpawnedDelegate onTileSpawned = null)
     {
-        outGridTiles = new LevelEditorTileViewModel[gridSizeX, gridSizeY];
-        outOutsideTiles = new LevelEditorTileViewModel[(gridSizeX + 1) * 2 + (gridSizeY + 1) * 2];
+        outGridTiles = new LevelEditorGridTileViewModel[gridSizeX, gridSizeY];
+        outOutsideTiles = new LevelEditorOutsideTileViewModel[(gridSizeX + 1) * 2 + (gridSizeY + 1) * 2];
         
         //Make space for outside tiles
         gridSizeX += 2;
@@ -38,10 +38,8 @@ public class LevelEditorGridSpawner : MonoBehaviour
             {
                 if (x == 0 || x == gridSizeX - 1 || y == 0 || y == gridSizeY - 1)
                 {
-                    LevelEditorTileViewModel outsideTile = Instantiate(m_outsideTilePrefab, m_tilesContainer);
-
-                    outsideTile.IsOutsideTile = true;
-
+                    LevelEditorOutsideTileViewModel outsideTile = Instantiate(m_outsideTilePrefab, m_tilesContainer);
+                    
                     outOutsideTiles[outsideTilesCount] = outsideTile;
                     
                     onTileSpawned?.Invoke(outOutsideTiles[outsideTilesCount]);
@@ -50,15 +48,13 @@ public class LevelEditorGridSpawner : MonoBehaviour
                 }
                 else
                 {
-                    LevelEditorTileViewModel gridTile = Instantiate(m_gridTilePrefab, m_tilesContainer);
+                    LevelEditorGridTileViewModel gridTile = Instantiate(m_gridTilePrefab, m_tilesContainer);
 
-                    gridTile.IsOutsideTile = false;
-                
-                    Vector2Int gridPos = new Vector2Int(x - 1, y - 1);
+                    gridTile.GridPos = new Vector2Int(x - 1, y - 1);
 
-                    outGridTiles[gridPos.x, gridPos.y] = gridTile;
+                    outGridTiles[gridTile.GridPos.x, gridTile.GridPos.y] = gridTile;
                     
-                    onTileSpawned?.Invoke(outGridTiles[gridPos.x, gridPos.y]);   
+                    onTileSpawned?.Invoke(outGridTiles[gridTile.GridPos.x, gridTile.GridPos.y]);   
                 }
             }
         }

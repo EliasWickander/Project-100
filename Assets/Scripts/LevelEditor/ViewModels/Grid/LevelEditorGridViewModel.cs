@@ -25,12 +25,12 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
     public static int s_gridSizeX = 10;
     public static int s_gridSizeY = 10;
     
-    private LevelEditorTileViewModel[,] m_gridTiles;
+    private LevelEditorGridTileViewModel[,] m_gridTiles;
 
-    public LevelEditorTileViewModel[,] GridTiles => m_gridTiles;
+    public LevelEditorGridTileViewModel[,] GridTiles => m_gridTiles;
 
-    private LevelEditorTileViewModel[] m_outsideTiles;
-    public LevelEditorTileViewModel[] OutsideTiles => m_outsideTiles;
+    private LevelEditorOutsideTileViewModel[] m_outsideTiles;
+    public LevelEditorOutsideTileViewModel[] OutsideTiles => m_outsideTiles;
     
     private readonly PropertyChangedEventArgs m_selectedTileProp = new PropertyChangedEventArgs(nameof(SelectedTile));
     private LevelEditorTileViewModel m_selectedTile = null;
@@ -81,12 +81,12 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (LevelEditorTileViewModel tile in m_gridTiles)
+        foreach (LevelEditorGridTileViewModel tile in m_gridTiles)
         {
             tile.OnClicked -= OnTileClicked;
         }
         
-        foreach (LevelEditorTileViewModel tile in m_outsideTiles)
+        foreach (LevelEditorOutsideTileViewModel tile in m_outsideTiles)
         {
             tile.OnClicked -= OnTileClicked;
         }
@@ -99,10 +99,10 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
     public void Reset()
     {
-        foreach (LevelEditorTileViewModel gridTile in m_gridTiles)
+        foreach (LevelEditorGridTileViewModel gridTile in m_gridTiles)
             gridTile.Reset();
 
-        foreach(LevelEditorTileViewModel outsideTile in m_outsideTiles)
+        foreach(LevelEditorOutsideTileViewModel outsideTile in m_outsideTiles)
             outsideTile.Reset();
         
         SelectedTile = null;
@@ -143,7 +143,7 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
             {
                 TileState gridTileCache = frameData.m_gridTileStates[x, y];
 
-                LevelEditorTileViewModel gridTile = m_gridTiles[x, y];
+                LevelEditorGridTileViewModel gridTile = m_gridTiles[x, y];
 
                 gridTile.LoadFromCache(gridTileCache);
             }
@@ -153,7 +153,7 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         {
             TileState outsideTileCache = frameData.m_outsideTileStates[i];
 
-            LevelEditorTileViewModel outsideTile = m_outsideTiles[i];
+            LevelEditorOutsideTileViewModel outsideTile = m_outsideTiles[i];
             
             outsideTile.LoadFromCache(outsideTileCache);
         }

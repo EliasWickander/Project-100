@@ -210,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a04cced5c925b440aefbd7dcf04cbcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gridTilePrefab: {fileID: 1499036523794646882, guid: a278984f1a6571141bea7e100e3bdc77, type: 3}
-  m_outsideTilePrefab: {fileID: 1499036523794646882, guid: a278984f1a6571141bea7e100e3bdc77, type: 3}
+  m_gridTilePrefab: {fileID: 7657802413572107591, guid: a278984f1a6571141bea7e100e3bdc77, type: 3}
+  m_outsideTilePrefab: {fileID: 5949897577651599512, guid: 410f88f73915f9248ad69643f9b9bf56, type: 3}
   m_tilesContainer: {fileID: 2244444322673149331}
   m_tilesGridLayoutGroup: {fileID: 4625951627440069671}
 --- !u!1 &5523929133490463054
