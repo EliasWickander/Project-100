@@ -6,25 +6,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Util.UnityMVVM;
 
-public struct GridTileState
+public struct TileState
 {
     public string m_unitId;
     public Vector2 m_direction;
 }
 
 [Binding]
-public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
+public class LevelEditorTileViewModel : ViewModelMonoBehaviour, IPointerClickHandler
 {
     [SerializeField] 
     private LevelEditorGridTileItemViewModel m_itemViewModel;
     
     [SerializeField] 
     private UnitDirectionArrowViewModel[] m_directionArrows;
-    
-    public event Action<LevelEditorGridTileViewModel> OnClicked;
 
-    public Vector2Int GridPos { get; set; }
-    
+    public event Action<LevelEditorTileViewModel> OnClicked;
+
     private readonly PropertyChangedEventArgs m_selectedProp = new PropertyChangedEventArgs(nameof(Selected));
     private bool m_selected = false;
 
@@ -93,9 +91,9 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         }
     }
     
-    private GridTileState m_tileState = new GridTileState();
+    private TileState m_tileState = new TileState();
 
-    public GridTileState TileState => m_tileState;
+    public TileState TileState => m_tileState;
 
     private void OnEnable()
     {
@@ -169,7 +167,7 @@ public class LevelEditorGridTileViewModel : ViewModelMonoBehaviour, IPointerClic
         Select(false);
     }
 
-    public void LoadFromCache(GridTileState cache)
+    public void LoadFromCache(TileState cache)
     {
         //Attach unit from cache data
         if (!string.IsNullOrEmpty(cache.m_unitId) && LevelEditor.UnitsMap.ContainsKey(cache.m_unitId))

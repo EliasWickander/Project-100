@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class LevelEditorGridSpawner : MonoBehaviour
 {
     [SerializeField] 
-    private LevelEditorGridTileViewModel m_gridTilePrefab;
+    private LevelEditorTileViewModel m_gridTilePrefab;
 
     [SerializeField] 
-    private LevelEditorGridTileViewModel m_outsideTilePrefab;
+    private LevelEditorTileViewModel m_outsideTilePrefab;
     
     [SerializeField] 
     private RectTransform m_tilesContainer;
@@ -17,38 +17,48 @@ public class LevelEditorGridSpawner : MonoBehaviour
     [SerializeField] 
     private GridLayoutGroup m_tilesGridLayoutGroup;
 
-    public delegate void OnGridTileSpawnedDelegate(LevelEditorGridTileViewModel tile);
-    public delegate void OnOutsideTileSpawnedDelegate(LevelEditorGridTileViewModel tile);
+    public delegate void OnTileSpawnedDelegate(LevelEditorTileViewModel tile);
 
-    public void Spawn(int gridSizeX, int gridSizeY, OnGridTileSpawnedDelegate onGridTileSpawned = null, OnOutsideTileSpawnedDelegate onOutsideTileSpawned = null)
+    public void Spawn(int gridSizeX, int gridSizeY, out LevelEditorTileViewModel[,] outGridTiles, out LevelEditorTileViewModel[] outOutsideTiles, OnTileSpawnedDelegate onTileSpawned = null)
     {
+        outGridTiles = new LevelEditorTileViewModel[gridSizeX, gridSizeY];
+        outOutsideTiles = new LevelEditorTileViewModel[(gridSizeX + 1) * 2 + (gridSizeY + 1) * 2];
+        
         //Make space for outside tiles
         gridSizeX += 2;
         gridSizeY += 2;
         
         FitToGridLayout(gridSizeX, gridSizeY);
 
+        int outsideTilesCount = 0;
+        
         for (int y = 0; y < gridSizeY; y++)
         {
             for (int x = 0; x < gridSizeX; x++)
             {
                 if (x == 0 || x == gridSizeX - 1 || y == 0 || y == gridSizeY - 1)
                 {
-                    LevelEditorGridTileViewModel outsideTile = Instantiate(m_outsideTilePrefab, m_tilesContainer);
+                    LevelEditorTileViewModel outsideTile = Instantiate(m_outsideTilePrefab, m_tilesContainer);
 
                     outsideTile.IsOutsideTile = true;
+
+                    outOutsideTiles[outsideTilesCount] = outsideTile;
                     
-                    onOutsideTileSpawned?.Invoke(outsideTile);
+                    onTileSpawned?.Invoke(outOutsideTiles[outsideTilesCount]);
+
+                    outsideTilesCount++;
                 }
                 else
                 {
-                    LevelEditorGridTileViewModel gridTile = Instantiate(m_gridTilePrefab, m_tilesContainer);
+                    LevelEditorTileViewModel gridTile = Instantiate(m_gridTilePrefab, m_tilesContainer);
 
                     gridTile.IsOutsideTile = false;
                 
-                    gridTile.GridPos = new Vector2Int(x - 1, y - 1);
+                    Vector2Int gridPos = new Vector2Int(x - 1, y - 1);
 
-                    onGridTileSpawned?.Invoke(gridTile);   
+                    outGridTiles[gridPos.x, gridPos.y] = gridTile;
+                    
+                    onTileSpawned?.Invoke(outGridTiles[gridPos.x, gridPos.y]);   
                 }
             }
         }

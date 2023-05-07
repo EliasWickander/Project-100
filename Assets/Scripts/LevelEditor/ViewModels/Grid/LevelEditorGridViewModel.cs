@@ -25,15 +25,18 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
     public static int s_gridSizeX = 10;
     public static int s_gridSizeY = 10;
     
-    private LevelEditorGridTileViewModel[,] m_tiles;
+    private LevelEditorTileViewModel[,] m_gridTiles;
 
-    public LevelEditorGridTileViewModel[,] Tiles => m_tiles;
+    public LevelEditorTileViewModel[,] GridTiles => m_gridTiles;
 
+    private LevelEditorTileViewModel[] m_outsideTiles;
+    public LevelEditorTileViewModel[] OutsideTiles => m_outsideTiles;
+    
     private readonly PropertyChangedEventArgs m_selectedTileProp = new PropertyChangedEventArgs(nameof(SelectedTile));
-    private LevelEditorGridTileViewModel m_selectedTile = null;
+    private LevelEditorTileViewModel m_selectedTile = null;
 
     [Binding]
-    public LevelEditorGridTileViewModel SelectedTile
+    public LevelEditorTileViewModel SelectedTile
     {
         get
         {
@@ -61,9 +64,7 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         
         Instance = this;
 
-        m_tiles = new LevelEditorGridTileViewModel[s_gridSizeX, s_gridSizeY];
-        
-        m_gridSpawner.Spawn(s_gridSizeX, s_gridSizeY, OnTileSpawned);
+        m_gridSpawner.Spawn(s_gridSizeX, s_gridSizeY, out m_gridTiles, out m_outsideTiles, OnTileSpawned);
     }
 
     private void OnEnable()
@@ -80,33 +81,30 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (LevelEditorGridTileViewModel tile in m_tiles)
+        foreach (LevelEditorTileViewModel tile in m_gridTiles)
+        {
+            tile.OnClicked -= OnTileClicked;
+        }
+        
+        foreach (LevelEditorTileViewModel tile in m_outsideTiles)
         {
             tile.OnClicked -= OnTileClicked;
         }
     }
 
-    private void OnTileSpawned(LevelEditorGridTileViewModel tile)
+    private void OnTileSpawned(LevelEditorTileViewModel tile)
     {
         tile.OnClicked += OnTileClicked;
-
-        if (!tile.IsOutsideTile)
-        {
-            m_tiles[tile.GridPos.x, tile.GridPos.y] = tile;   
-        }
-        else
-        {
-            
-        }
     }
-    
+
     public void Reset()
     {
-        foreach (LevelEditorGridTileViewModel tile in m_tiles)
-        {
-            tile.Reset();
-        }
+        foreach (LevelEditorTileViewModel gridTile in m_gridTiles)
+            gridTile.Reset();
 
+        foreach(LevelEditorTileViewModel outsideTile in m_outsideTiles)
+            outsideTile.Reset();
+        
         SelectedTile = null;
     }
     
@@ -118,7 +116,7 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         m_selectedTile.AttachUnit(selectedUnit);
     }
     
-    private void OnTileClicked(LevelEditorGridTileViewModel clickedTile)
+    private void OnTileClicked(LevelEditorTileViewModel clickedTile)
     {
         if(SelectedTile != null)
             SelectedTile.Select(false);
@@ -143,12 +141,21 @@ public class LevelEditorGridViewModel : ViewModelMonoBehaviour
         {
             for (int x = 0; x < s_gridSizeX; x++)
             {
-                GridTileState cache = frameData.m_tileStates[x, y];
+                TileState gridTileCache = frameData.m_gridTileStates[x, y];
 
-                LevelEditorGridTileViewModel tile = m_tiles[x, y];
+                LevelEditorTileViewModel gridTile = m_gridTiles[x, y];
 
-                tile.LoadFromCache(cache);
+                gridTile.LoadFromCache(gridTileCache);
             }
+        }
+
+        for(int i = 0; i < m_outsideTiles.Length; i++)
+        {
+            TileState outsideTileCache = frameData.m_outsideTileStates[i];
+
+            LevelEditorTileViewModel outsideTile = m_outsideTiles[i];
+            
+            outsideTile.LoadFromCache(outsideTileCache);
         }
     }
 

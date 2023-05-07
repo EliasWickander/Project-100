@@ -9,7 +9,8 @@ using Util.UnityMVVM;
 public class TimelineFrameData
 {
     public float m_timeStamp;
-    public GridTileState[,] m_tileStates;
+    public TileState[,] m_gridTileStates;
+    public TileState[] m_outsideTileStates;
 }
 
 [Binding]
@@ -81,7 +82,8 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
         m_data = new TimelineFrameData()
         {
             m_timeStamp = TimeStamp,
-            m_tileStates = new GridTileState[LevelEditorGridViewModel.s_gridSizeX, LevelEditorGridViewModel.s_gridSizeY]
+            m_gridTileStates = new TileState[LevelEditorGridViewModel.s_gridSizeX, LevelEditorGridViewModel.s_gridSizeY],
+            m_outsideTileStates = new TileState[(LevelEditorGridViewModel.s_gridSizeX + 1) * 2 + (LevelEditorGridViewModel.s_gridSizeY + 1) * 2]
         };
         
         m_saveFrameEvent = saveFrameEvent;
@@ -112,15 +114,27 @@ public class LevelEditorTimelineFrameViewModel : ViewModelMonoBehaviour, IPointe
     public void SaveFrame()
     {
         m_data.m_timeStamp = TimeStamp;
-        
+
         LevelEditorGridViewModel grid = LevelEditorGridViewModel.Instance;
 
         if (grid != null)
         {
-            foreach (LevelEditorGridTileViewModel tile in grid.Tiles)
+            for (int x = 0; x < LevelEditorGridViewModel.s_gridSizeX; x++)
             {
-                m_data.m_tileStates[tile.GridPos.x, tile.GridPos.y] = tile.TileState;
-            }   
+                for (int y = 0; y < LevelEditorGridViewModel.s_gridSizeY; y++)
+                {
+                    LevelEditorTileViewModel gridTile = grid.GridTiles[x, y];
+                    
+                    m_data.m_gridTileStates[x, y] = gridTile.TileState;
+                }
+            }
+
+            for (int i = 0; i < grid.OutsideTiles.Length; i++)
+            {
+                LevelEditorTileViewModel outsideTile = grid.OutsideTiles[i];
+                
+                m_data.m_outsideTileStates[i] = outsideTile.TileState;
+            }
         }
     }
 
