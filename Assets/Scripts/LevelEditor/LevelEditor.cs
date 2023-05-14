@@ -13,6 +13,7 @@ public class LevelData
 {
     public string m_id;
     public string m_name;
+    public string m_environmentPath;
     public List<TimelineFrameData> m_frames;
 }
 
@@ -53,6 +54,8 @@ public class LevelEditor : ViewModelMonoBehaviour
         }
     }
 
+    private EnvironmentConfig m_activeEnvironment;
+    
     private void Awake()
     {
         Instance = this;
@@ -68,6 +71,16 @@ public class LevelEditor : ViewModelMonoBehaviour
         m_units = Resources.LoadAll<UnitData>("Characters/Enemies");
     
         SetupUnitMap();
+    }
+
+    private void OnEnable()
+    {
+        EnvironmentLoader.OnEnvironmentChanged += OnEnvironmentChanged;
+    }
+
+    private void OnDisable()
+    {
+        EnvironmentLoader.OnEnvironmentChanged -= OnEnvironmentChanged;
     }
 
     private void Start()
@@ -90,6 +103,11 @@ public class LevelEditor : ViewModelMonoBehaviour
         }
     }
 
+    private void OnEnvironmentChanged(EnvironmentConfig environment)
+    {
+        m_activeEnvironment = environment;
+    }
+    
     public void LoadLevel(LevelData level)
     {
         if(level == null)
@@ -112,6 +130,7 @@ public class LevelEditor : ViewModelMonoBehaviour
         levelData.m_id = LevelEditorContext.s_currentEditedLevel != null ? LevelEditorContext.s_currentEditedLevel.m_id : Guid.NewGuid().ToString("N");
 
         levelData.m_name = LevelName;
+        levelData.m_environmentPath = m_activeEnvironment.m_resourcePath;
         
         //Convert all frames to json
         levelData.m_frames = new List<TimelineFrameData>();

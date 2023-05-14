@@ -10,6 +10,8 @@ public class EnvironmentLoader : MonoBehaviour
 
     [SerializeField] 
     private EnvironmentChangedGameEvent m_environmentChangedEvent;
+
+    public static event Action<EnvironmentConfig> OnEnvironmentChanged;
     
     private EnvironmentConfig m_activeEnvironmentConfig = null;
     private GameObject m_activeEnvironmentObject = null;
@@ -48,5 +50,7 @@ public class EnvironmentLoader : MonoBehaviour
         
         if(m_environmentChangedEvent != null)
             m_environmentChangedEvent.Raise(new EnvironmentChangedEventData() {m_environmentConfig = m_activeEnvironmentConfig});
+        
+        OnEnvironmentChanged?.Invoke(environment);
     }
 }
